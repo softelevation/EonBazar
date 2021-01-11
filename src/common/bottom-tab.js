@@ -28,6 +28,7 @@ const tabImages = {
   image: 'DashboardLogo',
   Cart: 'your_order_icon',
   Login: 'profile_icon',
+  Profile: 'profile_icon',
 };
 const renderHeight = (type) => {
   switch (type) {
@@ -45,6 +46,8 @@ const renderWidth = (type) => {
       return 20;
     case 'category_icon':
       return 21;
+    case 'your_order_icon':
+      return 25;
     default:
       return 23;
   }

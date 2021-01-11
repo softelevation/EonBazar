@@ -1,9 +1,13 @@
 import React, {useState} from 'react';
-import {StyleSheet, TextInput} from 'react-native';
-import {heightPercentageToDP} from 'react-native-responsive-screen';
+import {Platform, StyleSheet, TextInput} from 'react-native';
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen';
 import Block from './Block';
 import Button from './CustomButton';
 import Text from './Text';
+import {light} from './theme/colors';
 
 const componentStyles = () => {
   return StyleSheet.create({
@@ -11,22 +15,25 @@ const componentStyles = () => {
       marginBottom: heightPercentageToDP(0.8),
     },
     input: {
-      padding: heightPercentageToDP(1),
+      paddingVertical:
+        Platform.OS === 'ios'
+          ? heightPercentageToDP(1)
+          : heightPercentageToDP(0.3),
+      paddingHorizontal: widthPercentageToDP(3),
       borderWidth: 1,
       borderColor: '#C2C2C2',
-      // borderRadius: 5,
-      fontSize: 10,
+      fontSize: 14,
       fontWeight: '500',
-      color: '#000',
+      color: '#9c9c9c',
       backgroundColor: '#fff',
     },
     toggle: {
-      position: 'absolute',
-      alignItems: 'flex-end',
-      width: 16 * 2,
-      height: 16 * 2,
-      top: 16,
-      right: 0,
+      // position: 'absolute',
+      // alignItems: 'flex-end',
+      // width: 16 * 2,
+      // height: 16 * 2,
+      // top: 16,
+      // right: 0,
     },
   });
 };
@@ -114,9 +121,9 @@ const Input = ({
   const inputStyles = [
     styles.input,
     !editable && {
-      backgroundColor: '#000',
-      color: '#fff',
-      borderColor: '#000',
+      backgroundColor: '#e9ecef',
+      color: '#9c9c9c',
+      borderColor: '#e9ecef',
     },
     error && {borderColor: 'red'},
     style,

@@ -10,6 +10,7 @@ const getAllProductsSuccess = (data) => {
   return {
     type: ActionConstants.GET_ALL_PRODUCTS_SUCCESS,
     data,
+    res: true,
   };
 };
 const getAllProductsError = (error) => {

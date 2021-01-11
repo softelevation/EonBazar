@@ -4,26 +4,27 @@ const initialState = {
   data: [],
   error: '',
 };
-export function getCurrencyDetailsReducer(state = initialState, action) {
+export function currency(state = initialState, action) {
   switch (action.type) {
     case ActionConstants.GET_CURRENCY_DETAILS_REQUEST:
       return {
-        ...initialState,
+        ...state,
         loading: true,
       };
     case ActionConstants.GET_CURRENCY_DETAILS_SUCCESS:
       return {
-        ...initialState,
+        ...state,
         loading: false,
-        user: action.success,
+        data: action.data,
       };
     case ActionConstants.GET_CURRENCY_DETAILS_ERROR:
       return {
-        ...initialState,
+        ...state,
+        loading: false,
       };
 
     default:
       return state;
   }
 }
-export default getCurrencyDetailsReducer;
+export default currency;

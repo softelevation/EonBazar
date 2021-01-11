@@ -4,26 +4,27 @@ const initialState = {
   data: {},
   error: '',
 };
-export function registerReducer(state = initialState, action) {
+export function register(state = initialState, action) {
   switch (action.type) {
     case ActionConstants.REGISTER_REQUEST:
       return {
-        ...initialState,
+        ...state,
         loading: true,
       };
     case ActionConstants.REGISTER_SUCCESS:
       return {
-        ...initialState,
+        ...state,
         loading: false,
         data: action.success,
       };
     case ActionConstants.REGISTER_ERROR:
       return {
-        ...initialState,
+        ...state,
+        loading: false,
       };
 
     default:
       return state;
   }
 }
-export default registerReducer;
+export default register;

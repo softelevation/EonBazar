@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {ScrollView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {ActivityIndicator, ScrollView} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -11,11 +11,44 @@ import Search from '../../components/search';
 import Footer from '../../common/footer';
 import Cards from '../../common/cards';
 import HeaderMenu from '../../common/headerMenu';
+import {useDispatch, useSelector} from 'react-redux';
+import {getAllProductsRequest} from '../../redux/action';
+import {strictValidArrayWithLength} from '../../utils/commonUtils';
+import ActivityLoader from '../../components/activityLoader';
+import {w3} from '../../components/theme/fontsize';
+import {useNavigation} from '@react-navigation/native';
+import {light} from '../../components/theme/colors';
 const Dashboard = () => {
+  const navigation = useNavigation();
   const [menu, setmenu] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const dispatch = useDispatch();
+  const productsData = useSelector((v) => v.getProductsReducer.data);
+  const isLoad = useSelector((v) => v.getProductsReducer.loading);
+
   const sortingMenu = (val) => {
     setmenu(val);
   };
+  useEffect(() => {
+    dispatch(
+      getAllProductsRequest({
+        currentPage,
+        pageSize,
+      }),
+    );
+    const unsubscribe = navigation.addListener('state', () => {
+      dispatch(
+        getAllProductsRequest({
+          currentPage,
+          pageSize,
+        }),
+      );
+    });
+
+    return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <Block>
       <Header />
@@ -26,22 +59,30 @@ const Dashboard = () => {
         <HeaderMenu onPress={sortingMenu} color={menu} />
         <Banner />
         <Block padding={[0, wp(1)]} flex={false}>
-          <Text body semibold>
-            Top offers this week
-          </Text>
-          <Cards />
-        </Block>
-        <Block padding={[hp(1), wp(1)]} flex={false}>
-          <Text body semibold>
-            Best Seller Products
-          </Text>
-          <Cards />
-        </Block>
-        <Block padding={[hp(1), wp(1)]} flex={false}>
-          <Text body semibold>
-            New Products
-          </Text>
-          <Cards />
+          <Block padding={[0, w3]} row flex={false} space={'between'}>
+            <Text body semibold>
+              All Products
+            </Text>
+            <Text
+              onPress={() => navigation.navigate('SeeAllDetails')}
+              secondary
+              body
+              semibold>
+              See All
+            </Text>
+          </Block>
+
+          {isLoad ? (
+            <Block color="transparent" style={{height: hp(30)}} center middle>
+              <ActivityIndicator color={light.secondary} size="large" />
+            </Block>
+          ) : (
+            <Cards
+              value={currentPage}
+              setValue={(val) => setCurrentPage(val)}
+              data={strictValidArrayWithLength(productsData) && productsData}
+            />
+          )}
         </Block>
         <Footer />
       </ScrollView>

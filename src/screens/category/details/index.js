@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {FlatList, ScrollView, TouchableOpacity} from 'react-native';
+import {Alert, FlatList, ScrollView, TouchableOpacity} from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -19,16 +19,43 @@ import StarRating from 'react-native-star-rating';
 import Footer from '../../../common/footer';
 import {light} from '../../../components/theme/colors';
 import {useNavigation} from '@react-navigation/native';
+import {strictValidObjectWithKeys} from '../../../utils/commonUtils';
+import {useDispatch, useSelector} from 'react-redux';
+import {addToCartRequest} from '../../../redux/action';
+import {config} from '../../../utils/config';
+import styled from 'styled-components/native';
 
 const initialState = {
   reviews: true,
   overview: true,
 };
-const Details = () => {
+const Details = ({
+  route: {
+    params: {item},
+  },
+}) => {
   const [action, setAction] = useState(initialState);
   const {reviews, overview} = action;
   const [qty, setQty] = useState(1);
   const nav = useNavigation();
+  const userProfile = useSelector((v) => v.user.profile.user);
+  const quote_id = useSelector((v) => v.cart.cartId.id);
+  const isLoad = useSelector((state) => state.cart.save.loading);
+  const dispatch = useDispatch();
+
+  const addToCart = async () => {
+    if (strictValidObjectWithKeys(userProfile)) {
+      const newData = {
+        sku: item.sku,
+        qty: qty,
+        quote_id: quote_id,
+      };
+      await dispatch(addToCartRequest(newData));
+    } else {
+      Alert.alert('Error', 'Please login First');
+    }
+  };
+
   const renderConditions = () => {
     return (
       <Block margin={[t2, 0]} white padding={[t2]}>
@@ -173,9 +200,7 @@ const Details = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Block flex={false} padding={[t2]}>
           <Text grey regular size={12}>
-            {
-              'Home > Breakfast Range > Country Natural Black Seed Paratha - 12 Pcs  (900gm)'
-            }
+            {`Home > ${item.name}`}
           </Text>
           <Block margin={[t2, 0, 0, 0]} white padding={[t2, w3, 0, w3]}>
             <CustomButton
@@ -202,15 +227,29 @@ const Details = () => {
             {overview && (
               <>
                 <Block center flex={false}>
-                  <ImageComponent name="product" height="250" width="250" />
+                  <ImageComponent
+                    isURL
+                    name={`${config.Image_Url}${item.image}`}
+                    height="250"
+                    width="250"
+                  />
                 </Block>
                 <Block margin={[t2, 0]}>
                   <Text regular size={12} height={20}>
-                    Country Natural Black Seed Paratha - 12 Pcs (900gm)
+                    {item.name}
                   </Text>
                   <Text secondary size={12} semibold height={20}>
-                    BDT 240.00
+                    {item.currency_code} {item.specialPrice}
                   </Text>
+                  {item.price_info !== item.specialPrice && (
+                    <LineAboveText
+                      body
+                      size={12}
+                      color="grey"
+                      margin={[hp(0.2), 0, 0, 0]}>
+                      {item.currency_code} {item.price_info}
+                    </LineAboveText>
+                  )}
                   <Text transform="uppercase" size={12} height={20}>
                     be the first to review this product
                   </Text>
@@ -233,7 +272,7 @@ const Details = () => {
                     SKU
                   </Text>
                   <Text regular size={12} height={20}>
-                    Country Natural Black Seed Paratha - 12 Pcs (900gm)'
+                    {item.sku}
                   </Text>
                   <Block
                     padding={[t1, 0, 0, 0]}
@@ -289,8 +328,13 @@ const Details = () => {
                 Specification
               </Text>
               <Block row flex={false}>
-                <Text margin={[0, w1, 0, w1]} size={12} regular>
-                  Country Natural Black Seed
+                <Text
+                  style={{width: wp(50)}}
+                  numberOfLines={1}
+                  margin={[0, w1, 0, w1]}
+                  size={12}
+                  regular>
+                  {item.name}
                 </Text>
                 <Icon name="ios-chevron-forward" size={12} />
               </Block>
@@ -308,10 +352,13 @@ const Details = () => {
               <Icon name="ios-chevron-forward" size={12} />
             </Block>
           </Block>
-          <Button onPress={() => nav.navigate('Cart')} color="primary">
+          <Button
+            isLoading={isLoad}
+            onPress={() => addToCart()}
+            color="primary">
             Add to cart
           </Button>
-          <Button onPress={() => nav.navigate('Cart')} color="secondary">
+          <Button onPress={() => alert('working')} color="secondary">
             Buy Now
           </Button>
           <Block margin={[t1, 0]} center middle row>
@@ -328,7 +375,7 @@ const Details = () => {
               <ImageComponent
                 name="wishlist_icon"
                 height="20"
-                width="20"
+                width="23"
                 color="#78A942"
               />
             </CustomButton>
@@ -355,5 +402,8 @@ const Details = () => {
     </Block>
   );
 };
-
+const LineAboveText = styled(Text)({
+  textDecorationLine: 'line-through',
+  textDecorationStyle: 'solid',
+});
 export default Details;

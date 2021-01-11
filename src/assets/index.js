@@ -41,4 +41,6 @@ export const images = {
   checkbox_icon: require('./icons/checkbox.png'),
   uncheckbox_icon: require('./icons/uncheckbox.png'),
   back_icon: require('./icons/back.png'),
+  refresh_icon: require('./icons/refresh.png'),
+  empty_icon: require('./icons/empty.png'),
 };

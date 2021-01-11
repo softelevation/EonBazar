@@ -7,7 +7,7 @@ export function* request(action) {
   try {
     const response = yield call(Api, action.payload);
     if (response) {
-      yield put(getAllProductsSuccess(response.data));
+      yield put(getAllProductsSuccess(response.data.items));
     } else {
       yield put(getAllProductsError(response));
     }

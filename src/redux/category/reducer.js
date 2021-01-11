@@ -8,18 +8,19 @@ export function getProductsReducer(state = initialState, action) {
   switch (action.type) {
     case ActionConstants.GET_ALL_PRODUCTS_REQUEST:
       return {
-        ...initialState,
+        ...state,
         loading: true,
       };
     case ActionConstants.GET_ALL_PRODUCTS_SUCCESS:
       return {
-        ...initialState,
+        ...state,
         loading: false,
-        user: action.success,
+        data: action.data,
       };
     case ActionConstants.GET_ALL_PRODUCTS_ERROR:
       return {
-        ...initialState,
+        ...state,
+        loading: false,
       };
 
     default:

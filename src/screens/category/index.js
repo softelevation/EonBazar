@@ -57,7 +57,7 @@ const Category = () => {
               useNativeAndroidPickerStyle={false}
               style={dropdownStyle}
               // value={values.type}
-              onValueChange={(value) => console.log(value)}
+              // onValueChange={(value) => console.log(value)}
               mode="dropdown"
               items={[
                 {label: 'test', value: 'low'},

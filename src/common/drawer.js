@@ -5,12 +5,17 @@ import {
 } from 'react-native-responsive-screen';
 import {Block, CustomButton, ImageComponent, Text} from '../components';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {FlatList} from 'react-native';
+import {Alert, FlatList} from 'react-native';
 import {DrawerData} from '../utils/static-data';
-import {useNavigation} from '@react-navigation/native';
+import {DrawerActions, useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
+import {useDispatch, useSelector} from 'react-redux';
+import {loginSuccess, profileFlush} from '../redux/action';
+import {strictValidObjectWithKeys} from '../utils/commonUtils';
 const DrawerScreen = () => {
   const nav = useNavigation();
-
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.profile.user);
   const renderHeight = (type) => {
     switch (type) {
       case 'your_order_drawer_icon':
@@ -32,10 +37,30 @@ const DrawerScreen = () => {
     }
   };
 
+  const navigateHelpers = async (val) => {
+    if (val === 'Logout') {
+      try {
+        const keys = await AsyncStorage.getAllKeys();
+        await AsyncStorage.multiRemove(keys);
+        nav.dispatch(DrawerActions.closeDrawer());
+        dispatch(loginSuccess(''));
+        dispatch(profileFlush());
+      } catch (error) {}
+    } else if (val === 'Profile' || val === 'YourOrder' || val === 'Wishlist') {
+      if (strictValidObjectWithKeys(user)) {
+        nav.navigate(val);
+      } else {
+        Alert.alert('Error', 'Please login First');
+      }
+    } else {
+      nav.navigate(val);
+    }
+  };
+
   const _renderItem = ({item}) => {
     return (
       <CustomButton
-        onPress={() => nav.navigate(item.nav)}
+        onPress={() => navigateHelpers(item.nav)}
         row
         center
         flex={false}
@@ -62,7 +87,9 @@ const DrawerScreen = () => {
         padding={[hp(2), 0, hp(2), wp(5)]}>
         <AntDesign name="user" size={20} color="#fff" />
         <Text semibold margin={[0, wp(8), 0, wp(5)]} white>
-          Michal John
+          {strictValidObjectWithKeys(user)
+            ? user.firstname + ' ' + user.lastname
+            : 'Guest User'}
         </Text>
       </Block>
       <FlatList data={DrawerData} renderItem={_renderItem} />

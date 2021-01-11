@@ -95,7 +95,10 @@ const Button = ({
       activeOpacity={disabled ? opacity || 0.8 : 0.2}
       {...rest}>
       {isLoading ? (
-        <ActivityIndicator size="small" color="#ffffff" />
+        <ActivityIndicator
+          size="small"
+          color={color === 'secondary' ? '#fff' : light.secondary}
+        />
       ) : (
         <Text
           style={textStyle}

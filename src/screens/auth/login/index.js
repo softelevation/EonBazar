@@ -12,9 +12,14 @@ import Footer from '../../../common/footer';
 import {useNavigation} from '@react-navigation/native';
 import {Formik} from 'formik';
 import * as yup from 'yup';
+import {useDispatch, useSelector} from 'react-redux';
+import {loginRequest} from '../../../redux/action';
+import {strictValidString} from '../../../utils/commonUtils';
 const Login = () => {
   const nav = useNavigation();
-
+  const dispatch = useDispatch();
+  const isLoad = useSelector((state) => state.user.login.loading);
+  const isError = useSelector((state) => state.user.login.error);
   const renderNavigations = () => {
     return (
       <Block padding={[hp(2), wp(7), hp(2), wp(7)]} flex={false}>
@@ -60,8 +65,14 @@ const Login = () => {
       </Block>
     );
   };
-  const submitValues = (values) => {
-    console.log(values, 'values');
+  const submitValues = async (values) => {
+    const username = `${values.mobile}`;
+    const password = `${values.password}`;
+    const data = {
+      username,
+      password,
+    };
+    await dispatch(loginRequest(data));
   };
   return (
     <Block>
@@ -128,8 +139,14 @@ const Login = () => {
                   errorText={touched.password && errors.password}
                   secure={true}
                 />
+                {strictValidString(isError) && (
+                  <Text center size={12} errorColor>
+                    {isError}
+                  </Text>
+                )}
                 <Button
                   disabled={!dirty}
+                  isLoading={isLoad}
                   onPress={handleSubmit}
                   color="secondary">
                   SIGN IN

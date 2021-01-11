@@ -1,13 +1,10 @@
 import React from 'react';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
-import {Block, ImageComponent, Text} from '../components';
-import Icon from 'react-native-vector-icons/Ionicons';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {Block, ImageComponent} from '../components';
 import PropTypes from 'prop-types';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native';
+import {w3} from '../components/theme/fontsize';
 const Header = ({leftIcon, Logo, rightIcon}) => {
   const nav = useNavigation();
   return (
@@ -15,7 +12,7 @@ const Header = ({leftIcon, Logo, rightIcon}) => {
       center
       row
       space={'between'}
-      padding={[hp(1)]}
+      padding={[hp(1), w3]}
       secondary
       flex={false}>
       {leftIcon ? (

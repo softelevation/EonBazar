@@ -29,16 +29,21 @@ import YourOrder from '../screens/dashboard/your-order';
 import Shipping from '../screens/payment/shipping';
 import PlaceAnOrder from '../screens/payment/place-an-order';
 import Details from '../screens/category/details';
+import SeeAllDetails from '../screens/dashboard/all-details';
+import {useSelector} from 'react-redux';
+import {strictValidObjectWithKeys} from '../utils/commonUtils';
+import {navigationRef} from './NavigationService';
 const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 function Routes() {
+  const user = useSelector((state) => state.user.profile.user);
+
   const LoginStack = () => {
     return (
       <RootStack.Navigator
         screenOptions={{
-          cardStyleInterpolator:
-            CardStyleInterpolators.forScaleFromCenterAndroid,
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
         initialRouteName="Login"
         headerMode="none">
@@ -55,6 +60,7 @@ function Routes() {
         <RootStack.Screen name="Shipping" component={Shipping} />
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
         <RootStack.Screen name="Details" component={Details} />
+        <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
       </RootStack.Navigator>
     );
   };
@@ -62,8 +68,7 @@ function Routes() {
     return (
       <RootStack.Navigator
         screenOptions={{
-          cardStyleInterpolator:
-            CardStyleInterpolators.forScaleFromCenterAndroid,
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
         initialRouteName="Dashboard"
         headerMode="none">
@@ -79,6 +84,7 @@ function Routes() {
         <RootStack.Screen name="Shipping" component={Shipping} />
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
         <RootStack.Screen name="Details" component={Details} />
+        <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
       </RootStack.Navigator>
     );
   };
@@ -86,8 +92,7 @@ function Routes() {
     return (
       <RootStack.Navigator
         screenOptions={{
-          cardStyleInterpolator:
-            CardStyleInterpolators.forScaleFromCenterAndroid,
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
         initialRouteName="Cart"
         headerMode="none">
@@ -105,6 +110,8 @@ function Routes() {
         <RootStack.Screen name="Shipping" component={Shipping} />
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
         <RootStack.Screen name="Details" component={Details} />
+        <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
+        <RootStack.Screen name="Login" component={Login} />
       </RootStack.Navigator>
     );
   };
@@ -112,8 +119,7 @@ function Routes() {
     return (
       <RootStack.Navigator
         screenOptions={{
-          cardStyleInterpolator:
-            CardStyleInterpolators.forScaleFromCenterAndroid,
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
         initialRouteName="Category"
         headerMode="none">
@@ -129,6 +135,7 @@ function Routes() {
         <RootStack.Screen name="Shipping" component={Shipping} />
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
         <RootStack.Screen name="Details" component={Details} />
+        <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
       </RootStack.Navigator>
     );
   };
@@ -145,27 +152,13 @@ function Routes() {
           component={DashboardStack}
         />
         <Tab.Screen name="Category" component={CategoryStack} />
-        <Tab.Screen
-          options={{
-            unmountOnBlur: true,
-          }}
-          name="DashboardLogo"
-          component={DashboardStack}
-        />
-        <Tab.Screen
-          options={{
-            unmountOnBlur: true,
-          }}
-          name="Cart"
-          component={CartStack}
-        />
-        <Tab.Screen
-          options={{
-            unmountOnBlur: true,
-          }}
-          name="Login"
-          component={LoginStack}
-        />
+        <Tab.Screen name="DashboardLogo" component={DashboardStack} />
+        <Tab.Screen name="Cart" component={CartStack} />
+        {strictValidObjectWithKeys(user) ? (
+          <Tab.Screen name="Profile" component={Profile} />
+        ) : (
+          <Tab.Screen name="Login" component={LoginStack} />
+        )}
       </Tab.Navigator>
     );
   };
@@ -179,7 +172,7 @@ function Routes() {
     );
   }
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <SafeAreaView style={{flex: 1, backgroundColor: '#78A942'}}>
         <StatusBar barStyle="light-content" />
         <RootStack.Navigator

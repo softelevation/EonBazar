@@ -1,5 +1,10 @@
-import React from 'react';
-import {FlatList} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import styled from 'styled-components/native';
 import {Block, Text, ImageComponent, CustomButton} from '../components';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -9,13 +14,78 @@ import {
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
-const Cards = () => {
+import {useDispatch, useSelector} from 'react-redux';
+import {strictValidObjectWithKeys} from '../utils/commonUtils';
+import {addToCartRequest} from '../redux/action';
+import {config} from '../utils/config';
+const Cards = ({data}) => {
   const nav = useNavigation();
-  const renderItem = ({item}) => {
+  const [products, setData] = useState([]);
+  const quote_id = useSelector((state) => state.cart.cartId.id);
+  const userProfile = useSelector((state) => state.user.profile.user);
+  const errorCartLoad = useSelector((state) => state.cart.save.error);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const newData = [];
+    data &&
+      data.map((a) => {
+        const special_price = a.custom_attributes.find(
+          (v) => v.attribute_code === 'special_price',
+        );
+        newData.push({
+          qty: 1,
+          name: a.name,
+          image: a.media_gallery_entries[0].file,
+          currency_code: a.currency_code || 'BDT',
+          price_info: a.price,
+          specialPrice: special_price
+            ? Math.ceil(special_price.value).toFixed(2)
+            : a.price,
+          isLoad: false,
+          sku: a.sku,
+        });
+      });
+    setData(newData);
+  }, [data, errorCartLoad]);
+
+  const addToCart = async (val, index) => {
+    if (strictValidObjectWithKeys(userProfile)) {
+      const old = products[index];
+      const updated = {...old, isLoad: true};
+      const clone = [...products];
+      clone[index] = updated;
+      setData(clone);
+      const newData = {
+        sku: val.sku,
+        qty: val.qty,
+        quote_id: quote_id,
+      };
+      await dispatch(addToCartRequest(newData));
+    } else {
+      Alert.alert('Error', 'Please login First');
+    }
+  };
+
+  const updateQty = (qty, index) => {
+    const old = products[index];
+    const updated = {...old, qty: qty};
+    const clone = [...products];
+    clone[index] = updated;
+    setData(clone);
+  };
+
+  const _renderEmpty = () => {
+    return (
+      <Block style={{height: hp(40)}} center middle>
+        <Text size={16}>List Not Found</Text>
+      </Block>
+    );
+  };
+  const renderItem = ({item, index}) => {
     return (
       <CustomButton
         activeOpacity={1}
-        onPress={() => nav.navigate('Details')}
         style={{width: wp(45)}}
         padding={[hp(2)]}
         margin={[hp(0.5), wp(1.8)]}
@@ -23,22 +93,33 @@ const Cards = () => {
         flex={false}>
         <Icon name="ios-heart-outline" size={15} />
         <Icon name="ios-shuffle" size={15} />
-        <Block margin={[hp(1), 0, 0, 0]} center flex={false}>
-          <ImageComponent name="product" />
+        <CustomButton
+          activeOpacity={1}
+          onPress={() =>
+            nav.navigate('Details', {
+              item: item,
+            })
+          }
+          margin={[hp(1), 0, 0, 0]}
+          center
+          flex={false}>
+          <ImageComponent name={`${config.Image_Url}${item.image}`} isURL />
           <Text size={12} center margin={[hp(2), 0, 0, 0]} body>
-            Country Natural Dressed Chicken{' '}
+            {item.name}
           </Text>
           <Text size={12} body margin={[hp(1), 0, 0, 0]} semibold>
-            BDT 300.00
+            {item.currency_code} {item.specialPrice}
           </Text>
-          <LineAboveText
-            body
-            size={12}
-            color="grey"
-            margin={[hp(0.2), 0, 0, 0]}>
-            BDT 450.00
-          </LineAboveText>
-        </Block>
+          {item.price_info !== item.specialPrice && (
+            <LineAboveText
+              body
+              size={12}
+              color="grey"
+              margin={[hp(0.2), 0, 0, 0]}>
+              {item.currency_code} {item.price_info}
+            </LineAboveText>
+          )}
+        </CustomButton>
         <Block
           margin={[hp(1), 0, 0, 0]}
           center
@@ -55,19 +136,33 @@ const Cards = () => {
             padding={[hp(0.5)]}
             borderColorDeafult
             flex={false}>
-            <Icon name="ios-remove-outline" size={15} />
-            <Text size={12}>1</Text>
-            <Icon name="add" size={15} />
+            <TouchableOpacity
+              disabled={item.qty === 1}
+              onPress={() => updateQty(item.qty - 1, index)}>
+              <Icon name="ios-remove-outline" size={15} />
+            </TouchableOpacity>
+
+            <Text size={12}>{item.qty}</Text>
+            <Icon
+              onPress={() => updateQty(item.qty + 1, index)}
+              name="add"
+              size={15}
+            />
           </Block>
-          <Block
+          <CustomButton
+            onPress={() => addToCart(item, index)}
             secondary
             padding={[hp(1)]}
             borderRadius={20}
             center
             middle
             flex={false}>
-            <MaterialIcon name="shopping-bag" size={20} color="#fff" />
-          </Block>
+            {item.isLoad ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <MaterialIcon name="shopping-bag" size={20} color="#fff" />
+            )}
+          </CustomButton>
         </Block>
       </CustomButton>
     );
@@ -75,8 +170,10 @@ const Cards = () => {
   return (
     <FlatList
       contentContainerStyle={flatlistContentStyle}
-      data={['1', '2', '3', '4']}
+      data={products && products}
       renderItem={renderItem}
+      onEndReachedThreshold={0}
+      ListEmptyComponent={_renderEmpty}
     />
   );
 };

@@ -1,7 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {Formik} from 'formik';
-import React, {useState} from 'react';
-import {ScrollView} from 'react-native';
+import React, {useRef, useState} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -14,11 +13,44 @@ import {Block, Button, Input, Text} from '../../../components';
 import Checkbox from '../../../components/checkbox';
 import Search from '../../../components/search';
 import * as yup from 'yup';
+import {useDispatch, useSelector} from 'react-redux';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 const NewCustomer = () => {
   const [generate, setGenerate] = useState(false);
+  const formikRef = useRef(null);
+  const [resend, setResend] = useState(0);
+  const dispatch = useDispatch();
   const nav = useNavigation();
+  const isLoad = useSelector((state) => state.user.register.loading);
+  const isOtpLoad = useSelector((state) => state.user.otp.loading);
   const submitValues = (values) => {
-    console.log(values);
+    const data = {
+      firstname: values.firstname,
+      lastname: values.lastname,
+      mobile: values.mobile,
+      otp: values.otp,
+      password: values.password,
+    };
+  };
+  const generateOtp = () => {
+    if (formikRef.current) {
+      const {mobile} = formikRef.current.values;
+      const data = {
+        resend,
+        mobile,
+      };
+      setGenerate(true);
+    }
+  };
+  const resendOtp = () => {
+    if (formikRef.current) {
+      const {mobile} = formikRef.current.values;
+      const data = {
+        resend: resend + 1,
+        mobile,
+      };
+      setGenerate(true);
+    }
   };
   return (
     <Block>
@@ -28,7 +60,16 @@ const NewCustomer = () => {
       </Block>
       {/* <Banner /> */}
       <Formik
-        initialValues={{email: '', password: '', check: false}}
+        innerRef={formikRef}
+        initialValues={{
+          password: '',
+          check: false,
+          firstname: '',
+          lastname: '',
+          mobile: '',
+          confirmpass: '',
+          otp: '',
+        }}
         onSubmit={submitValues}
         validationSchema={yup.object().shape({
           mobile: yup
@@ -36,7 +77,22 @@ const NewCustomer = () => {
             .min(10)
             .max(15)
             .required('Mobile Number is Required'),
-          password: yup.string().min(6).required('Password is Required'),
+          password: yup.string().min(8).required(),
+          firstname: yup.string().min(3).required(),
+          lastname: yup.string().min(1).required(),
+          otp: yup.string().required(),
+          confirmpass: yup
+            .string()
+            .when('password', {
+              is: (val) => (val && val.length > 0 ? true : false),
+              then: yup
+                .string()
+                .oneOf(
+                  [yup.ref('password')],
+                  'Both password need to be the same',
+                ),
+            })
+            .required(),
         })}>
         {({
           values,
@@ -46,10 +102,11 @@ const NewCustomer = () => {
           touched,
           handleSubmit,
           setFieldValue,
+          isValid,
+          dirty,
         }) => {
-          const {check} = values;
           return (
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
               <Text semibold transform="uppercase" center>
                 Create New Customer Login
               </Text>
@@ -67,8 +124,22 @@ const NewCustomer = () => {
                   padding={[0, 0, hp(1), 0]}
                   borderWidth={[0, 0, 1, 0]}
                 />
-                <Input label="First Name" />
-                <Input label="Last Name" />
+                <Input
+                  label="First Name"
+                  value={values.firstname}
+                  onChangeText={handleChange('firstname')}
+                  onBlur={() => setFieldTouched('firstname')}
+                  error={touched.firstname && errors.firstname}
+                  errorText={touched.firstname && errors.firstname}
+                />
+                <Input
+                  label="Last Name"
+                  value={values.lastname}
+                  onChangeText={handleChange('lastname')}
+                  onBlur={() => setFieldTouched('lastname')}
+                  error={touched.lastname && errors.lastname}
+                  errorText={touched.lastname && errors.lastname}
+                />
                 <Checkbox
                   checked={values.check}
                   checkboxStyle={{height: 20, width: 20}}
@@ -87,35 +158,71 @@ const NewCustomer = () => {
                     padding={[0, 0, hp(1), 0]}
                     borderWidth={[0, 0, 1, 0]}
                   />
-                  <Input label="Email" />
-                  <Input label="Customer Mobile" />
+                  <Input
+                    keyboardType="number-pad"
+                    label="Customer Mobile"
+                    value={values.mobile}
+                    onChangeText={handleChange('mobile')}
+                    onBlur={() => setFieldTouched('mobile')}
+                    error={touched.mobile && errors.mobile}
+                    errorText={touched.mobile && errors.mobile}
+                  />
                   <Text color="#636363" body>
-                    please add number without counry code
+                    please add number without country code
                   </Text>
                   <Button
-                    onPress={() => setGenerate(true)}
+                    isLoading={isOtpLoad}
+                    disabled={!values.mobile}
+                    onPress={() => generateOtp()}
                     style={{width: wp(30)}}
                     color="secondary">
                     GENERATE OTP
                   </Button>
                   {generate && (
                     <>
-                      <Input label="Verify Otp" />
+                      <Input
+                        label="Verify Otp"
+                        value={values.otp}
+                        onChangeText={handleChange('otp')}
+                        onBlur={() => setFieldTouched('otp')}
+                        error={touched.otp && errors.otp}
+                        errorText={touched.otp && errors.otp}
+                      />
                       <Button style={{width: wp(30)}} color="secondary">
-                        Verify OTP
+                        RESEND OTP
                       </Button>
                     </>
                   )}
-                  <Input label="Password" />
-                  <Input label="Confirm Password" />
-                  <Button color="secondary">Create an acount</Button>
+                  <Input
+                    value={values.password}
+                    onChangeText={handleChange('password')}
+                    onBlur={() => setFieldTouched('password')}
+                    error={touched.password && errors.password}
+                    errorText={touched.password && errors.password}
+                    label="Password"
+                  />
+                  <Input
+                    label="Confirm Password"
+                    value={values.confirmpass}
+                    onChangeText={handleChange('confirmpass')}
+                    onBlur={() => setFieldTouched('confirmpass')}
+                    error={touched.confirmpass && errors.confirmpass}
+                    errorText={touched.confirmpass && errors.confirmpass}
+                  />
+                  <Button
+                    isLoading={isLoad}
+                    onPress={handleSubmit}
+                    disabled={!isValid}
+                    color="secondary">
+                    Create an acount
+                  </Button>
                   <Button onPress={() => nav.goBack()} color="secondary">
                     Back
                   </Button>
                 </Block>
               </Block>
               <Footer images={false} />
-            </ScrollView>
+            </KeyboardAwareScrollView>
           );
         }}
       </Formik>

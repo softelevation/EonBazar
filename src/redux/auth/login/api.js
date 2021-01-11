@@ -1,16 +1,17 @@
 import axios from 'axios';
+import {config} from '../../../utils/config';
 export const Api = async (data) => {
   const headers = {
     'Content-Type': 'application/json',
   };
   return axios({
     method: 'post',
-    url: 'https://solatic.app/solatic/token',
+    url: `${config.Api_Url}/V1/integration/customer/token`,
     headers,
     data: {
-      username: data.email,
+      username: `${data.username}${config.domain_name}`,
       password: data.password,
-      grant_type: 'password',
+      websiteId: '0',
     },
   });
 };

@@ -77,6 +77,29 @@ export const DrawerData = [
   {
     name: 'Logout',
     icon: 'logout_icon',
-    nav: '',
+    nav: 'Logout',
   },
 ];
+
+// Signup
+// 1. Send otp with eventType “customer_signup_otp”
+// 2. Then use the /V1/customersignupwithotp endpoint
+// 3. Email must be <mobile_no>@example.com
+// Sample request
+
+// {
+// "customer": {
+// "email": "01719306813@example.com",
+// "firstname": "Manas",
+// "lastname": "Bala",
+// "middlename": "",
+// "gender": 0,
+// "store_id": 1,
+// "website_id": 1,
+// "addresses": [],
+// "disable_auto_group_change": 0
+// },
+// "password": "Manas123!",
+// "mobile": "01719306813",
+// "otp": "4193"
+// }
