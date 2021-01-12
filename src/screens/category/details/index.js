@@ -41,6 +41,9 @@ const Details = ({
   const userProfile = useSelector((v) => v.user.profile.user);
   const quote_id = useSelector((v) => v.cart.cartId.id);
   const isLoad = useSelector((state) => state.cart.save.loading);
+  const currency = useSelector(
+    (v) => v.currency.currencyDetail.data.base_currency_code,
+  );
   const dispatch = useDispatch();
 
   const addToCart = async () => {
@@ -196,7 +199,7 @@ const Details = ({
   };
   return (
     <Block>
-      <Header />
+      <Header leftIcon={false} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <Block flex={false} padding={[t2]}>
           <Text grey regular size={12}>

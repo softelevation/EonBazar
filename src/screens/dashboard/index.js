@@ -24,8 +24,8 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const dispatch = useDispatch();
-  const productsData = useSelector((v) => v.getProductsReducer.data);
-  const isLoad = useSelector((v) => v.getProductsReducer.loading);
+  const productsData = useSelector((v) => v.category.productList.data);
+  const isLoad = useSelector((v) => v.category.productList.loading);
 
   const sortingMenu = (val) => {
     setmenu(val);

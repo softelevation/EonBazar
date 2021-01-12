@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
-import {config} from '../../utils/config';
+import {config} from '../../../utils/config';
 export const Api = async (data) => {
   const storeId = 1;
   const country = 'BDT';

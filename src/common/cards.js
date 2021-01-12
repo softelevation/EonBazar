@@ -24,6 +24,9 @@ const Cards = ({data}) => {
   const quote_id = useSelector((state) => state.cart.cartId.id);
   const userProfile = useSelector((state) => state.user.profile.user);
   const errorCartLoad = useSelector((state) => state.cart.save.error);
+  const currency = useSelector(
+    (state) => state.currency.currencyDetail.data.base_currency_code,
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,7 +40,7 @@ const Cards = ({data}) => {
           qty: 1,
           name: a.name,
           image: a.media_gallery_entries[0].file,
-          currency_code: a.currency_code || 'BDT',
+          currency_code: currency || 'BDT',
           price_info: a.price,
           specialPrice: special_price
             ? Math.ceil(special_price.value).toFixed(2)

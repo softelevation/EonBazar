@@ -44,7 +44,9 @@ const Cart = () => {
   const cart_list = useSelector((state) => state.cart.list.data);
   const isLoad = useSelector((state) => state.cart.list.loading);
   const errorCartLoad = useSelector((state) => state.cart.updateCart.error);
-  const deleteItemLoad = useSelector((state) => state.cart.deleteItem.loading);
+  const currency = useSelector(
+    (state) => state.currency.currencyDetail.data.base_currency_code,
+  );
   const nav = useNavigation();
   const [cartlist, setList] = useState([]);
   const dispatch = useDispatch();
@@ -211,7 +213,7 @@ const Cart = () => {
         </Block>
         <Block flex={false}>
           <Text bold secondary size={14}>
-            BDT {item.price_copy.toFixed(2)}
+            {currency} {item.price_copy.toFixed(2)}
           </Text>
           <Block row flex={false}>
             <Text margin={[t1, 0]} size={14}>

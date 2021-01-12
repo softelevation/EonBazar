@@ -1,8 +1,8 @@
 import React from 'react';
 import {combineReducers} from 'redux';
-import currency from './currencyType/reducer';
+import currencyDetail from './currencyType/reducer';
 
 const mainDetails = combineReducers({
-  currency,
+  currencyDetail,
 });
 export default mainDetails;
