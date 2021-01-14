@@ -3,7 +3,7 @@ export {
   getAllProductsError,
   getAllProductsRequest,
   getAllProductsSuccess,
-} from './category/action';
+} from './category/list/action';
 export {
   registerError,
   registerRequest,
@@ -43,3 +43,8 @@ export {
   deleteItemSuccess,
 } from './cart/action';
 export {myOrderError, myOrderRequest, myOrderSuccess} from './order/action';
+export {
+  getCategoryListError,
+  getCategoryListRequest,
+  getCategoryListSuccess,
+} from './category/details/action';

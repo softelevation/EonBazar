@@ -4,20 +4,20 @@ const initialState = {
   data: [],
   error: '',
 };
-export function currencyDetail(state = initialState, action) {
+export function getProductsReducer(state = initialState, action) {
   switch (action.type) {
-    case ActionConstants.GET_CURRENCY_DETAILS_REQUEST:
+    case ActionConstants.GET_ALL_PRODUCTS_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case ActionConstants.GET_CURRENCY_DETAILS_SUCCESS:
+    case ActionConstants.GET_ALL_PRODUCTS_SUCCESS:
       return {
         ...state,
         loading: false,
         data: action.data,
       };
-    case ActionConstants.GET_CURRENCY_DETAILS_ERROR:
+    case ActionConstants.GET_ALL_PRODUCTS_ERROR:
       return {
         ...state,
         loading: false,
@@ -27,4 +27,4 @@ export function currencyDetail(state = initialState, action) {
       return state;
   }
 }
-export default currencyDetail;
+export default getProductsReducer;

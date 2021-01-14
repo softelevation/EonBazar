@@ -34,10 +34,13 @@ const SeeAllDetails = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loader, setloader] = useState(false);
   const [state, setstate] = useState(initialState);
-  const productsData = useSelector((v) => v.getProductsReducer.data);
-  const isLoad = useSelector((v) => v.getProductsReducer.loading);
+  const productsData = useSelector((v) => v.category.productList.data);
+  const isLoad = useSelector((v) => v.category.productList.loading);
   const userProfile = useSelector((v) => v.user.profile.user);
   const quote_id = useSelector((v) => v.cart.cartId.id);
+  const currency = useSelector(
+    (v) => v.currency.currencyDetail.data.base_currency_code,
+  );
   const {data} = state;
 
   const LoadRandomData = async () => {
@@ -64,7 +67,7 @@ const SeeAllDetails = () => {
           qty: 1,
           name: a.name,
           image: a.media_gallery_entries[0].file,
-          currency_code: a.currency_code || 'BDT',
+          currency_code: currency || 'BDT',
           price_info: a.price,
           specialPrice: special_price
             ? Math.ceil(special_price.value).toFixed(2)
@@ -216,7 +219,7 @@ const SeeAllDetails = () => {
   return (
     <Block>
       {!loader && isLoad && <ActivityLoader />}
-      <Header />
+      <Header leftIcon={false} />
       <FlatList
         contentContainerStyle={flatlistContentStyle}
         data={strictValidArray(data) && data.slice(0, 60)}

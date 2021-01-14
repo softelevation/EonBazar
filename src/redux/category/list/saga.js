@@ -1,5 +1,5 @@
-import {ActionConstants} from '../constants';
-import {getAllProductsError, getAllProductsSuccess} from '../action';
+import {ActionConstants} from '../../constants';
+import {getAllProductsError, getAllProductsSuccess} from '../../action';
 import {put, call, all, takeLatest} from 'redux-saga/effects';
 import {Api} from './api';
 
