@@ -7,7 +7,7 @@ export function* request(action) {
   try {
     const response = yield call(Api, action.payload);
     if (response) {
-      yield put(getCategoryListSuccess(response.data.items));
+      yield put(getCategoryListSuccess(response.data));
     } else {
       yield put(getCategoryListError(response));
     }

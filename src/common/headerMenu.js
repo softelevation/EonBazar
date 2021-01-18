@@ -4,19 +4,25 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {useSelector} from 'react-redux';
 import {images} from '../assets';
 import {Block, CustomButton, ImageComponent, Text} from '../components';
 import {light} from '../components/theme/colors';
 import {t1, w3} from '../components/theme/fontsize';
 const HeaderMenu = ({color, onPress}) => {
+  const category = useSelector(
+    (state) => state.category.categoryList.data.children_data,
+  );
+  console.log(category, 'category');
   const _renderItem = ({item}) => {
     return (
       <CustomButton
         center
+        margin={[hp(1), wp(1)]}
         style={{width: wp(20)}}
-        onPress={() => onPress(item.title)}>
+        onPress={() => onPress(item.id)}>
         <Block
-          color={color === item.title ? light.warning : light.secondary}
+          color={color === item.id ? light.warning : light.secondary}
           flex={false}
           borderRadius={60}
           center
@@ -30,8 +36,8 @@ const HeaderMenu = ({color, onPress}) => {
           margin={[hp(0.5), 0, 0, 0]}
           height={16}
           transform="uppercase"
-          size={8}>
-          {item.title}
+          size={10}>
+          {item.name}
         </Text>
       </CustomButton>
     );
@@ -40,20 +46,7 @@ const HeaderMenu = ({color, onPress}) => {
     <Block white margin={[0, w3]} padding={[hp(0.5), 0]} flex={false}>
       <FlatList
         contentContainerStyle={flatlistStyle}
-        data={[
-          {
-            link: 'breakfast_range',
-            title: 'breakfast range',
-          },
-          {
-            link: 'snacks_range',
-            title: 'curry range',
-          },
-          {
-            link: 'curry_range',
-            title: 'snacks range',
-          },
-        ]}
+        data={category}
         renderItem={_renderItem}
       />
     </Block>

@@ -14,7 +14,9 @@ import Search from '../../components/search';
 import {t1, t2, w2, w3, w5} from '../../components/theme/fontsize';
 import RNPickerSelect from 'react-native-picker-select';
 import HeaderMenu from '../../common/headerMenu';
-const Category = () => {
+
+const Category = (props) => {
+  console.log(props, 'props');
   const [menu, setmenu] = useState('');
   const sortingMenu = (val) => {
     setmenu(val);

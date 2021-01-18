@@ -35,3 +35,4 @@ export function categoryList(state = initialList, action) {
       return state;
   }
 }
+export default categoryList;

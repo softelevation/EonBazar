@@ -151,7 +151,13 @@ function Routes() {
           name="Dashboard"
           component={DashboardStack}
         />
-        <Tab.Screen name="Category" component={CategoryStack} />
+        <Tab.Screen
+          options={{
+            unmountOnBlur: true,
+          }}
+          name="Category"
+          component={CategoryStack}
+        />
         <Tab.Screen name="DashboardLogo" component={DashboardStack} />
         <Tab.Screen name="Cart" component={CartStack} />
         {strictValidObjectWithKeys(user) ? (

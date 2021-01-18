@@ -4,16 +4,14 @@ import {config} from '../../../utils/config';
 
 export const Api = async (data) => {
   const token = await AsyncStorage.getItem('token');
+  const newToken = '5q0h1829ixf2vdm57k6g3qtzd88wkvr2';
   const headers = {
     'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + token,
+    Authorization: 'Bearer ' + newToken,
   };
   return axios({
-    method: 'put',
-    url: `${config.Api_Url}/V1/products?searchCriteria[filter_groups][0][filters][0][field]=category_id&searchCriteria[filter_groups][0][filters][0][value]=4&searchCriteria[filter_groups][0][filters][0][condition_type]=eq`,
+    method: 'get',
+    url: `${config.Api_Url}/V1/categories`,
     headers,
-    data: {
-      cartItem: data.data,
-    },
   });
 };

@@ -12,7 +12,10 @@ import Footer from '../../common/footer';
 import Cards from '../../common/cards';
 import HeaderMenu from '../../common/headerMenu';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllProductsRequest} from '../../redux/action';
+import {
+  getAllProductsRequest,
+  getCategoryListRequest,
+} from '../../redux/action';
 import {strictValidArrayWithLength} from '../../utils/commonUtils';
 import ActivityLoader from '../../components/activityLoader';
 import {w3} from '../../components/theme/fontsize';
@@ -28,7 +31,10 @@ const Dashboard = () => {
   const isLoad = useSelector((v) => v.category.productList.loading);
 
   const sortingMenu = (val) => {
-    setmenu(val);
+    console.log(val, 'val');
+    navigation.jumpTo('Category', {
+      id: val,
+    });
   };
   useEffect(() => {
     dispatch(
@@ -37,6 +43,7 @@ const Dashboard = () => {
         pageSize,
       }),
     );
+    dispatch(getCategoryListRequest());
     const unsubscribe = navigation.addListener('state', () => {
       dispatch(
         getAllProductsRequest({
@@ -52,7 +59,7 @@ const Dashboard = () => {
   return (
     <Block>
       <Header />
-      <Block flex={false} padding={[0, wp(3), 0, wp(3)]}>
+      <Block flex={false} padding={[0, wp(2), 0, wp(2)]}>
         <Search />
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>
