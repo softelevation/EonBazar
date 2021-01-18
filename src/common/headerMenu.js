@@ -22,8 +22,8 @@ const HeaderMenu = ({color, onPress}) => {
           center
           middle
           margin={[0, w3]}
-          style={{height: 60, width: 60}}>
-          <ImageComponent name={item.link} height="40" width="40" />
+          style={{height: 40, width: 40}}>
+          <ImageComponent name={item.link} height="20" width="20" />
         </Block>
         <Text
           center
@@ -37,7 +37,7 @@ const HeaderMenu = ({color, onPress}) => {
     );
   };
   return (
-    <Block white margin={[0, w3]} padding={[t1]} flex={false}>
+    <Block white margin={[0, w3]} padding={[hp(0.5), 0]} flex={false}>
       <FlatList
         contentContainerStyle={flatlistStyle}
         data={[

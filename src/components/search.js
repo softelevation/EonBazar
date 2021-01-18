@@ -16,8 +16,8 @@ const Search = ({placeholder}) => {
       row
       white
       border={[10, 10, 10, 10]}
-      margin={[hp(1), 0]}
-      padding={[hp(1), 20, hp(1), wp(4)]}>
+      margin={[hp(1), wp(1)]}
+      padding={[hp(0.3), 20, hp(0.3), wp(4)]}>
       <Icon name="ios-search-outline" size={30} color={'grey'} />
       <Input
         placeholder={placeholder}
