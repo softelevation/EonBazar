@@ -8,6 +8,8 @@ import {registerWatcher} from './auth/register/saga';
 import {cartWatcher} from './cart/saga';
 import {orderWatcher} from './order/saga';
 import {categoryWatcher} from './category/details/saga';
+import {filterWatcher} from './category/filter/saga';
+import {contactWatcher} from './contactus/saga';
 export default function* rootSaga() {
   yield all([
     loginWatcher(),
@@ -19,5 +21,7 @@ export default function* rootSaga() {
     cartWatcher(),
     orderWatcher(),
     categoryWatcher(),
+    filterWatcher(),
+    contactWatcher(),
   ]);
 }

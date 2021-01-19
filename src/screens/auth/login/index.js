@@ -85,7 +85,7 @@ const Login = () => {
             .min(10)
             .max(15)
             .required('Mobile Number is Required'),
-          password: yup.string().min(6).required('Password is Required'),
+          password: yup.string().min(1).required('Password is Required'),
         })}>
         {({
           values,

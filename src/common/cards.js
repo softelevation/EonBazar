@@ -39,7 +39,7 @@ const Cards = ({data}) => {
         newData.push({
           qty: 1,
           name: a.name,
-          image: a.media_gallery_entries[0].file,
+          image: a.media_gallery_entries[0] && a.media_gallery_entries[0].file,
           currency_code: currency || 'BDT',
           price_info: a.price,
           specialPrice: special_price
@@ -81,7 +81,7 @@ const Cards = ({data}) => {
   const _renderEmpty = () => {
     return (
       <Block style={{height: hp(40)}} center middle>
-        <Text size={16}>List Not Found</Text>
+        <Text size={16}>Products Not Found</Text>
       </Block>
     );
   };

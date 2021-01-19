@@ -62,7 +62,6 @@ const Cart = () => {
     });
     return unsubscribe;
   }, []);
-  console.log(errorCartLoad);
   useEffect(() => {
     if (strictValidObjectWithKeys(userData)) {
       dispatch(getCartDetailsRequest());
@@ -90,7 +89,6 @@ const Cart = () => {
 
     setList(newData);
   }, [cart_list, errorCartLoad]);
-  console.log(cartlist, 'cartlist');
 
   const changeQty = (text, id, index, price, qtyText, qty) => {
     if (Number(qtyText) === 0 || Number(qtyText) === '') {

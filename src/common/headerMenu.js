@@ -13,14 +13,13 @@ const HeaderMenu = ({color, onPress}) => {
   const category = useSelector(
     (state) => state.category.categoryList.data.children_data,
   );
-  console.log(category, 'category');
   const _renderItem = ({item}) => {
     return (
       <CustomButton
         center
         margin={[hp(1), wp(1)]}
         style={{width: wp(20)}}
-        onPress={() => onPress(item.id)}>
+        onPress={() => onPress(item)}>
         <Block
           color={color === item.id ? light.warning : light.secondary}
           flex={false}

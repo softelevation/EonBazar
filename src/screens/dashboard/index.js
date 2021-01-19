@@ -13,6 +13,7 @@ import Cards from '../../common/cards';
 import HeaderMenu from '../../common/headerMenu';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  filterIdRequest,
   getAllProductsRequest,
   getCategoryListRequest,
 } from '../../redux/action';
@@ -31,10 +32,8 @@ const Dashboard = () => {
   const isLoad = useSelector((v) => v.category.productList.loading);
 
   const sortingMenu = (val) => {
-    console.log(val, 'val');
-    navigation.jumpTo('Category', {
-      id: val,
-    });
+    dispatch(filterIdRequest(val));
+    navigation.jumpTo('Category');
   };
   useEffect(() => {
     dispatch(
