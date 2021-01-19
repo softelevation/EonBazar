@@ -33,9 +33,12 @@ import {
   strictValidObjectWithKeys,
 } from '../../utils/commonUtils';
 import {
+  deleteGuestCartRequest,
   deleteItemRequest,
   getCartDetailsRequest,
+  guestCartRequest,
   updateCartRequest,
+  updateGuestCartRequest,
 } from '../../redux/action';
 import ActivityLoader from '../../components/activityLoader';
 import {light} from '../../components/theme/colors';
@@ -43,28 +46,24 @@ const Cart = () => {
   const userData = useSelector((state) => state.user.profile.user);
   const cart_list = useSelector((state) => state.cart.list.data);
   const isLoad = useSelector((state) => state.cart.list.loading);
+  const guestLoad = useSelector((state) => state.cart.guestlist.loading);
+
   const errorCartLoad = useSelector((state) => state.cart.updateCart.error);
   const currency = useSelector(
     (state) => state.currency.currencyDetail.data.base_currency_code,
   );
+  const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
+
   const nav = useNavigation();
   const [cartlist, setList] = useState([]);
   const dispatch = useDispatch();
   const [refreshing, setrefreshing] = useState(false);
-  useEffect(() => {
-    if (!strictValidObjectWithKeys(userData)) {
-      nav.navigate('Login');
-    }
-    const unsubscribe = nav.addListener('focus', () => {
-      if (!strictValidObjectWithKeys(userData)) {
-        nav.navigate('Login');
-      }
-    });
-    return unsubscribe;
-  }, []);
+
   useEffect(() => {
     if (strictValidObjectWithKeys(userData)) {
       dispatch(getCartDetailsRequest());
+    } else {
+      dispatch(guestCartRequest(guestCartToken));
     }
   }, [userData]);
 
@@ -127,7 +126,13 @@ const Cart = () => {
       quote_id: item.quote_id,
     };
     const id = item.item_id;
-    dispatch(updateCartRequest({data, id}));
+    if (strictValidObjectWithKeys(userData)) {
+      dispatch(updateCartRequest({data, id}));
+    } else {
+      dispatch(
+        updateGuestCartRequest({token: guestCartToken, id: id, items: data}),
+      );
+    }
   };
 
   const deleteProduct = (id, index) => {
@@ -136,7 +141,11 @@ const Cart = () => {
     const clone = [...cartlist];
     clone[index] = updated;
     setList(clone);
-    dispatch(deleteItemRequest(id));
+    if (strictValidObjectWithKeys(userData)) {
+      dispatch(deleteItemRequest(id));
+    } else {
+      dispatch(deleteGuestCartRequest({token: guestCartToken, id: id}));
+    }
   };
 
   const onRefresh = () => {
@@ -144,7 +153,11 @@ const Cart = () => {
     setTimeout(() => {
       setrefreshing(false);
     }, 2000);
-    dispatch(getCartDetailsRequest());
+    if (strictValidObjectWithKeys(userData)) {
+      dispatch(getCartDetailsRequest());
+    } else {
+      dispatch(guestCartRequest(guestCartToken));
+    }
   };
 
   const _renderItem = ({item, index}) => {
@@ -242,7 +255,7 @@ const Cart = () => {
   return (
     <Block>
       <Header />
-      {!refreshing && isLoad && <ActivityLoader />}
+      {!refreshing && (isLoad || guestLoad) && <ActivityLoader />}
 
       <Block white padding={[t2, 0]}>
         <Block center row flex={false}>

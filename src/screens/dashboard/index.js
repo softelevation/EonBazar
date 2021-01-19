@@ -16,12 +16,15 @@ import {
   filterIdRequest,
   getAllProductsRequest,
   getCategoryListRequest,
+  GuestCartIDRequest,
+  guestCartRequest,
 } from '../../redux/action';
 import {strictValidArrayWithLength} from '../../utils/commonUtils';
 import ActivityLoader from '../../components/activityLoader';
 import {w3} from '../../components/theme/fontsize';
 import {useNavigation} from '@react-navigation/native';
 import {light} from '../../components/theme/colors';
+import AsyncStorage from '@react-native-community/async-storage';
 const Dashboard = () => {
   const navigation = useNavigation();
   const [menu, setmenu] = useState('');
@@ -35,7 +38,14 @@ const Dashboard = () => {
     dispatch(filterIdRequest(val));
     navigation.jumpTo('Category');
   };
+  const checkApi = async () => {
+    const guest_token = await AsyncStorage.getItem('guest-token');
+    if (!guest_token) {
+      dispatch(GuestCartIDRequest());
+    }
+  };
   useEffect(() => {
+    checkApi();
     dispatch(
       getAllProductsRequest({
         currentPage,

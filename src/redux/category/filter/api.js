@@ -9,7 +9,7 @@ export const Api = async (id) => {
   };
   return axios({
     method: 'get',
-    url: `${config.Api_Url}/V1/products?searchCriteria[filter_groups][0][filters][0][field]=category_id&searchCriteria[filter_groups][0][filters][0][value]=${id}`,
+    url: `${config.Api_Url}/V1/products?searchCriteria[filter_groups][0][filters][0][field]=category_id&searchCriteria[filter_groups][0][filters][0][value]=${id}&searchCriteria[filter_groups][1][filters][0][field]=status&searchCriteria[filter_groups][1][filters][0][value]=1`,
     headers,
   });
 };

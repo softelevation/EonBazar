@@ -9,6 +9,8 @@ import {
   loginSuccess,
   profileRequest,
   createCartRequest,
+  GuestCartIDRequest,
+  GuestCartIDSuccess,
 } from '../../redux/action';
 import {strictValidStringWithMinLength} from '../../utils/commonUtils';
 
@@ -17,10 +19,17 @@ const Splash = () => {
   const nav = useNavigation();
   const CallNavigation = async () => {
     const token = await AsyncStorage.getItem('token');
+    const guest_token = await AsyncStorage.getItem('guest-token');
     if (strictValidStringWithMinLength(token)) {
       dispatch(loginSuccess(token));
       dispatch(profileRequest());
       dispatch(createCartRequest());
+
+      setTimeout(() => {
+        nav.navigate('Home');
+      }, 3000);
+    } else if (strictValidStringWithMinLength(guest_token)) {
+      dispatch(GuestCartIDSuccess(guest_token));
       setTimeout(() => {
         nav.navigate('Home');
       }, 3000);

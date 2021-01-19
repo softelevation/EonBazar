@@ -14,6 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {myOrderRequest} from '../../../redux/action';
 import ActivityLoader from '../../../components/activityLoader';
 import moment from 'moment';
+import EmptyFile from '../../../components/emptyFile';
 const YourOrder = () => {
   const [toggle, setToggle] = useState();
   const nav = useNavigation();
@@ -144,21 +145,27 @@ const YourOrder = () => {
     );
   };
   return (
-    <Block>
+    <Block primary>
       <Header />
       {isload && <ActivityLoader />}
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={{flexGrow: 1}}
+        showsVerticalScrollIndicator={false}>
         <Text margin={[t2, 0]} center bold transform="uppercase">
           My Orders
         </Text>
 
-        <FlatList data={orderData.items} renderItem={_renderItem} />
-        <Block margin={[t1, w4]}>
-          <Button onPress={() => nav.navigate('Dashboard')} color="secondary">
-            Start Shopping
-          </Button>
-        </Block>
+        <FlatList
+          data={orderData.items}
+          ListEmptyComponent={<EmptyFile />}
+          renderItem={_renderItem}
+        />
       </ScrollView>
+      <Block flex={false} margin={[t1, w4]}>
+        <Button onPress={() => nav.navigate('Dashboard')} color="secondary">
+          Start Shopping
+        </Button>
+      </Block>
     </Block>
   );
 };

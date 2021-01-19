@@ -42,6 +42,7 @@ const Category = (props) => {
   useEffect(() => {
     if (!menu) {
       setmenu(category[0].id);
+      setname(category[0].name);
     }
   }, [category]);
   return (

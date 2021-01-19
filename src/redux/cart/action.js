@@ -100,3 +100,117 @@ export const deleteItemError = (error) => {
     error,
   };
 };
+
+// Guest cart
+export const guestCartRequest = (payload) => {
+  return {
+    type: ActionConstants.GET_GUEST_CART_REQUEST,
+    payload,
+  };
+};
+export const guestCartSuccess = (data) => {
+  return {
+    type: ActionConstants.GET_GUEST_CART_SUCCESS,
+    data,
+  };
+};
+export const guestCartError = (error) => {
+  return {
+    type: ActionConstants.GET_GUEST_CART_ERROR,
+    error,
+  };
+};
+
+export const addToGuestCartRequest = (payload) => {
+  return {
+    type: ActionConstants.ADD_TO_GUEST_CART_REQUEST,
+    payload,
+  };
+};
+export const addToGuestCartSuccess = (data) => {
+  return {
+    type: ActionConstants.ADD_TO_GUEST_CART_SUCCESS,
+    data,
+  };
+};
+export const addToGuestCartError = (error) => {
+  return {
+    type: ActionConstants.ADD_TO_GUEST_CART_ERROR,
+    error,
+  };
+};
+
+export const updateGuestCartRequest = (payload) => {
+  return {
+    type: ActionConstants.UPDATE_GUEST_CART_REQUEST,
+    payload,
+  };
+};
+export const updateGuestCartSuccess = (data) => {
+  return {
+    type: ActionConstants.UPDATE_GUEST_CART_SUCCESS,
+    data,
+  };
+};
+export const updateGuestCartError = (error) => {
+  return {
+    type: ActionConstants.UPDATE_GUEST_CART_SUCCESS,
+    error,
+  };
+};
+
+export const deleteGuestCartRequest = (payload) => {
+  return {
+    type: ActionConstants.DELETE_GUEST_CART_REQUEST,
+    payload,
+  };
+};
+export const deleteGuestCartSuccess = (data) => {
+  return {
+    type: ActionConstants.DELETE_GUEST_CART_SUCCESS,
+    data,
+  };
+};
+export const deleteGuestCartError = (error) => {
+  return {
+    type: ActionConstants.DELETE_GUEST_CART_ERROR,
+    error,
+  };
+};
+
+export const GuestCartIDRequest = (payload) => {
+  return {
+    type: ActionConstants.GUEST_CART_REQUEST,
+    payload,
+  };
+};
+export const GuestCartIDSuccess = (data) => {
+  return {
+    type: ActionConstants.GUEST_CART_SUCCESS,
+    data,
+  };
+};
+export const GuestCartIDError = (error) => {
+  return {
+    type: ActionConstants.GUEST_CART_SUCCESS,
+    error,
+  };
+};
+export const GuestMergeRequest = (payload) => {
+  return {
+    type: ActionConstants.MERGE_GUEST_CART_REQUEST,
+    payload,
+  };
+};
+export const GuestMergeSuccess = (data) => {
+  return {
+    type: ActionConstants.MERGE_GUEST_CART_SUCCESS,
+    data,
+  };
+};
+export const GuestMergeError = (error) => {
+  return {
+    type: ActionConstants.MERGE_GUEST_CART_ERROR,
+    error,
+  };
+};

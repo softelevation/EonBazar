@@ -27,7 +27,7 @@ import {light} from '../../../components/theme/colors';
 import {useNavigation} from '@react-navigation/native';
 import {strictValidObjectWithKeys} from '../../../utils/commonUtils';
 import {useDispatch, useSelector} from 'react-redux';
-import {addToCartRequest} from '../../../redux/action';
+import {addToCartRequest, addToGuestCartRequest} from '../../../redux/action';
 import {config} from '../../../utils/config';
 import styled from 'styled-components/native';
 import {useEffect} from 'react';
@@ -50,6 +50,8 @@ const Details = ({
   const userProfile = useSelector((v) => v.user.profile.user);
   const quote_id = useSelector((v) => v.cart.cartId.id);
   const isLoad = useSelector((state) => state.cart.save.loading);
+  const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
+  const guestCartError = useSelector((v) => v.cart.guestsave.error);
   const scrollRef = useRef();
   const dispatch = useDispatch();
   const [scrollHeight, setScrollHeight] = useState({});
@@ -71,7 +73,14 @@ const Details = ({
       };
       await dispatch(addToCartRequest(newData));
     } else {
-      Alert.alert('Error', 'Please login First');
+      const newData = {
+        sku: item.sku,
+        qty: qty,
+        quote_id: guestCartToken,
+      };
+      await dispatch(
+        addToGuestCartRequest({token: guestCartToken, items: newData}),
+      );
     }
   };
 
@@ -474,7 +483,7 @@ const Details = ({
           {/* Reviews */}
 
           {renderReviews()}
-          {/* <Footer images={false} /> */}
+          <Footer images={false} />
         </Block>
       </ScrollView>
     </Block>

@@ -16,7 +16,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import Header from '../../../common/header';
 import {Block, CustomButton, ImageComponent, Text} from '../../../components';
-import {addToCartRequest, getAllProductsRequest} from '../../../redux/action';
+import {
+  addToCartRequest,
+  addToGuestCartRequest,
+  getAllProductsRequest,
+} from '../../../redux/action';
 import ActivityLoader from '../../../components/activityLoader';
 import {light} from '../../../components/theme/colors';
 import {
@@ -41,6 +45,8 @@ const SeeAllDetails = () => {
   const currency = useSelector(
     (v) => v.currency.currencyDetail.data.base_currency_code,
   );
+  const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
+  const guestCartError = useSelector((v) => v.cart.guestsave.error);
   const {data} = state;
 
   const LoadRandomData = async () => {
@@ -63,10 +69,13 @@ const SeeAllDetails = () => {
         const special_price = a.custom_attributes.find(
           (v) => v.attribute_code === 'special_price',
         );
+        const getImage = a.media_gallery_entries.find(
+          (image) => image.media_type === 'image',
+        );
         newData.push({
           qty: 1,
           name: a.name,
-          image: a.media_gallery_entries[0].file,
+          image: getImage && getImage.file,
           currency_code: currency || 'BDT',
           price_info: a.price,
           specialPrice: special_price
@@ -104,7 +113,19 @@ const SeeAllDetails = () => {
       };
       await dispatch(addToCartRequest(newData));
     } else {
-      Alert.alert('Error', 'Please login First');
+      const old = data[index];
+      const updated = {...old, isLoad: true};
+      const clone = [...data];
+      clone[index] = updated;
+      setstate({data: clone});
+      const newData = {
+        sku: val.sku,
+        qty: val.qty,
+        quote_id: guestCartToken,
+      };
+      await dispatch(
+        addToGuestCartRequest({token: guestCartToken, items: newData}),
+      );
     }
   };
 

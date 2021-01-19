@@ -1,5 +1,6 @@
-import React from 'react';
-import {FlatList, ScrollView} from 'react-native';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, FlatList, ScrollView} from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -16,51 +17,114 @@ import {
 import {t1, t2, w2, w3, w4} from '../../../components/theme/fontsize';
 import StarRating from 'react-native-star-rating';
 import Footer from '../../../common/footer';
+import {useDispatch, useSelector} from 'react-redux';
+import {removeWishlistRequest, wishlistRequest} from '../../../redux/action';
+import ActivityLoader from '../../../components/activityLoader';
+import {config} from '../../../utils/config';
+import {light} from '../../../components/theme/colors';
+import ResponsiveImage from 'react-native-responsive-image';
+import {images} from '../../../assets';
 const Wishlist = () => {
-  const _renderItem = () => {
+  const [wishlistData, setData] = useState([]);
+  const dispatch = useDispatch();
+  const wishlist = useSelector((state) => state.wishlist.list.data);
+  const isLoad = useSelector((state) => state.wishlist.list.loading);
+  const currency = useSelector(
+    (state) => state.currency.currencyDetail.data.base_currency_code,
+  );
+  useEffect(() => {
+    dispatch(wishlistRequest());
+  }, []);
+
+  useEffect(() => {
+    const newData = [];
+    wishlist &&
+      wishlist.map((a) => {
+        const {name, special_price, price, thumbnail} = a && a.product;
+        newData.push({
+          qty: 1,
+          name: name,
+          image: thumbnail,
+          currency_code: currency || 'BDT',
+          price: price,
+          special_price: special_price,
+          isLoad: false,
+          id: a.wishlist_item_id,
+        });
+      });
+    setData(newData);
+  }, [wishlist]);
+
+  const removeItem = (id, index) => {
+    const old = wishlistData[index];
+    const updated = {...old, isLoad: true};
+    const clone = [...wishlistData];
+    clone[index] = updated;
+    setData(clone);
+    dispatch(removeWishlistRequest(id));
+  };
+
+  const _renderItem = ({item, index}) => {
+    const {name, special_price, price, image, currency_code} = item;
     return (
       <Block row white padding={[t1, t1, 0, t1]} margin={[t1, 0]} flex={false}>
         <Block row padding={[t1, 0]}>
-          <ImageComponent name="product" height="100" width="100" />
+          <ImageComponent
+            isURL
+            name={`${config.Image_Url}${image}`}
+            height="100"
+            width="100"
+          />
           <Block margin={[t1, w4]}>
-            <Text color="#000000" size={10}>
-              Country Natural Dressed Chicken-13 Cut (Without Skin) 1 kg
+            <Text color="#000000" size={14}>
+              {name}
             </Text>
             <Text size={10} body margin={[t1, 0, 0, 0]} semibold>
-              BDT 300.00
+              {currency_code} {Number(special_price).toFixed(2)}
             </Text>
-            <LineAboveText
-              body
-              size={10}
-              color="grey"
-              margin={[hp(0.2), 0, 0, 0]}>
-              BDT 450.00
-            </LineAboveText>
+            {special_price !== price && (
+              <LineAboveText
+                body
+                size={12}
+                color="grey"
+                margin={[hp(0.2), 0, 0, 0]}>
+                {currency_code} {Number(price).toFixed(2)}
+              </LineAboveText>
+            )}
             <Block margin={[t1, 0]} flex={false}>
               <StarRating
                 disabled={false}
                 starSize={15}
                 maxStars={5}
                 fullStarColor={'#78A942'}
-                rating={5}
+                rating={item.rating || 0}
                 containerStyle={{width: wp(20)}}
               />
             </Block>
           </Block>
           <Block flex={false}>
-            <CustomButton
-              flex={false}
-              style={{height: 20, width: 20}}
-              center
-              middle
-              secondary>
-              <ImageComponent
-                name="close_icon"
-                height="15"
-                width="15"
-                color="#fff"
+            {item.isLoad ? (
+              <ActivityIndicator
+                size="small"
+                color={light.secondary}
+                style={{alignSelf: 'flex-end'}}
               />
-            </CustomButton>
+            ) : (
+              <CustomButton
+                onPress={() => removeItem(item.id, index)}
+                flex={false}
+                style={{height: 20, width: 20}}
+                center
+                middle
+                secondary>
+                <ResponsiveImage
+                  source={images.close_icon}
+                  initHeight="15"
+                  initWidth="15"
+                  style={{tintColor: '#fff'}}
+                />
+              </CustomButton>
+            )}
             <Block alignSelf="center" middle margin={[-hp(2), 0, 0, 0]}>
               <ImageComponent
                 name="right_arrow_icon"
@@ -74,9 +138,17 @@ const Wishlist = () => {
       </Block>
     );
   };
+  const _renderEmpty = () => {
+    return (
+      <Block style={{height: hp(20)}} center middle>
+        <Text size={14}>Wishlist products not found</Text>
+      </Block>
+    );
+  };
   return (
     <Block>
       <Header />
+      {isLoad && <ActivityLoader />}
       <ScrollView showsVerticalScrollIndicator={false}>
         <Block row middle center margin={[t2, 0]}>
           <Block
@@ -91,7 +163,7 @@ const Wishlist = () => {
             <ImageComponent
               name="wishlist_icon"
               height="15"
-              width="15"
+              width="17"
               color="#78A942"
             />
           </Block>
@@ -100,7 +172,11 @@ const Wishlist = () => {
           </Text>
         </Block>
         <Block margin={[t1, w3]}>
-          <FlatList data={['1', '2']} renderItem={_renderItem} />
+          <FlatList
+            data={wishlistData}
+            ListEmptyComponent={_renderEmpty}
+            renderItem={_renderItem}
+          />
           <Button style={{marginTop: t2}} color="secondary">
             Start Shopping
           </Button>

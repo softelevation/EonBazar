@@ -10,6 +10,7 @@ import {orderWatcher} from './order/saga';
 import {categoryWatcher} from './category/details/saga';
 import {filterWatcher} from './category/filter/saga';
 import {contactWatcher} from './contactus/saga';
+import {wishlistWatcher} from './wishlist/saga';
 export default function* rootSaga() {
   yield all([
     loginWatcher(),
@@ -23,5 +24,6 @@ export default function* rootSaga() {
     categoryWatcher(),
     filterWatcher(),
     contactWatcher(),
+    wishlistWatcher(),
   ]);
 }

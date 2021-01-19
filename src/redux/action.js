@@ -41,6 +41,24 @@ export {
   deleteItemError,
   deleteItemRequest,
   deleteItemSuccess,
+  guestCartError,
+  guestCartRequest,
+  guestCartSuccess,
+  GuestCartIDError,
+  GuestCartIDRequest,
+  GuestCartIDSuccess,
+  addToGuestCartError,
+  addToGuestCartRequest,
+  addToGuestCartSuccess,
+  updateGuestCartError,
+  updateGuestCartRequest,
+  updateGuestCartSuccess,
+  deleteGuestCartError,
+  deleteGuestCartRequest,
+  deleteGuestCartSuccess,
+  GuestMergeError,
+  GuestMergeRequest,
+  GuestMergeSuccess,
 } from './cart/action';
 export {myOrderError, myOrderRequest, myOrderSuccess} from './order/action';
 export {
@@ -61,3 +79,14 @@ export {
   contactUsRequest,
   contactUsSuccess,
 } from './contactus/action';
+export {
+  wishlistRequest,
+  wishlistError,
+  wishlistSuccess,
+  updateWishlistError,
+  updateWishlistRequest,
+  updateWishlistSuccess,
+  removeWishlistError,
+  removeWishlistRequest,
+  removeWishlistSuccess,
+} from './wishlist/action';
