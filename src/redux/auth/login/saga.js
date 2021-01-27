@@ -12,6 +12,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 const SaveToken = async (token) => {
   return await AsyncStorage.setItem('token', token);
 };
+const clearGuestToken = async (token) => {
+  return await AsyncStorage.removeItem('guest-token');
+};
 
 export function* loginRequest(action) {
   try {
@@ -21,6 +24,7 @@ export function* loginRequest(action) {
       yield put(loginSuccess(response.data));
       yield put(profileRequest());
       yield put(createCartRequest());
+      yield call(clearGuestToken);
     } else {
       yield put(loginError(response));
     }

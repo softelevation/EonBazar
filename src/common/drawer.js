@@ -50,7 +50,10 @@ const DrawerScreen = () => {
       if (strictValidObjectWithKeys(user)) {
         nav.navigate(val);
       } else {
-        Alert.alert('Error', 'Please login First');
+        nav.dispatch(DrawerActions.closeDrawer());
+        nav.reset({
+          routes: [{name: 'Login'}],
+        });
       }
     } else {
       nav.navigate(val);

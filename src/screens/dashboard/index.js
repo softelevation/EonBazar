@@ -13,6 +13,7 @@ import Cards from '../../common/cards';
 import HeaderMenu from '../../common/headerMenu';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  bannerRequest,
   filterIdRequest,
   getAllProductsRequest,
   getCategoryListRequest,
@@ -33,6 +34,8 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const productsData = useSelector((v) => v.category.productList.data);
   const isLoad = useSelector((v) => v.category.productList.loading);
+  const isLoadBanner = useSelector((v) => v.banner.list.loading);
+  const bannerData = useSelector((v) => v.banner.list.data);
 
   const sortingMenu = (val) => {
     dispatch(filterIdRequest(val));
@@ -46,6 +49,7 @@ const Dashboard = () => {
   };
   useEffect(() => {
     checkApi();
+    dispatch(bannerRequest());
     dispatch(
       getAllProductsRequest({
         currentPage,
@@ -73,7 +77,13 @@ const Dashboard = () => {
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>
         <HeaderMenu onPress={sortingMenu} color={menu} />
-        <Banner />
+        {isLoadBanner ? (
+          <Block color="transparent" style={{height: hp(23)}} center middle>
+            <ActivityIndicator color={light.secondary} size="large" />
+          </Block>
+        ) : (
+          <Banner data={bannerData} />
+        )}
         <Block padding={[0, wp(1)]} flex={false}>
           <Block padding={[0, w3]} row flex={false} space={'between'}>
             <Text body semibold>

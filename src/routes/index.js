@@ -33,6 +33,7 @@ import SeeAllDetails from '../screens/dashboard/all-details';
 import {useSelector} from 'react-redux';
 import {strictValidObjectWithKeys} from '../utils/commonUtils';
 import {navigationRef} from './NavigationService';
+import SearchList from '../screens/dashboard/advance-search/list';
 const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -47,8 +48,8 @@ function Routes() {
         }}
         initialRouteName="Login"
         headerMode="none">
-        <Tab.Screen name="Login" component={Login} />
-        <Tab.Screen name="NewCustomer" component={NewCustomer} />
+        <RootStack.Screen name="Login" component={Login} />
+        <RootStack.Screen name="NewCustomer" component={NewCustomer} />
         <RootStack.Screen name="Faq" component={Faq} />
         <RootStack.Screen name="Terms" component={Terms} />
         <RootStack.Screen name="Privacy" component={Privacy} />
@@ -61,6 +62,7 @@ function Routes() {
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
         <RootStack.Screen name="Details" component={Details} />
         <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
+        <RootStack.Screen name="SearchList" component={SearchList} />
       </RootStack.Navigator>
     );
   };
@@ -85,6 +87,7 @@ function Routes() {
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
         <RootStack.Screen name="Details" component={Details} />
         <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
+        <RootStack.Screen name="SearchList" component={SearchList} />
       </RootStack.Navigator>
     );
   };
@@ -112,6 +115,7 @@ function Routes() {
         <RootStack.Screen name="Details" component={Details} />
         <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
         <RootStack.Screen name="Login" component={Login} />
+        <RootStack.Screen name="SearchList" component={SearchList} />
       </RootStack.Navigator>
     );
   };
@@ -136,6 +140,7 @@ function Routes() {
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
         <RootStack.Screen name="Details" component={Details} />
         <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
+        <RootStack.Screen name="SearchList" component={SearchList} />
       </RootStack.Navigator>
     );
   };

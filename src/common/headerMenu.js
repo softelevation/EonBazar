@@ -9,6 +9,7 @@ import {images} from '../assets';
 import {Block, CustomButton, ImageComponent, Text} from '../components';
 import {light} from '../components/theme/colors';
 import {t1, w3} from '../components/theme/fontsize';
+import {config} from '../utils/config';
 const HeaderMenu = ({color, onPress}) => {
   const category = useSelector(
     (state) => state.category.categoryList.data.children_data,
@@ -28,7 +29,13 @@ const HeaderMenu = ({color, onPress}) => {
           middle
           margin={[0, w3]}
           style={{height: 40, width: 40}}>
-          <ImageComponent name={item.link} height="20" width="20" />
+          {console.log(`${config.Image_Url}${item.image}`)}
+          <ImageComponent
+            isURL
+            name={`${config.Image_Url}${item.image}`}
+            height="20"
+            width="20"
+          />
         </Block>
         <Text
           center
