@@ -29,10 +29,12 @@ const HeaderMenu = ({color, onPress}) => {
           middle
           margin={[0, w3]}
           style={{height: 40, width: 40}}>
-          {console.log(`${config.Image_Url}${item.image}`)}
+          {console.log(
+            `${config.Api_Url}media/mobilebanner/images/image${item.image}`,
+          )}
           <ImageComponent
             isURL
-            name={`${config.Image_Url}${item.image}`}
+            name={`${config.Api_Url}media/mobilebanner/images/image${item.image}`}
             height="20"
             width="20"
           />
