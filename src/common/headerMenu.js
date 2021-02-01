@@ -29,14 +29,11 @@ const HeaderMenu = ({color, onPress}) => {
           middle
           margin={[0, w3]}
           style={{height: 40, width: 40}}>
-          {console.log(
-            `${config.Api_Url}media/mobilebanner/images/image${item.image}`,
-          )}
           <ImageComponent
             isURL
-            name={`${config.Api_Url}media/mobilebanner/images/image${item.image}`}
-            height="20"
-            width="20"
+            name={`http://stage.eonbazar.com/${item.image}`}
+            height="30"
+            width="30"
           />
         </Block>
         <Text
