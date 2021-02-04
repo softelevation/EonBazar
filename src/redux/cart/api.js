@@ -102,7 +102,6 @@ export const guestListApi = async (token) => {
 };
 
 export const guestAddList = async (data) => {
-  console.log(data, 'guestAddList');
   const {token, items} = data;
   const headers = {
     'Content-Type': 'application/json',
@@ -134,7 +133,6 @@ export const guestupdateCartApi = async (data) => {
 
 export const guestdeleteItemApi = async (data) => {
   const {token, id} = data;
-  console.log(data, 'data');
   const headers = {
     'Content-Type': 'application/json',
   };

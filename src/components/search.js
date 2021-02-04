@@ -56,7 +56,6 @@ const Search = ({placeholder}) => {
         return [];
       });
   };
-  console.log(results);
   const searchCourses = () => {
     setIsSearching(true);
     // Fire off our API call

@@ -2,10 +2,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import {config} from '../../../utils/config';
 export const Api = async (data) => {
-  const token = await AsyncStorage.getItem('token');
+  // const token = await AsyncStorage.getItem('token');
   const headers = {
     'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + token,
+    // Authorization: 'Bearer ' + token,
   };
   return axios({
     method: 'post',
@@ -15,7 +15,7 @@ export const Api = async (data) => {
       resend: data.resend,
       storeId: 1,
       mobile: data.mobile,
-      eventType: 'customer_signup_otp',
+      eventType: data.eventType,
     },
   });
 };

@@ -9,7 +9,7 @@ import {images} from '../assets';
 import {Block, CustomButton, ImageComponent, Text} from '../components';
 import {light} from '../components/theme/colors';
 import {t1, w3} from '../components/theme/fontsize';
-import {config} from '../utils/config';
+import Icon from 'react-native-vector-icons/Ionicons';
 const HeaderMenu = ({color, onPress}) => {
   const category = useSelector(
     (state) => state.category.categoryList.data.children_data,
@@ -29,12 +29,16 @@ const HeaderMenu = ({color, onPress}) => {
           middle
           margin={[0, w3]}
           style={{height: 40, width: 40}}>
-          <ImageComponent
-            isURL
-            name={`http://stage.eonbazar.com/${item.image}`}
-            height="30"
-            width="30"
-          />
+          {item.image ? (
+            <ImageComponent
+              isURL
+              name={`http://stage.eonbazar.com/${item.image}`}
+              height="30"
+              width="30"
+            />
+          ) : (
+            <Icon name="bookmark-outline" size={22} color="#fff" />
+          )}
         </Block>
         <Text
           center

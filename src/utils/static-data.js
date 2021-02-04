@@ -103,3 +103,10 @@ export const DrawerData = [
 // "mobile": "01719306813",
 // "otp": "4193"
 // }
+
+export const eventType = {
+  forgot_password_otp: 'forgot_password_otp',
+  customer_signup_otp: 'customer_signup_otp',
+  customer_login_otp: 'customer_login_otp',
+  customer_account_edit_otp: 'customer_account_edit_otp',
+};

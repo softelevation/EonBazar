@@ -21,7 +21,6 @@ const Help = () => {
     user.custom_attributes.find((v) => v.attribute_code === 'customer_mobile');
   const submitValues = (values, {resetForm}) => {
     const {name, email, mobile, message} = values;
-    console.log(values, 'values');
     const data = {
       name: name,
       email: email,

@@ -15,12 +15,16 @@ import Search from '../../../components/search';
 import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {generateOtpRequest} from '../../../redux/auth/otp/action';
+import {eventType} from '../../../utils/static-data';
+import {registerRequest} from '../../../redux/action';
 const NewCustomer = () => {
   const [generate, setGenerate] = useState(false);
   const formikRef = useRef(null);
   const [resend, setResend] = useState(0);
   const dispatch = useDispatch();
   const nav = useNavigation();
+
   const isLoad = useSelector((state) => state.user.register.loading);
   const isOtpLoad = useSelector((state) => state.user.otp.loading);
   const submitValues = (values) => {
@@ -31,6 +35,7 @@ const NewCustomer = () => {
       otp: values.otp,
       password: values.password,
     };
+    dispatch(registerRequest(data));
   };
   const generateOtp = () => {
     if (formikRef.current) {
@@ -38,7 +43,9 @@ const NewCustomer = () => {
       const data = {
         resend,
         mobile,
+        eventType: eventType.customer_signup_otp,
       };
+      dispatch(generateOtpRequest(data));
       setGenerate(true);
     }
   };
@@ -48,7 +55,10 @@ const NewCustomer = () => {
       const data = {
         resend: resend + 1,
         mobile,
+        eventType: eventType.customer_signup_otp,
       };
+      setResend(resend + 1);
+      dispatch(generateOtpRequest(data));
       setGenerate(true);
     }
   };
@@ -172,7 +182,7 @@ const NewCustomer = () => {
                   </Text>
                   <Button
                     isLoading={isOtpLoad}
-                    disabled={!values.mobile}
+                    disabled={!values.mobile || generate}
                     onPress={() => generateOtp()}
                     style={{width: wp(30)}}
                     color="secondary">
@@ -182,13 +192,18 @@ const NewCustomer = () => {
                     <>
                       <Input
                         label="Verify Otp"
+                        keyboardType="number-pad"
                         value={values.otp}
                         onChangeText={handleChange('otp')}
                         onBlur={() => setFieldTouched('otp')}
                         error={touched.otp && errors.otp}
                         errorText={touched.otp && errors.otp}
+                        maxLength={4}
                       />
-                      <Button style={{width: wp(30)}} color="secondary">
+                      <Button
+                        onPress={() => resendOtp()}
+                        style={{width: wp(30)}}
+                        color="secondary">
                         RESEND OTP
                       </Button>
                     </>
@@ -200,6 +215,7 @@ const NewCustomer = () => {
                     error={touched.password && errors.password}
                     errorText={touched.password && errors.password}
                     label="Password"
+                    secureTextEntry={true}
                   />
                   <Input
                     label="Confirm Password"
@@ -208,6 +224,7 @@ const NewCustomer = () => {
                     onBlur={() => setFieldTouched('confirmpass')}
                     error={touched.confirmpass && errors.confirmpass}
                     errorText={touched.confirmpass && errors.confirmpass}
+                    secureTextEntry={true}
                   />
                   <Button
                     isLoading={isLoad}

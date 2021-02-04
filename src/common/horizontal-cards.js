@@ -16,7 +16,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  strictValidArray,
   strictValidArrayWithLength,
   strictValidObjectWithKeys,
 } from '../utils/commonUtils';
@@ -27,7 +26,7 @@ import {
 } from '../redux/action';
 import {config} from '../utils/config';
 import {light} from '../components/theme/colors';
-const Cards = ({data}) => {
+const HorizontalCards = ({data}) => {
   const nav = useNavigation();
   const [products, setData] = useState([]);
   const quote_id = useSelector((state) => state.cart.cartId.id);
@@ -232,6 +231,8 @@ const Cards = ({data}) => {
       renderItem={renderItem}
       onEndReachedThreshold={0}
       ListEmptyComponent={_renderEmpty}
+      horizontal
+      showsHorizontalScrollIndicator={false}
     />
   );
 };
@@ -244,4 +245,4 @@ const flatlistContentStyle = {
   flexDirection: 'row',
   paddingTop: hp(2),
 };
-export default Cards;
+export default HorizontalCards;
