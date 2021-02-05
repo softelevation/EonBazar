@@ -6,6 +6,8 @@ import order from './order/reducer';
 import category from './category/reducer';
 import {contact} from './contactus/reducer';
 import wishlist from './wishlist/reducer';
+import banner from './banner/reducer';
+import advanceSearch from './advance-search/reducer';
 const rootreducer = combineReducers({
   user,
   cart,
@@ -14,5 +16,7 @@ const rootreducer = combineReducers({
   category,
   contact,
   wishlist,
+  banner,
+  advanceSearch,
 });
 export default rootreducer;

@@ -24,6 +24,7 @@ const Splash = () => {
       dispatch(loginSuccess(token));
       dispatch(profileRequest());
       dispatch(createCartRequest());
+      dispatch(GuestCartIDSuccess(guest_token));
 
       setTimeout(() => {
         nav.navigate('Home');

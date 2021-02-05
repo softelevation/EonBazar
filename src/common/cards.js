@@ -15,7 +15,11 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {strictValidObjectWithKeys} from '../utils/commonUtils';
+import {
+  strictValidArray,
+  strictValidArrayWithLength,
+  strictValidObjectWithKeys,
+} from '../utils/commonUtils';
 import {
   addToCartRequest,
   addToGuestCartRequest,
@@ -44,7 +48,9 @@ const Cards = ({data}) => {
           (v) => v.attribute_code === 'special_price',
         );
         const getImage = a.media_gallery_entries.find(
-          (image) => image.media_type === 'image',
+          (image) =>
+            image.media_type === 'image' &&
+            strictValidArrayWithLength(image.types),
         );
         newData.push({
           qty: 1,
@@ -63,6 +69,7 @@ const Cards = ({data}) => {
         });
       });
     setData(newData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, errorCartLoad, guestCartError]);
 
   const addToCart = async (val, index) => {

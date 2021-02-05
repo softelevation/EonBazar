@@ -83,6 +83,7 @@ const Cart = () => {
           isLoad: false,
           isDelete: false,
           price_copy: a.price * a.qty,
+          image: a.extension_attributes.image_url,
         });
       });
 
@@ -216,7 +217,7 @@ const Cart = () => {
             <Icon name="edit" size={12} color="#fff" />
           </CustomButton>
         </Block>
-        <ImageComponent name="product" />
+        <ImageComponent isURL name={item.image} />
         <Block flex={false} margin={[0, w3]}>
           <Text style={{width: widthPercentageToDP(38)}} size={13}>
             {item.name}

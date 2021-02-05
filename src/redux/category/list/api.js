@@ -6,8 +6,6 @@ export const Api = async (data) => {
   const country = 'BDT';
   const currentPage = data.currentPage;
   const pageSize = data.pageSize;
-  // const token = await AsyncStorage.getItem('token');
-  // console.log(token, 'token in product Api');
   const newToken = '5q0h1829ixf2vdm57k6g3qtzd88wkvr2';
   const headers = {
     'Content-Type': 'application/json',

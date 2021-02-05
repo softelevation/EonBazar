@@ -6,9 +6,9 @@ import {
 } from 'react-native-responsive-screen';
 import styled from 'styled-components/native';
 import {Block} from '../components';
-import {sliderData} from '../utils/static-data';
+import {config} from '../utils/config';
 
-const Banner = () => {
+const Banner = ({data}) => {
   const [indexValue, setIndex] = useState(0);
   const flatListref = useRef();
   const onScrollEnd = (e) => {
@@ -25,7 +25,7 @@ const Banner = () => {
       margin={[hp(2), 0, hp(2), 0]}
       color="transparent">
       <FlatList
-        data={sliderData}
+        data={data}
         horizontal
         pagingEnabled
         decelerationRate="fast"
@@ -35,9 +35,10 @@ const Banner = () => {
         onMomentumScrollEnd={onScrollEnd}
         renderItem={({item}) => {
           return (
-            <BackgroundImage source={item}>
+            <BackgroundImage
+              source={{uri: `${config.banner_image_url}${item.image}`}}>
               <FlatList
-                data={sliderData}
+                data={data}
                 horizontal
                 pagingEnabled
                 style={flatlistStyle}

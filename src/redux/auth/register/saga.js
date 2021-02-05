@@ -1,17 +1,23 @@
+import {Alert} from 'react-native';
 import {ActionConstants} from '../../constants';
-import {registerError, registerSuccess} from '../../action';
+import {registerError, registerSuccess, loginSuccess} from '../../action';
 import {put, call, all, takeLatest} from 'redux-saga/effects';
 import {Api} from './api';
-
+import * as navigation from '../../../routes/NavigationService';
 export function* request(action) {
   try {
     const response = yield call(Api, action.payload);
     if (response) {
       yield put(registerSuccess(response.data));
+      navigation.navigate('Dashboard');
+      yield put(loginSuccess(response.data));
+
+      Alert.alert('User created Sucessfully');
     } else {
       yield put(registerError(response));
     }
   } catch (err) {
+    Alert.alert(err.response.data.message);
     yield put(registerError(err));
   }
 }
