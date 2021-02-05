@@ -27,10 +27,6 @@ const Profile = () => {
     setUser(userData);
   }, [userData]);
 
-  const submitValues = (values) => {
-    // console.log(values);
-  };
-
   if (isLoad) {
     return <ActivityLoader />;
   } else {
@@ -52,7 +48,6 @@ const Profile = () => {
               mobile: mobile.value || emailMobile,
               email: `${user.email}`,
             }}
-            onSubmit={submitValues}
             validationSchema={yup.object().shape({
               mobile: yup
                 .string()
@@ -103,7 +98,10 @@ const Profile = () => {
                     errorText={touched.mobile && errors.mobile}
                   />
                   <Block row flex={false}>
-                    <Text secondary size={16}>
+                    <Text
+                      onPress={() => nav.navigate('EditProfile')}
+                      secondary
+                      size={16}>
                       Edit
                     </Text>
                     <Text secondary size={16} margin={[0, w1]}>

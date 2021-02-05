@@ -28,7 +28,8 @@ const Splash = () => {
       setTimeout(() => {
         nav.navigate('Home');
       }, 3000);
-    } else if (strictValidStringWithMinLength(guest_token)) {
+    }
+    if (strictValidStringWithMinLength(guest_token)) {
       dispatch(GuestCartIDSuccess(guest_token));
       setTimeout(() => {
         nav.navigate('Home');

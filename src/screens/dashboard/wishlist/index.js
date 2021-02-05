@@ -141,7 +141,7 @@ const Wishlist = () => {
   const _renderEmpty = () => {
     return (
       <Block style={{height: hp(20)}} center middle>
-        <Text size={14}>Wishlist products not found</Text>
+        <Text size={14}>You have no items in your wish list.</Text>
       </Block>
     );
   };

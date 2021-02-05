@@ -33,6 +33,7 @@ import SeeAllDetails from '../screens/dashboard/all-details';
 import {useSelector} from 'react-redux';
 import {strictValidObjectWithKeys} from '../utils/commonUtils';
 import {navigationRef} from './NavigationService';
+import EditProfile from '../screens/auth/edit-profile';
 const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -61,6 +62,32 @@ function Routes() {
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
         <RootStack.Screen name="Details" component={Details} />
         <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
+      </RootStack.Navigator>
+    );
+  };
+  const ProfileStack = () => {
+    return (
+      <RootStack.Navigator
+        screenOptions={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+        initialRouteName="Profile"
+        headerMode="none">
+        <RootStack.Screen name="Profile" component={Profile} />
+        <Tab.Screen name="Login" component={Login} />
+        <Tab.Screen name="NewCustomer" component={NewCustomer} />
+        <RootStack.Screen name="Faq" component={Faq} />
+        <RootStack.Screen name="Terms" component={Terms} />
+        <RootStack.Screen name="Privacy" component={Privacy} />
+        <RootStack.Screen name="Help" component={Help} />
+        <RootStack.Screen name="AdvanceSearch" component={AdvanceSearch} />
+        <RootStack.Screen name="Wishlist" component={Wishlist} />
+        <RootStack.Screen name="YourOrder" component={YourOrder} />
+        <RootStack.Screen name="Shipping" component={Shipping} />
+        <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
+        <RootStack.Screen name="Details" component={Details} />
+        <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
+        <RootStack.Screen name="EditProfile" component={EditProfile} />
       </RootStack.Navigator>
     );
   };
@@ -161,7 +188,7 @@ function Routes() {
         <Tab.Screen name="DashboardLogo" component={DashboardStack} />
         <Tab.Screen name="Cart" component={CartStack} />
         {strictValidObjectWithKeys(user) ? (
-          <Tab.Screen name="Profile" component={Profile} />
+          <Tab.Screen name="Profile" component={ProfileStack} />
         ) : (
           <Tab.Screen name="Login" component={LoginStack} />
         )}
