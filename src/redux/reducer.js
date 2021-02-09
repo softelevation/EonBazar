@@ -8,6 +8,8 @@ import {contact} from './contactus/reducer';
 import wishlist from './wishlist/reducer';
 import banner from './banner/reducer';
 import advanceSearch from './advance-search/reducer';
+import shipping from './shipping/reducer';
+import area from './areas/reducer';
 const rootreducer = combineReducers({
   user,
   cart,
@@ -18,5 +20,7 @@ const rootreducer = combineReducers({
   wishlist,
   banner,
   advanceSearch,
+  shipping,
+  area,
 });
 export default rootreducer;

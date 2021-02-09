@@ -3773,6 +3773,13 @@
     "inherits" "^2.0.1"
     "readable-stream" "^2.0.4"
 
+"flux-standard-action@^2.0.3":
+  "integrity" "sha512-W86GzmXmIiTVq/dpYVd2HtTIUX9c35Iq3ao3xR6qcKtuXgbu+BDEj72op5VnEIe/kpuSbhl+I8kT1iS2hpcusw=="
+  "resolved" "https://registry.npmjs.org/flux-standard-action/-/flux-standard-action-2.1.1.tgz"
+  "version" "2.1.1"
+  dependencies:
+    "lodash" "^4.17.15"
+
 "follow-redirects@^1.10.0":
   "integrity" "sha512-SSG5xmZh1mkPGyKzjZP8zLjltIfpW32Y5QpdNJyjcfGxK3qo3NDDkZOZSFiGn1A6SclQxY9GzEwAHQ3dmYRWpg=="
   "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.13.1.tgz"
@@ -4677,6 +4684,11 @@
   "version" "2.0.4"
   dependencies:
     "isobject" "^3.0.1"
+
+"is-promise@^2.1.0":
+  "integrity" "sha512-+lP4/6lKUBfQjZ2pdxThZvLUAafmZb8OAxFb8XXtiQmS35INgr85hdOGoEs124ez1FCnZJt6jau/T+alh58QFQ=="
+  "resolved" "https://registry.npmjs.org/is-promise/-/is-promise-2.2.2.tgz"
+  "version" "2.2.2"
 
 "is-redirect@^1.0.0":
   "integrity" "sha1-HQPd7VO9jbDzDCbk+V02/HyH3CQ="
@@ -8101,12 +8113,30 @@
   "resolved" "https://registry.npmjs.org/realpath-native/-/realpath-native-2.0.0.tgz"
   "version" "2.0.0"
 
+"redux-devtools-extension@^2.13.8":
+  "integrity" "sha512-8qlpooP2QqPtZHQZRhx3x3OP5skEV1py/zUdMY28WNAocbafxdG2tRD1MWE7sp8obGMNYuLWanhhQ7EQvT1FBg=="
+  "resolved" "https://registry.npmjs.org/redux-devtools-extension/-/redux-devtools-extension-2.13.8.tgz"
+  "version" "2.13.8"
+
 "redux-logger@^3.0.6":
   "integrity" "sha1-91VZZvMJjzyIYExEnPC69XeCdL8="
   "resolved" "https://registry.npmjs.org/redux-logger/-/redux-logger-3.0.6.tgz"
   "version" "3.0.6"
   dependencies:
     "deep-diff" "^0.3.5"
+
+"redux-persist@^6.0.0":
+  "integrity" "sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ=="
+  "resolved" "https://registry.npmjs.org/redux-persist/-/redux-persist-6.0.0.tgz"
+  "version" "6.0.0"
+
+"redux-promise@^0.6.0":
+  "integrity" "sha512-R2mGxJbPFgXyCNbFDE6LjTZhCEuACF54g1bxld3nqBhnRMX0OsUyWk77moF7UMGkUdl5WOAwc4BC5jOd1dunqQ=="
+  "resolved" "https://registry.npmjs.org/redux-promise/-/redux-promise-0.6.0.tgz"
+  "version" "0.6.0"
+  dependencies:
+    "flux-standard-action" "^2.0.3"
+    "is-promise" "^2.1.0"
 
 "redux-saga@^1.1.3":
   "integrity" "sha512-RkSn/z0mwaSa5/xH/hQLo8gNf4tlvT18qXDNvedihLcfzh+jMchDgaariQoehCpgRltEm4zHKJyINEz6aqswTw=="
@@ -8115,7 +8145,7 @@
   dependencies:
     "@redux-saga/core" "^1.1.3"
 
-"redux@^4.0.4", "redux@^4.0.5":
+"redux@^3.1.0 || ^4.0.0", "redux@^4.0.4", "redux@^4.0.5", "redux@>4.0.0":
   "integrity" "sha512-VSz1uMAH24DM6MF72vcojpYPtrTUu3ByVWfPL1nPfVRb5mZVTve5GnNCUV53QM/BZ66xfWrm0CTWoM+Xlz8V1w=="
   "resolved" "https://registry.npmjs.org/redux/-/redux-4.0.5.tgz"
   "version" "4.0.5"

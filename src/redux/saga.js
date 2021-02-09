@@ -14,6 +14,8 @@ import {contactWatcher} from './contactus/saga';
 import {wishlistWatcher} from './wishlist/saga';
 import {bannerWatcher} from './banner/saga';
 import {advanceSearchWatcher} from './advance-search/saga';
+import {shippingWatcher} from './shipping/saga';
+import {areaWatcher} from './areas/saga';
 export default function* rootSaga() {
   yield all([
     loginWatcher(),
@@ -31,5 +33,7 @@ export default function* rootSaga() {
     bannerWatcher(),
     advanceSearchWatcher(),
     offerWatcher(),
+    shippingWatcher(),
+    areaWatcher(),
   ]);
 }

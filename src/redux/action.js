@@ -103,7 +103,20 @@ export {
 } from './wishlist/action';
 export {bannerError, bannerRequest, bannerSuccess} from './banner/action';
 export {
+  addShippingError,
+  addShippingRequest,
+  addShippingSuccess,
+} from './shipping/action';
+export {
   advanceSearchError,
   advanceSearchRequest,
   advanceSearchSuccess,
 } from './advance-search/action';
+export {
+  searchAreaError,
+  searchAreaRequest,
+  searchAreaSuccess,
+  searchDistrictError,
+  searchDistrictRequest,
+  searchDistrictSuccess,
+} from './areas/action';

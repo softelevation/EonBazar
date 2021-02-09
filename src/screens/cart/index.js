@@ -312,7 +312,13 @@ const Cart = () => {
               Keep Shopping
             </CartButton>
             <CartButton
-              onPress={() => nav.navigate('Shipping')}
+              onPress={() =>
+                nav.navigate('Shipping', {
+                  price: cartlist
+                    .reduce((sum, i) => (sum += i.price_copy), 0)
+                    .toFixed(2),
+                })
+              }
               textStyle={{textTransform: 'uppercase'}}
               color="secondary">
               Buy Now

@@ -13,6 +13,8 @@ export function* request(action) {
       yield put(generateOtpError(response));
     }
   } catch (err) {
+    Alert.alert(err.response.data.message);
+
     yield put(generateOtpError(err));
   }
 }

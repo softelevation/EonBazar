@@ -120,6 +120,7 @@ const EditProfile = () => {
                     value={values.currentpass}
                     onChangeText={handleChange('currentpass')}
                     onBlur={() => setFieldTouched('currentpass')}
+                    secure={true}
                     error={touched.currentpass && errors.currentpass}
                     errorText={touched.currentpass && errors.currentpass}
                   />
@@ -133,6 +134,7 @@ const EditProfile = () => {
                       onBlur={() => setFieldTouched('password')}
                       error={touched.password && errors.password}
                       errorText={touched.password && errors.password}
+                      secure={true}
                     />
                     <Input
                       label="Confirm New Password"
@@ -140,6 +142,7 @@ const EditProfile = () => {
                       onChangeText={handleChange('cofirmpassword')}
                       onBlur={() => setFieldTouched('cofirmpassword')}
                       error={touched.cofirmpassword && errors.cofirmpassword}
+                      secure={true}
                       errorText={
                         touched.cofirmpassword && errors.cofirmpassword
                       }

@@ -102,10 +102,7 @@ const Profile = () => {
                       onPress={() => nav.navigate('EditProfile')}
                       secondary
                       size={16}>
-                      Edit
-                    </Text>
-                    <Text secondary size={16} margin={[0, w1]}>
-                      Change Password
+                      Edit Profile
                     </Text>
                   </Block>
                 </Block>
