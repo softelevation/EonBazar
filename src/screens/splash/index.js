@@ -12,25 +12,22 @@ import {
   GuestCartIDRequest,
   GuestCartIDSuccess,
 } from '../../redux/action';
+import {authCheckRequest} from '../../redux/auth/login/action';
 import {strictValidStringWithMinLength} from '../../utils/commonUtils';
 
 const Splash = () => {
   const dispatch = useDispatch();
   const nav = useNavigation();
-  const CallNavigation = async () => {
-    const token = await AsyncStorage.getItem('token');
-    const guest_token = await AsyncStorage.getItem('guest-token');
-    if (strictValidStringWithMinLength(token)) {
-      dispatch(loginSuccess(token));
-      dispatch(profileRequest());
-      dispatch(createCartRequest());
-      dispatch(GuestCartIDSuccess(guest_token));
 
+  const CallNavigation = async () => {
+    const guest_token = await AsyncStorage.getItem('guest-token');
+
+    const res = await dispatch(authCheckRequest());
+    if (res.res) {
       setTimeout(() => {
         nav.navigate('Home');
       }, 3000);
-    }
-    if (strictValidStringWithMinLength(guest_token)) {
+    } else if (strictValidStringWithMinLength(guest_token)) {
       dispatch(GuestCartIDSuccess(guest_token));
       setTimeout(() => {
         nav.navigate('Home');

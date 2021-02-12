@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import {config} from '../../../utils/config';
 export const Api = async (data) => {
@@ -13,5 +14,18 @@ export const Api = async (data) => {
       password: data.password,
       websiteId: '0',
     },
+  });
+};
+
+export const authCheckApi = async () => {
+  const token = await AsyncStorage.getItem('token');
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + token,
+  };
+  return axios({
+    method: 'get',
+    url: 'http://stage.eonbazar.com/rest/all/V1/customers/me',
+    headers,
   });
 };

@@ -1,20 +1,20 @@
 import {ActionConstants} from '../../constants';
 
-const loginRequest = (payload) => {
+export const loginRequest = (payload) => {
   return {
     type: ActionConstants.LOGIN_REQUEST,
     payload,
     res: false,
   };
 };
-const loginSuccess = (data) => {
+export const loginSuccess = (data) => {
   return {
     type: ActionConstants.LOGIN_SUCCESS,
     data,
     res: true,
   };
 };
-const loginError = (error) => {
+export const loginError = (error) => {
   return {
     type: ActionConstants.LOGIN_ERROR,
     error,
@@ -22,4 +22,24 @@ const loginError = (error) => {
   };
 };
 
-export {loginRequest, loginError, loginSuccess};
+export const authCheckRequest = (payload) => {
+  return {
+    type: ActionConstants.AUTH_CHECK_REQUEST,
+    payload,
+    res: false,
+  };
+};
+export const authCheckSuccess = (data) => {
+  return {
+    type: ActionConstants.AUTH_CHECK_SUCCESS,
+    data,
+    res: true,
+  };
+};
+export const authCheckError = (error) => {
+  return {
+    type: ActionConstants.AUTH_CHECK_ERROR,
+    error,
+    res: false,
+  };
+};

@@ -23,6 +23,23 @@ export function loginReducer(state = initialState, action) {
         loading: false,
         error: action.error,
       };
+    case ActionConstants.AUTH_CHECK_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ActionConstants.AUTH_CHECK_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        user: action.data,
+      };
+    case ActionConstants.AUTH_CHECK_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
 
     default:
       return state;
