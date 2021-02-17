@@ -43,3 +43,24 @@ export const authCheckError = (error) => {
     res: false,
   };
 };
+export const guestCheckRequest = (payload) => {
+  return {
+    type: ActionConstants.GUEST_CHECK_REQUEST,
+    payload,
+    res: false,
+  };
+};
+export const guestCheckSuccess = (data) => {
+  return {
+    type: ActionConstants.GUEST_CHECK_SUCCESS,
+    data,
+    res: true,
+  };
+};
+export const guestCheckError = (error) => {
+  return {
+    type: ActionConstants.GUEST_CHECK_ERROR,
+    error,
+    res: false,
+  };
+};

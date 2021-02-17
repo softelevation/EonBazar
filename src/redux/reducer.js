@@ -10,6 +10,7 @@ import banner from './banner/reducer';
 import advanceSearch from './advance-search/reducer';
 import shipping from './shipping/reducer';
 import area from './areas/reducer';
+import payment from './payment/reducer';
 const rootreducer = combineReducers({
   user,
   cart,
@@ -22,5 +23,6 @@ const rootreducer = combineReducers({
   advanceSearch,
   shipping,
   area,
+  payment,
 });
 export default rootreducer;

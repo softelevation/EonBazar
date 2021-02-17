@@ -47,7 +47,7 @@ const Cart = () => {
   const cart_list = useSelector((state) => state.cart.list.data);
   const isLoad = useSelector((state) => state.cart.list.loading);
   const guestLoad = useSelector((state) => state.cart.guestlist.loading);
-
+  const navigation = useNavigation();
   const errorCartLoad = useSelector((state) => state.cart.updateCart.error);
   const currency = useSelector(
     (state) => state.currency.currencyDetail.data.base_currency_code,
@@ -66,6 +66,18 @@ const Cart = () => {
       dispatch(guestCartRequest(guestCartToken));
     }
   }, [userData]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (strictValidObjectWithKeys(userData)) {
+        dispatch(getCartDetailsRequest());
+      } else {
+        dispatch(guestCartRequest(guestCartToken));
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   useEffect(() => {
     const newData = [];

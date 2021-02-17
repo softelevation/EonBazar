@@ -29,3 +29,15 @@ export const authCheckApi = async () => {
     headers,
   });
 };
+export const guestCheckApi = async () => {
+  const token = await AsyncStorage.getItem('guest-token');
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + token,
+  };
+  return axios({
+    method: 'get',
+    url: 'http://stage.eonbazar.com/rest/all/V1/customers/me',
+    headers,
+  });
+};

@@ -84,9 +84,10 @@ const Shipping = ({
 
   const getShippingCharge = async () => {
     const token = await AsyncStorage.getItem('token');
+    const guest = await AsyncStorage.getItem('guest-token');
     const headers = {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
+      Authorization: token ? `Bearer ${token}` : `Bearer ${guest}`,
     };
     axios({
       method: 'post',
@@ -135,7 +136,6 @@ const Shipping = ({
       },
     };
     dispatch(addShippingRequest(data));
-    console.log(data, 'data');
   };
 
   const selectDistrict = (value) => {
@@ -166,7 +166,7 @@ const Shipping = ({
           country: 'Bangladesh',
           district: 1,
           region: '',
-          shipping: true,
+          shipping: '',
         }}
         onSubmit={submitValues}
         validationSchema={yup.object().shape({
@@ -179,6 +179,7 @@ const Shipping = ({
           lastname: yup.string().min(1).required('Last Name is Required'),
           streetAddress: yup.string().required('Street Address is Required'),
           city: yup.string().required('City is Required'),
+          shipping: yup.string().required('Please choose Shipping method'),
           postalCode: yup
             .string()
             .min(3)
@@ -320,6 +321,7 @@ const Shipping = ({
                   onBlur={() => setFieldTouched('postalCode')}
                   error={touched.postalCode && errors.postalCode}
                   errorText={touched.postalCode && errors.postalCode}
+                  keyboardType="number-pad"
                 />
                 <Input
                   label="Country"
@@ -337,13 +339,13 @@ const Shipping = ({
                   onBlur={() => setFieldTouched('mobile')}
                   error={touched.mobile && errors.mobile}
                   errorText={touched.mobile && errors.mobile}
+                  keyboardType="number-pad"
                 />
                 <Text size={12}>Please add number without country code</Text>
                 <Block margin={[t4, 0, 0, 0]}>
                   <Text transform="uppercase" bold>
                     Shipping Charge
                   </Text>
-
                   {shipping.map((a) => {
                     return (
                       <Block
@@ -369,6 +371,11 @@ const Shipping = ({
                       </Block>
                     );
                   })}
+                  {touched.firstname && errors.firstname && (
+                    <Text size={12} errorColor>
+                      {touched.firstname && errors.firstname}
+                    </Text>
+                  )}
                   <Button
                     isLoading={isLoad}
                     disabled={!isValid || !dirty}

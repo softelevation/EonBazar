@@ -1,4 +1,14 @@
-export {loginError, loginRequest, loginSuccess} from './auth/login/action';
+export {
+  loginError,
+  loginRequest,
+  loginSuccess,
+  guestCheckError,
+  guestCheckRequest,
+  guestCheckSuccess,
+  authCheckError,
+  authCheckRequest,
+  authCheckSuccess,
+} from './auth/login/action';
 export {
   getAllProductsError,
   getAllProductsRequest,
@@ -120,3 +130,4 @@ export {
   searchDistrictRequest,
   searchDistrictSuccess,
 } from './areas/action';
+export {paymentError, paymentRequest, paymentSuccess} from './payment/action';

@@ -10,7 +10,10 @@ export function* request(action) {
     const response = yield call(Api, action.payload);
     if (response) {
       yield put(addShippingSuccess(response.data));
-      RootNavigation.navigate('PaymentMethod');
+      console.log(action.payload);
+      RootNavigation.navigate('PaymentMethod', {
+        item: action.payload,
+      });
     } else {
       yield put(addShippingError(response));
     }

@@ -6,7 +6,8 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {images} from '../../assets';
 import Footer from '../../common/footer';
 import Header from '../../common/header';
 import {
@@ -18,21 +19,35 @@ import {
   Text,
 } from '../../components';
 import Checkbox from '../../components/checkbox';
+import {paymentRequest} from '../../redux/action';
+import {
+  strictValidArray,
+  strictValidArrayWithLength,
+} from '../../utils/commonUtils';
 import {config} from '../../utils/config';
 
 const initialState = {
   cards: false,
   cash: false,
 };
-const PaymentMethod = () => {
+const PaymentMethod = ({
+  route: {
+    params: {item},
+  },
+}) => {
   const nav = useNavigation();
   const [discount, setdiscount] = useState(false);
   const [instruction, setinstruction] = useState(false);
   const [toggleCheckBox, setToggleCheckBox] = useState(initialState);
-  const [terms, setTerms] = useState({});
+  const [terms, setTerms] = useState([]);
+  const [termsToggle, setTermsToggle] = useState(false);
+  const isLoad = useSelector((state) => state.payment.loading);
+  const dispatch = useDispatch();
 
   const {cards, cash} = toggleCheckBox;
-
+  console.log(item, 'item');
+  const {addressInformation} = item;
+  const {shipping_address} = addressInformation;
   const paymentMethod = useSelector(
     (v) => v.shipping.shippingDetails.data.payment_methods,
   );
@@ -48,13 +63,12 @@ const PaymentMethod = () => {
       Authorization: 'Bearer ' + token,
     };
     axios({
-      method: 'post',
-      url: `${config.Api_Url}/V1/carts/licence`,
+      method: 'get',
+      url: 'http://stage.eonbazar.com/rest/V1/carts/licence',
       headers,
     }).then((res) => setTerms(res.data));
   };
 
-  console.log('terms', terms);
   const proceedPayment = () => {
     if (cards) {
       nav.navigate('PlaceAnOrder');
@@ -62,6 +76,17 @@ const PaymentMethod = () => {
       nav.navigate('ThankYou');
     }
   };
+
+  const onSubmit = () => {
+    const data = {
+      method: cards,
+      po_number: '',
+      agreement_id: terms[0].agreement_id,
+    };
+
+    dispatch(paymentRequest(data));
+  };
+  console.log(terms, 'terms');
   return (
     <Block>
       <Header />
@@ -77,35 +102,24 @@ const PaymentMethod = () => {
                   <Checkbox
                     checkboxStyle={{height: 20, width: 20}}
                     label={a.title}
-                    checked={a.title === cards}
-                    onChange={(newValue) => setToggleCheckBox({cards: a.title})}
+                    checked={a.code === cards}
+                    onChange={(newValue) => setToggleCheckBox({cards: a.code})}
                     labelStyle={{fontSize: 12, color: '#818991'}}
                   />
                 </Block>
 
-                {a.title === cards && (
+                {a.code === cards && (
                   <>
-                    {/* <Block margin={[hp(1), 0]} flex={false}>
-                      <Checkbox
-                        disabled={false}
-                        checkboxStyle={{height: 20, width: 20}}
-                        label="My billing and shipping address are the same"
-                        checked={billingCheckBox}
-                        onChange={(newValue) =>
-                          setBillingCheckBox(newValue.checked)
-                        }
-                        labelStyle={{fontSize: 12, color: '#818991'}}
-                      />
-                    </Block> */}
                     <Block flex={false} margin={[0, wp(8)]}>
                       <Text height={20} grey size={12}>
-                        Michal Johns
+                        {shipping_address.firstname} {shipping_address.lastname}
                       </Text>
                       <Text height={20} grey size={12}>
-                        Dhaka, sector 10, Road 11, Uttara
+                        {shipping_address.street[0]}{' '}
+                        {shipping_address.street[1] || ''}
                       </Text>
                       <Text height={20} grey size={12}>
-                        01000000000
+                        {shipping_address.telephone}
                       </Text>
                     </Block>
                     <CustomButton
@@ -142,8 +156,25 @@ const PaymentMethod = () => {
               </>
             );
           })}
+          {strictValidArrayWithLength(terms) && (
+            <Block margin={[hp(1), 0, 0]} row center flex={false}>
+              <Checkbox
+                checkboxStyle={{height: 20, width: 20}}
+                label={terms[0].checkbox_text}
+                checked={termsToggle}
+                onChange={(newValue) => setTermsToggle(!termsToggle)}
+                labelStyle={{fontSize: 12, color: '#818991'}}
+                checkedImage={images.checkbox_icon}
+                uncheckedImage={images.uncheckbox_icon}
+              />
+            </Block>
+          )}
 
-          <Button onPress={() => proceedPayment()} color="secondary">
+          <Button
+            disabled={!termsToggle || !cards}
+            isLoading={isLoad}
+            onPress={() => onSubmit()}
+            color="secondary">
             Place Order
           </Button>
           <CustomButton

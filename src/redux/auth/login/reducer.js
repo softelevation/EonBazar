@@ -41,6 +41,19 @@ export function loginReducer(state = initialState, action) {
         error: action.error,
       };
 
+    case ActionConstants.GUEST_CHECK_REQUEST:
+      return {
+        ...state,
+      };
+    case ActionConstants.GUEST_CHECK_SUCCESS:
+      return {
+        ...state,
+      };
+    case ActionConstants.GUEST_CHECK_ERROR:
+      return {
+        ...state,
+      };
+
     default:
       return state;
   }

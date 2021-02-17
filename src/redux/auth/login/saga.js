@@ -4,20 +4,26 @@ import {
   loginSuccess,
   profileRequest,
   createCartRequest,
+  guestCheckError,
+  authCheckError,
 } from '../../action';
 import {put, call, all, takeLatest} from 'redux-saga/effects';
-import {Api, authCheckApi} from './api';
+import {Api, authCheckApi, guestCheckApi} from './api';
 import AsyncStorage from '@react-native-community/async-storage';
 import {profileSuccess} from '../profile/action';
+import {authCheckSuccess, guestCheckSuccess} from './action';
 
 const SaveToken = async (token) => {
   return await AsyncStorage.setItem('token', token);
 };
-const clearGuestToken = async (token) => {
+const clearGuestToken = async () => {
   return await AsyncStorage.removeItem('guest-token');
 };
-const clearAuthToken = async (token) => {
+const clearAuthToken = async () => {
   return await AsyncStorage.removeItem('token');
+};
+const clearPersistToken = async () => {
+  return await AsyncStorage.removeItem('persist: root');
 };
 
 export function* loginRequest(action) {
@@ -41,18 +47,37 @@ export function* authRequest(action) {
   try {
     const response = yield call(authCheckApi, action.payload);
     if (response) {
+      console.log('verified user token');
       yield put(loginSuccess(response.data));
       yield put(profileRequest());
       yield put(createCartRequest());
       yield call(clearGuestToken);
+      yield put(authCheckSuccess(response));
     } else {
-      yield put(loginError(response));
+      yield put(authCheckError(response));
     }
   } catch (err) {
     yield call(clearAuthToken);
+    yield call(clearPersistToken);
     yield put(profileSuccess({}));
-
-    yield put(loginError());
+    console.log('clear user token');
+    yield put(authCheckError());
+  }
+}
+export function* gusetRequest() {
+  try {
+    const response = yield call(guestCheckApi);
+    if (response) {
+      console.log('verified guest token');
+      yield put(guestCheckSuccess(response));
+    } else {
+      yield put(guestCheckError(response));
+    }
+  } catch (err) {
+    console.log('clear guest token');
+    yield call(clearGuestToken);
+    yield call(clearPersistToken);
+    yield put(guestCheckError());
   }
 }
 
@@ -60,6 +85,7 @@ export function* loginWatcher() {
   yield all([
     takeLatest(ActionConstants.LOGIN_REQUEST, loginRequest),
     takeLatest(ActionConstants.AUTH_CHECK_REQUEST, authRequest),
+    takeLatest(ActionConstants.GUEST_CHECK_REQUEST, gusetRequest),
   ]);
 }
 export default loginWatcher;

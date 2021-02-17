@@ -24,9 +24,7 @@ const EditProfile = () => {
   const emailMobile =
     strictValidObjectWithKeys(user) && user.email.replace(/\D/g, '');
 
-  const submitValues = (values) => {
-    console.log(values);
-  };
+  const submitValues = (values) => {};
 
   return (
     <Block white>

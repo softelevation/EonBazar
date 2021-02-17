@@ -11,8 +11,9 @@ import {
   createCartRequest,
   GuestCartIDRequest,
   GuestCartIDSuccess,
+  authCheckRequest,
+  guestCheckRequest,
 } from '../../redux/action';
-import {authCheckRequest} from '../../redux/auth/login/action';
 import {strictValidStringWithMinLength} from '../../utils/commonUtils';
 
 const Splash = () => {
@@ -21,14 +22,14 @@ const Splash = () => {
 
   const CallNavigation = async () => {
     const guest_token = await AsyncStorage.getItem('guest-token');
-
+    const token = await AsyncStorage.getItem('token');
     const res = await dispatch(authCheckRequest());
+    const guestres = await dispatch(guestCheckRequest());
     if (res.res) {
       setTimeout(() => {
         nav.navigate('Home');
       }, 3000);
-    } else if (strictValidStringWithMinLength(guest_token)) {
-      dispatch(GuestCartIDSuccess(guest_token));
+    } else if (guestres.res) {
       setTimeout(() => {
         nav.navigate('Home');
       }, 3000);
