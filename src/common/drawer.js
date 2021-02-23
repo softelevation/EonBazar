@@ -5,7 +5,7 @@ import {
 } from 'react-native-responsive-screen';
 import {Block, CustomButton, ImageComponent, Text} from '../components';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {Alert, FlatList} from 'react-native';
+import {FlatList} from 'react-native';
 import {DrawerData} from '../utils/static-data';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';

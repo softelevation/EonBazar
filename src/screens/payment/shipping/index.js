@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   heightPercentageToDP,
@@ -21,9 +21,10 @@ import {
   addShippingRequest,
 } from '../../../redux/action';
 import {
+  strictValidArray,
   strictValidArrayWithLength,
   strictValidNumber,
-  strictValidString,
+  strictValidObjectWithKeys,
 } from '../../../utils/commonUtils';
 import {config} from '../../../utils/config';
 import axios from 'axios';
@@ -53,9 +54,6 @@ const stylesPicker = StyleSheet.create({
   viewContainer: {
     marginTop: t1,
   },
-  label: {
-    // marginBottom: heightPercentageToDP(0.3),
-  },
 });
 
 const Shipping = ({
@@ -63,7 +61,6 @@ const Shipping = ({
     params: {price},
   },
 }) => {
-  const nav = useNavigation();
   const dispatch = useDispatch();
   const [State, setState] = useState('');
   const [region, setregion] = useState(null);
@@ -71,23 +68,26 @@ const Shipping = ({
   const currency = useSelector(
     (state) => state.currency.currencyDetail.data.base_currency_code,
   );
-  const district = useSelector((state) => state.area.district.data.items);
-  const city = useSelector((state) => state.area.cities.data.items);
+  const district = useSelector((state) => state.area.district.data);
+  const city = useSelector((state) => state.area.cities.data);
   const isLoad = useSelector((state) => state.shipping.shippingDetails.loading);
+  const userData = useSelector((state) => state.user.profile.user);
 
   useEffect(() => {
-    dispatch(searchDistrictRequest());
-    selectDistrict(1);
-    getShippingCharge();
+    strictValidArray(district.items) && selectDistrict(1);
+    if (strictValidObjectWithKeys(userData)) {
+      getShippingCharge();
+    } else {
+      getShippingChargeByGuest();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getShippingCharge = async () => {
     const token = await AsyncStorage.getItem('token');
-    const guest = await AsyncStorage.getItem('guest-token');
     const headers = {
       'Content-Type': 'application/json',
-      Authorization: token ? `Bearer ${token}` : `Bearer ${guest}`,
+      Authorization: `Bearer ${token}`,
     };
     axios({
       method: 'post',
@@ -101,6 +101,25 @@ const Shipping = ({
       },
     }).then((res) => setShipping(res.data));
   };
+  const getShippingChargeByGuest = async () => {
+    const guest = await AsyncStorage.getItem('guest-token');
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${guest}`,
+    };
+    axios({
+      method: 'post',
+      url: `${config.Api_Url}/V1/guest-carts/${guest}/estimate-shipping-methods`,
+      headers,
+      data: {
+        address: {
+          region_id: '0',
+          country_id: 'BD',
+        },
+      },
+    }).then((res) => setShipping(res.data));
+  };
+
   const submitValues = (values) => {
     const data = {
       addressInformation: {
@@ -140,12 +159,14 @@ const Shipping = ({
 
   const selectDistrict = (value) => {
     dispatch(searchAreaRequest(value));
-    const getStates = district.filter((v) => v.id === value);
+    const getStates =
+      strictValidArray(district.items) &&
+      district.items.filter((v) => v.id === value);
     getStates.map((c) => setState(c.name));
   };
-
   const selectCity = (val) => {
-    const getStates = city.filter((v) => v.name === val);
+    const getStates =
+      strictValidArray(city.items) && city.items.filter((v) => v.name === val);
     getStates.map((c) => setregion(c.id));
   };
 
@@ -217,9 +238,12 @@ const Shipping = ({
                   {'Select District'}
                 </Text>
                 <RNPickerSelect
-                  placeholder={{
-                    label: '',
-                  }}
+                  placeholder={
+                    {
+                      // label: '',
+                    }
+                  }
+                  useNativeAndroidPickerStyle={false}
                   value={values.district}
                   mode="dropdown"
                   style={stylesPicker}
@@ -228,25 +252,26 @@ const Shipping = ({
                     selectDistrict(value);
                   }}
                   items={
-                    district &&
-                    district.map((v) => ({
+                    strictValidArray(district.items) &&
+                    district.items.map((v) => ({
                       label: v.name,
                       value: v.id,
                     }))
                   }
                 />
+                <Text margin={[t1, 0, 0]} body color="#636363">
+                  {'Select Delievery Area'}
+                </Text>
                 {strictValidNumber(values.district) &&
-                strictValidArrayWithLength(city) ? (
+                strictValidArrayWithLength(city.items) ? (
                   <>
-                    <Text margin={[t1, 0, 0]} body color="#636363">
-                      {'Select Delievery Area'}
-                    </Text>
                     <RNPickerSelect
                       placeholder={
                         {
                           // label: 'Select City',
                         }
                       }
+                      useNativeAndroidPickerStyle={false}
                       style={stylesPicker}
                       value={values.region}
                       onValueChange={(value) => {
@@ -254,8 +279,8 @@ const Shipping = ({
                         selectCity(value);
                       }}
                       items={
-                        city &&
-                        city.map((a) => ({
+                        strictValidArray(city.items) &&
+                        city.items.map((a) => ({
                           label: `${a.name} - ${State}`,
                           value: `${a.name}`,
                         }))
@@ -354,8 +379,8 @@ const Shipping = ({
                         space={'between'}
                         center>
                         <Checkbox
-                          checkboxStyle={{height: 20, width: 20}}
-                          labelStyle={{marginLeft: w3, fontSize: 12}}
+                          checkboxStyle={checkboxStyle}
+                          labelStyle={labelStyle}
                           label={`BDT ${a.amount.toFixed(2)}`}
                           checked={a.carrier_code === values.shipping}
                           onChange={(b) =>
@@ -380,10 +405,7 @@ const Shipping = ({
                     isLoading={isLoad}
                     disabled={!isValid || !dirty}
                     onPress={handleSubmit}
-                    style={{
-                      width: widthPercentageToDP(50),
-                      alignSelf: 'center',
-                    }}
+                    style={buttonStyle}
                     color="secondary">
                     Next
                   </Button>
@@ -397,5 +419,10 @@ const Shipping = ({
     </Block>
   );
 };
-
+const buttonStyle = {
+  width: widthPercentageToDP(50),
+  alignSelf: 'center',
+};
+const checkboxStyle = {height: 20, width: 20};
+const labelStyle = {marginLeft: w3, fontSize: 12};
 export default Shipping;

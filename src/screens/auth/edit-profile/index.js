@@ -5,14 +5,16 @@ import {Block, Button, Input, Text} from '../../../components';
 import {t2, t3} from '../../../components/theme/fontsize';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {strictValidObjectWithKeys} from '../../../utils/commonUtils';
 import Checkbox from '../../../components/checkbox';
 import {images} from '../../../assets';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
+import {updateProfileRequest} from '../../../redux/action';
 const EditProfile = () => {
   const userData = useSelector((state) => state.user.profile.user);
   const isLoad = useSelector((state) => state.user.profile.loading);
+  const dispatch = useDispatch();
   const [user, setUser] = useState({});
   useEffect(() => {
     setUser(userData);
@@ -24,7 +26,26 @@ const EditProfile = () => {
   const emailMobile =
     strictValidObjectWithKeys(user) && user.email.replace(/\D/g, '');
 
-  const submitValues = (values) => {};
+  const submitValues = (values) => {
+    const data = {
+      customer: {
+        id: userData.id,
+        email: values.email,
+        firstname: values.firstname,
+        lastname: values.lastname,
+        middlename: '',
+        gender: 0,
+        store_id: 1,
+        website_id: 1,
+      },
+      password: values.cofirmpassword,
+      otp: values.otp || '',
+      mobile: values.mobile,
+      websiteId: 1,
+    };
+    dispatch(updateProfileRequest(data));
+    console.log(values, data);
+  };
 
   return (
     <Block white>
@@ -51,7 +72,16 @@ const EditProfile = () => {
                 .min(10)
                 .max(15)
                 .required('Mobile Number is Required'),
-              password: yup.string().min(6).required('Password is Required'),
+              password: yup.string().min(6),
+              cofirmpassword: yup.string().when('password', {
+                is: (val) => (val && val.length > 0 ? true : false),
+                then: yup
+                  .string()
+                  .oneOf(
+                    [yup.ref('password')],
+                    'Both password need to be the same',
+                  ),
+              }),
             })}>
             {({
               values,
@@ -112,17 +142,6 @@ const EditProfile = () => {
                     errorText={touched.email && errors.email}
                   />
                 )}
-                {(values.emailCheck || values.passwordCheck) && (
-                  <Input
-                    label="Current Password"
-                    value={values.currentpass}
-                    onChangeText={handleChange('currentpass')}
-                    onBlur={() => setFieldTouched('currentpass')}
-                    secure={true}
-                    error={touched.currentpass && errors.currentpass}
-                    errorText={touched.currentpass && errors.currentpass}
-                  />
-                )}
                 {values.passwordCheck && (
                   <>
                     <Input
@@ -160,6 +179,9 @@ const EditProfile = () => {
                 />
                 <Text size={12}>Please add number without country code.</Text>
                 <Button
+                  isLoading={isLoad}
+                  disabled={!dirty}
+                  onPress={handleSubmit}
                   style={{marginTop: heightPercentageToDP(2)}}
                   color="secondary">
                   Save

@@ -6,11 +6,6 @@ import {useDispatch} from 'react-redux';
 import {Block, ImageComponent} from '../../components';
 import {
   getCurrencyDetailsRequest,
-  loginSuccess,
-  profileRequest,
-  createCartRequest,
-  GuestCartIDRequest,
-  GuestCartIDSuccess,
   authCheckRequest,
   guestCheckRequest,
 } from '../../redux/action';
@@ -24,12 +19,12 @@ const Splash = () => {
     const guest_token = await AsyncStorage.getItem('guest-token');
     const token = await AsyncStorage.getItem('token');
     const res = await dispatch(authCheckRequest());
-    const guestres = await dispatch(guestCheckRequest());
+    // const guestres = await dispatch(guestCheckRequest());
     if (res.res) {
       setTimeout(() => {
         nav.navigate('Home');
       }, 3000);
-    } else if (guestres.res) {
+    } else if (guest_token) {
       setTimeout(() => {
         nav.navigate('Home');
       }, 3000);

@@ -184,14 +184,20 @@ function Routes() {
           component={DashboardStack}
         />
         <Tab.Screen
-          options={{
-            unmountOnBlur: true,
-          }}
+          // options={{
+          //   unmountOnBlur: true,
+          // }}
           name="Category"
           component={CategoryStack}
         />
         <Tab.Screen name="DashboardLogo" component={DashboardStack} />
-        <Tab.Screen name="Cart" component={CartStack} />
+        <Tab.Screen
+          options={{
+            unmountOnBlur: true,
+          }}
+          name="Cart"
+          component={CartStack}
+        />
         {strictValidObjectWithKeys(user) ? (
           <Tab.Screen name="Profile" component={ProfileStack} />
         ) : (

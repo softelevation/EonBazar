@@ -37,6 +37,7 @@ import {
   deleteItemRequest,
   getCartDetailsRequest,
   guestCartRequest,
+  searchDistrictRequest,
   updateCartRequest,
   updateGuestCartRequest,
 } from '../../redux/action';
@@ -60,6 +61,8 @@ const Cart = () => {
   const [refreshing, setrefreshing] = useState(false);
 
   useEffect(() => {
+    dispatch(searchDistrictRequest());
+
     if (strictValidObjectWithKeys(userData)) {
       dispatch(getCartDetailsRequest());
     } else {
@@ -170,6 +173,19 @@ const Cart = () => {
       dispatch(getCartDetailsRequest());
     } else {
       dispatch(guestCartRequest(guestCartToken));
+    }
+  };
+  const navigateToShipping = () => {
+    if (strictValidObjectWithKeys(userData)) {
+      nav.navigate('Shipping', {
+        price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
+      });
+    } else {
+      Alert.alert(
+        'Error',
+        'Please first login with your registered email address',
+      );
+      navigation.navigate('Login');
     }
   };
 
@@ -324,13 +340,9 @@ const Cart = () => {
               Keep Shopping
             </CartButton>
             <CartButton
-              onPress={() =>
-                nav.navigate('Shipping', {
-                  price: cartlist
-                    .reduce((sum, i) => (sum += i.price_copy), 0)
-                    .toFixed(2),
-                })
-              }
+              onPress={() => {
+                navigateToShipping();
+              }}
               textStyle={{textTransform: 'uppercase'}}
               color="secondary">
               Buy Now

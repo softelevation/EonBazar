@@ -6,16 +6,11 @@ import {Alert} from 'react-native';
 import * as RootNavigation from '../../routes/NavigationService';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const clearPersistToken = async () => {
-  return await AsyncStorage.removeItem('persist: root');
-};
-
 export function* paymentRequest(action) {
   try {
     const response = yield call(Api, action.payload);
     if (response) {
       yield put(paymentSuccess(response.data));
-      yield call(clearPersistToken);
       yield put(createCartRequest());
 
       RootNavigation.navigate('YourOrder');

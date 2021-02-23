@@ -1,4 +1,4 @@
-import {all} from 'redux-saga/effects';
+import {all, call} from 'redux-saga/effects';
 import {loginWatcher} from './auth/login/saga';
 import {profileWatcher} from './auth/profile/saga';
 import {productsWatcher} from './category/list/saga';
@@ -17,6 +17,7 @@ import {advanceSearchWatcher} from './advance-search/saga';
 import {shippingWatcher} from './shipping/saga';
 import {areaWatcher} from './areas/saga';
 import {paymentWatcher} from './payment/saga';
+
 export default function* rootSaga() {
   yield all([
     loginWatcher(),

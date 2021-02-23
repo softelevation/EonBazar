@@ -7,7 +7,6 @@ import {
 } from '../action';
 import {put, call, all, takeLatest} from 'redux-saga/effects';
 import {Api, AreaApi} from './api';
-import {Alert} from 'react-native';
 
 export function* districtRequest(action) {
   try {

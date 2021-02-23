@@ -96,6 +96,7 @@ const Cards = ({data}) => {
         qty: val.qty,
         quote_id: guestCartToken,
       };
+
       await dispatch(
         addToGuestCartRequest({token: guestCartToken, items: newData}),
       );
@@ -166,9 +167,9 @@ const Cards = ({data}) => {
             {item.name}
           </Text>
           <Text size={12} body margin={[hp(1), 0, 0, 0]} semibold>
-            {item.currency_code} {item.specialPrice}
+            {item.currency_code} {item.price_info}
           </Text>
-          {item.price_info !== item.specialPrice && (
+          {/* {item.price_info !== item.specialPrice && (
             <LineAboveText
               body
               size={12}
@@ -176,7 +177,7 @@ const Cards = ({data}) => {
               margin={[hp(0.2), 0, 0, 0]}>
               {item.currency_code} {item.price_info}
             </LineAboveText>
-          )}
+          )} */}
         </CustomButton>
         <Block
           margin={[hp(1), 0, 0, 0]}

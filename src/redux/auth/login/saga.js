@@ -22,9 +22,6 @@ const clearGuestToken = async () => {
 const clearAuthToken = async () => {
   return await AsyncStorage.removeItem('token');
 };
-const clearPersistToken = async () => {
-  return await AsyncStorage.removeItem('persist: root');
-};
 
 export function* loginRequest(action) {
   try {
@@ -34,7 +31,6 @@ export function* loginRequest(action) {
       yield put(loginSuccess(response.data));
       yield put(profileRequest());
       yield put(createCartRequest());
-      yield call(clearGuestToken);
     } else {
       yield put(loginError(response));
     }
@@ -51,14 +47,13 @@ export function* authRequest(action) {
       yield put(loginSuccess(response.data));
       yield put(profileRequest());
       yield put(createCartRequest());
-      yield call(clearGuestToken);
+      // yield call(clearGuestToken);
       yield put(authCheckSuccess(response));
     } else {
       yield put(authCheckError(response));
     }
   } catch (err) {
     yield call(clearAuthToken);
-    yield call(clearPersistToken);
     yield put(profileSuccess({}));
     console.log('clear user token');
     yield put(authCheckError());
@@ -75,8 +70,7 @@ export function* gusetRequest() {
     }
   } catch (err) {
     console.log('clear guest token');
-    yield call(clearGuestToken);
-    yield call(clearPersistToken);
+    // yield call(clearGuestToken);
     yield put(guestCheckError());
   }
 }
