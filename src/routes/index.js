@@ -35,11 +35,26 @@ import {strictValidObjectWithKeys} from '../utils/commonUtils';
 import {navigationRef} from './NavigationService';
 import EditProfile from '../screens/auth/edit-profile';
 import SearchList from '../screens/dashboard/advance-search/list';
+import Payment from '../screens/payment/payment';
+
 const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
+
 function Routes() {
   const user = useSelector((state) => state.user.profile.user);
+
+  function PaymentModal() {
+    return (
+      <RootStack.Navigator mode="modal">
+        <RootStack.Screen
+          name="Payment"
+          component={Payment}
+          options={{headerShown: false}}
+        />
+      </RootStack.Navigator>
+    );
+  }
 
   const LoginStack = () => {
     return (
@@ -64,6 +79,7 @@ function Routes() {
         <RootStack.Screen name="Details" component={Details} />
         <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
         <RootStack.Screen name="SearchList" component={SearchList} />
+        <RootStack.Screen name="Payment" component={PaymentModal} />
       </RootStack.Navigator>
     );
   };
@@ -76,8 +92,8 @@ function Routes() {
         initialRouteName="Profile"
         headerMode="none">
         <RootStack.Screen name="Profile" component={Profile} />
-        <Tab.Screen name="Login" component={Login} />
-        <Tab.Screen name="NewCustomer" component={NewCustomer} />
+        <RootStack.Screen name="Login" component={Login} />
+        <RootStack.Screen name="NewCustomer" component={NewCustomer} />
         <RootStack.Screen name="Faq" component={Faq} />
         <RootStack.Screen name="Terms" component={Terms} />
         <RootStack.Screen name="Privacy" component={Privacy} />
@@ -90,6 +106,8 @@ function Routes() {
         <RootStack.Screen name="Details" component={Details} />
         <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
         <RootStack.Screen name="EditProfile" component={EditProfile} />
+        <RootStack.Screen name="SearchList" component={SearchList} />
+        <RootStack.Screen name="Payment" component={PaymentModal} />
       </RootStack.Navigator>
     );
   };
@@ -102,6 +120,7 @@ function Routes() {
         initialRouteName="Dashboard"
         headerMode="none">
         <RootStack.Screen name="Dashboard" component={Dashboard} />
+        <RootStack.Screen name="NewCustomer" component={NewCustomer} />
         <RootStack.Screen name="Faq" component={Faq} />
         <RootStack.Screen name="Terms" component={Terms} />
         <RootStack.Screen name="Privacy" component={Privacy} />
@@ -115,6 +134,7 @@ function Routes() {
         <RootStack.Screen name="Details" component={Details} />
         <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
         <RootStack.Screen name="SearchList" component={SearchList} />
+        <RootStack.Screen name="Payment" component={PaymentModal} />
       </RootStack.Navigator>
     );
   };
@@ -127,6 +147,7 @@ function Routes() {
         initialRouteName="Cart"
         headerMode="none">
         <RootStack.Screen name="Cart" component={Cart} />
+        <RootStack.Screen name="NewCustomer" component={NewCustomer} />
         <RootStack.Screen name="Faq" component={Faq} />
         <RootStack.Screen name="Terms" component={Terms} />
         <RootStack.Screen name="Privacy" component={Privacy} />
@@ -143,6 +164,7 @@ function Routes() {
         <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
         <RootStack.Screen name="Login" component={Login} />
         <RootStack.Screen name="SearchList" component={SearchList} />
+        <RootStack.Screen name="Payment" component={PaymentModal} />
       </RootStack.Navigator>
     );
   };
@@ -155,6 +177,7 @@ function Routes() {
         initialRouteName="Category"
         headerMode="none">
         <RootStack.Screen name="Category" component={Category} />
+        <RootStack.Screen name="NewCustomer" component={NewCustomer} />
         <RootStack.Screen name="Faq" component={Faq} />
         <RootStack.Screen name="Terms" component={Terms} />
         <RootStack.Screen name="Privacy" component={Privacy} />
@@ -168,6 +191,7 @@ function Routes() {
         <RootStack.Screen name="Details" component={Details} />
         <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
         <RootStack.Screen name="SearchList" component={SearchList} />
+        <RootStack.Screen name="Payment" component={PaymentModal} />
       </RootStack.Navigator>
     );
   };
@@ -177,31 +201,33 @@ function Routes() {
         initialRouteName="Dashboard"
         tabBar={(props) => <BottomTab {...props} />}>
         <Tab.Screen
-          options={{
-            unmountOnBlur: true,
-          }}
+          options={{unmountOnBlur: true}}
           name="Dashboard"
           component={DashboardStack}
         />
         <Tab.Screen
-          // options={{
-          //   unmountOnBlur: true,
-          // }}
+          options={{unmountOnBlur: true}}
           name="Category"
           component={CategoryStack}
         />
         <Tab.Screen name="DashboardLogo" component={DashboardStack} />
         <Tab.Screen
-          options={{
-            unmountOnBlur: true,
-          }}
+          options={{unmountOnBlur: true}}
           name="Cart"
           component={CartStack}
         />
         {strictValidObjectWithKeys(user) ? (
-          <Tab.Screen name="Profile" component={ProfileStack} />
+          <Tab.Screen
+            options={{unmountOnBlur: true}}
+            name="Profile"
+            component={ProfileStack}
+          />
         ) : (
-          <Tab.Screen name="Login" component={LoginStack} />
+          <Tab.Screen
+            options={{unmountOnBlur: true}}
+            name="Login"
+            component={LoginStack}
+          />
         )}
       </Tab.Navigator>
     );
@@ -209,6 +235,7 @@ function Routes() {
   function HomeDrawer() {
     return (
       <Drawer.Navigator
+        drawerType="front"
         drawerStyle={{width: widthPercentageToDP(70)}}
         drawerContent={(props) => <DrawerScreen {...props} />}>
         <Drawer.Screen name="Controls" component={TabNav} />

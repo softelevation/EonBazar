@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {ActivityIndicator, ScrollView} from 'react-native';
+import {ActivityIndicator, Dimensions, ScrollView} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Banner from '../../common/banner';
 import Header from '../../common/header';
-import {Block, Text} from '../../components';
+import {Block, ImageComponent, Text} from '../../components';
 import Search from '../../components/search';
 import Footer from '../../common/footer';
 import Cards from '../../common/cards';
@@ -20,6 +20,7 @@ import {
   getAllProductsRequest,
   getCategoryListRequest,
   GuestCartIDRequest,
+  guestCartRequest,
   topOfferRequest,
 } from '../../redux/action';
 import {strictValidArrayWithLength} from '../../utils/commonUtils';
@@ -28,6 +29,8 @@ import {useNavigation} from '@react-navigation/native';
 import {light} from '../../components/theme/colors';
 import AsyncStorage from '@react-native-community/async-storage';
 import HorizontalCards from '../../common/horizontal-cards';
+import ImageSlider from '../../components/ImageSlider';
+import {config} from '../../utils/config';
 const Dashboard = () => {
   const navigation = useNavigation();
   const [menu, setmenu] = useState('');
@@ -42,6 +45,7 @@ const Dashboard = () => {
   const bestOfferLoad = useSelector((v) => v.category.best.loading);
   const newOffers = useSelector((v) => v.category.brands.data.items);
   const newOfferLoad = useSelector((v) => v.category.brands.loading);
+  const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
 
   const bestOffer = 10;
   const topOffer = 11;
@@ -67,6 +71,7 @@ const Dashboard = () => {
     dispatch(topOfferRequest(topOffer));
     dispatch(brandOfferRequest(brandOffer));
     dispatch(bestOfferRequest(bestOffer));
+    dispatch(guestCartRequest(guestCartToken));
     dispatch(
       getAllProductsRequest({
         currentPage,
@@ -74,7 +79,12 @@ const Dashboard = () => {
       }),
     );
     dispatch(getCategoryListRequest());
-    const unsubscribe = navigation.addListener('state', () => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      checkApi();
+      dispatch(bannerRequest());
+      dispatch(topOfferRequest(topOffer));
+      dispatch(brandOfferRequest(brandOffer));
+      dispatch(bestOfferRequest(bestOffer));
       dispatch(
         getAllProductsRequest({
           currentPage,

@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView} from 'react-native';
+import {Alert, ScrollView} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -23,14 +23,8 @@ const Login = () => {
   const renderNavigations = () => {
     return (
       <Block padding={[hp(2), wp(7), hp(2), wp(7)]} flex={false}>
-        <CustomButton margin={[hp(0.7), 0, 0, 0]} flex={false} row center>
-          <Icon name="account" size={20} />
-          <Text margin={[0, 0, 0, wp(1)]} transform="uppercase" body>
-            My Account
-          </Text>
-        </CustomButton>
         <CustomButton
-          onPress={() => nav.navigate('Wishlist')}
+          onPress={() => Alert.alert('Please login first')}
           margin={[hp(0.7), 0, 0, 0]}
           flex={false}
           row
@@ -41,7 +35,7 @@ const Login = () => {
           </Text>
         </CustomButton>
         <CustomButton
-          onPress={() => nav.navigate('YourOrder')}
+          onPress={() => Alert.alert('Please login first')}
           margin={[hp(0.7), 0, 0, 0]}
           flex={false}
           row
@@ -151,16 +145,17 @@ const Login = () => {
                   color="secondary">
                   SIGN IN
                 </Button>
-                <Text transform="uppercase" underline center caption>
-                  Forgot your password?
-                </Text>
               </Block>
               <Block
                 margin={[hp(2), 0, 0, 0]}
                 padding={[hp(2), wp(7), hp(2), wp(7)]}
                 flex={false}
                 primary>
-                <Text transform="uppercase" center body>
+                <Text
+                  onPress={() => nav.navigate('NewCustomer')}
+                  transform="uppercase"
+                  center
+                  body>
                   New Customer?{' '}
                   <Text
                     onPress={() => nav.navigate('NewCustomer')}

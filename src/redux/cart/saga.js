@@ -39,8 +39,13 @@ import {
   guestdMergeApi,
 } from './api';
 import * as RootNavigation from '../../routes/NavigationService';
-import {deleteGuestCartSuccess, guestCartRequest} from './action';
+import {
+  deleteGuestCartSuccess,
+  GuestCartIDRequest,
+  guestCartRequest,
+} from './action';
 import AsyncStorage from '@react-native-community/async-storage';
+import {Alert} from 'react-native';
 
 export function* requestList(action) {
   try {
@@ -74,6 +79,7 @@ export function* requestSaveList(action) {
 export function* createCart(action) {
   try {
     const response = yield call(CreateCartApi, action.payload);
+    console.log(response, 'response');
     if (response) {
       yield put(createCartSuccess(response.data));
     } else {
@@ -137,9 +143,11 @@ export function* guestrequestList(action) {
       yield put(getCartDetailsSuccess(response.data));
     } else {
       yield put(guestCartError(response));
+      yield put(GuestCartIDRequest());
     }
   } catch (err) {
     yield put(guestCartError(err));
+    yield put(GuestCartIDRequest());
   }
 }
 

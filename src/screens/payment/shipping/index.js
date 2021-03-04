@@ -150,8 +150,8 @@ const Shipping = ({
           telephone: values.mobile,
           same_as_billing: 1,
         },
-        shipping_carrier_code: 'flatrate',
-        shipping_method_code: 'flatrate',
+        shipping_carrier_code: values.shipping,
+        shipping_method_code: values.method_code,
       },
     };
     dispatch(addShippingRequest(data));
@@ -172,7 +172,7 @@ const Shipping = ({
 
   return (
     <Block>
-      <Header />
+      <Header leftIcon={false} />
       <Formik
         enableReinitialize
         initialValues={{
@@ -188,6 +188,8 @@ const Shipping = ({
           district: 1,
           region: '',
           shipping: '',
+          carrier_code: '',
+          method_code: '',
         }}
         onSubmit={submitValues}
         validationSchema={yup.object().shape({
@@ -383,9 +385,10 @@ const Shipping = ({
                           labelStyle={labelStyle}
                           label={`BDT ${a.amount.toFixed(2)}`}
                           checked={a.carrier_code === values.shipping}
-                          onChange={(b) =>
-                            setFieldValue('shipping', a.carrier_code)
-                          }
+                          onChange={(b) => {
+                            setFieldValue('shipping', a.carrier_code);
+                            setFieldValue('method_code', a.method_code);
+                          }}
                         />
                         <Text size={12}>{a.method_title}</Text>
                         <Text

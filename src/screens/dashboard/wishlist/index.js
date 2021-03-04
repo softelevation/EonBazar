@@ -24,7 +24,9 @@ import {config} from '../../../utils/config';
 import {light} from '../../../components/theme/colors';
 import ResponsiveImage from 'react-native-responsive-image';
 import {images} from '../../../assets';
+import {useNavigation} from '@react-navigation/native';
 const Wishlist = () => {
+  const nav = useNavigation();
   const [wishlistData, setData] = useState([]);
   const dispatch = useDispatch();
   const wishlist = useSelector((state) => state.wishlist.list.data);
@@ -67,7 +69,17 @@ const Wishlist = () => {
   const _renderItem = ({item, index}) => {
     const {name, special_price, price, image, currency_code} = item;
     return (
-      <Block row white padding={[t1, t1, 0, t1]} margin={[t1, 0]} flex={false}>
+      <CustomButton
+        onPress={() =>
+          nav.navigate('Details', {
+            item: item,
+          })
+        }
+        row
+        white
+        padding={[t1, t1, 0, t1]}
+        margin={[t1, 0]}
+        flex={false}>
         <Block row padding={[t1, 0]}>
           <ImageComponent
             isURL
@@ -79,18 +91,10 @@ const Wishlist = () => {
             <Text color="#000000" size={14}>
               {name}
             </Text>
-            <Text size={10} body margin={[t1, 0, 0, 0]} semibold>
-              {currency_code} {Number(special_price).toFixed(2)}
+            <Text secondary size={10} margin={[t1, 0, 0, 0]} bold>
+              {currency_code} {Number(price).toFixed(2)}
             </Text>
-            {special_price !== price && (
-              <LineAboveText
-                body
-                size={12}
-                color="grey"
-                margin={[hp(0.2), 0, 0, 0]}>
-                {currency_code} {Number(price).toFixed(2)}
-              </LineAboveText>
-            )}
+
             <Block margin={[t1, 0]} flex={false}>
               <StarRating
                 disabled={false}
@@ -135,7 +139,7 @@ const Wishlist = () => {
             </Block>
           </Block>
         </Block>
-      </Block>
+      </CustomButton>
     );
   };
   const _renderEmpty = () => {
@@ -177,7 +181,10 @@ const Wishlist = () => {
             ListEmptyComponent={_renderEmpty}
             renderItem={_renderItem}
           />
-          <Button style={{marginTop: t2}} color="secondary">
+          <Button
+            onPress={() => nav.navigate('Dashboard')}
+            style={{marginTop: t2}}
+            color="secondary">
             Start Shopping
           </Button>
         </Block>

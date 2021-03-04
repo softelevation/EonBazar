@@ -9,6 +9,7 @@ import {
 import {put, call, all, takeLatest} from 'redux-saga/effects';
 import {Api, updateApi} from './api';
 import AsyncStorage from '@react-native-community/async-storage';
+import {Alert} from 'react-native';
 
 const getToken = async () => {
   const guest_token = await AsyncStorage.getItem('guest-token');
@@ -49,6 +50,7 @@ export function* updateRequest(action) {
     const response = yield call(updateApi, action.payload);
     if (response) {
       yield put(profileSuccess(response.data));
+      Alert.alert('Your Profile has been sucessfully updated');
     } else {
       yield put(profileError(response));
     }

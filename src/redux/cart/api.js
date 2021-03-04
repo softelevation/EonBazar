@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import {config} from '../../utils/config';
 
-export const CreateCartApi = async (data) => {
+export const CreateCartApi = async () => {
   const token = await AsyncStorage.getItem('token');
   const headers = {
     'Content-Type': 'application/json',
@@ -10,7 +10,7 @@ export const CreateCartApi = async (data) => {
   };
   return axios({
     method: 'post',
-    url: `${config.Api_Url}/V1/carts/mine`,
+    url: 'http://stage.eonbazar.com/rest/default/V1/carts/mine',
     headers,
   });
 };
@@ -72,10 +72,6 @@ export const deleteItemApi = async (data) => {
     headers,
   });
 };
-
-// sku: data.name,
-// qty: 20,
-// quote_id: '3930',
 
 //Guest Cart
 

@@ -69,14 +69,6 @@ const PaymentMethod = ({
     }).then((res) => setTerms(res.data));
   };
 
-  const proceedPayment = () => {
-    if (cards) {
-      nav.navigate('PlaceAnOrder');
-    } else {
-      nav.navigate('ThankYou');
-    }
-  };
-
   const onSubmit = () => {
     const data = {
       method: cards,
@@ -89,7 +81,7 @@ const PaymentMethod = ({
   console.log(terms, 'terms');
   return (
     <Block>
-      <Header />
+      <Header leftIcon={false} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text margin={[hp(2), 0, 0, 0]} semibold transform="uppercase" center>
           Payment Method

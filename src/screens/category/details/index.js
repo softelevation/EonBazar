@@ -1,5 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {
+  ActivityIndicator,
   Alert,
   FlatList,
   ScrollView,
@@ -27,7 +28,11 @@ import {light} from '../../../components/theme/colors';
 import {useNavigation} from '@react-navigation/native';
 import {strictValidObjectWithKeys} from '../../../utils/commonUtils';
 import {useDispatch, useSelector} from 'react-redux';
-import {addToCartRequest, addToGuestCartRequest} from '../../../redux/action';
+import {
+  addToCartRequest,
+  addToGuestCartRequest,
+  updateWishlistRequest,
+} from '../../../redux/action';
 import {config} from '../../../utils/config';
 import styled from 'styled-components/native';
 import {useEffect} from 'react';
@@ -52,6 +57,8 @@ const Details = ({
   const isLoad = useSelector((state) => state.cart.save.loading);
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
   const guestCartError = useSelector((v) => v.cart.guestsave.error);
+  const wishlistLoad = useSelector((state) => state.wishlist.update.loading);
+
   const scrollRef = useRef();
   const dispatch = useDispatch();
   const [scrollHeight, setScrollHeight] = useState({});
@@ -81,6 +88,25 @@ const Details = ({
       await dispatch(
         addToGuestCartRequest({token: guestCartToken, items: newData}),
       );
+    }
+  };
+
+  const addToWishlist = async () => {
+    const id = item.id;
+    if (strictValidObjectWithKeys(userProfile)) {
+      await dispatch(updateWishlistRequest(id));
+    } else {
+      Alert.alert('Error', 'Please login First');
+    }
+  };
+  console.log(Number(qty * item.price_info).toFixed(2));
+  const onBuyNow = () => {
+    if (strictValidObjectWithKeys(userProfile)) {
+      nav.navigate('Shipping', {
+        price: Number(qty * item.price_info).toFixed(2),
+      });
+    } else {
+      nav.navigate('Login');
     }
   };
 
@@ -316,17 +342,8 @@ const Details = ({
                   {item.name}
                 </Text>
                 <Text secondary size={12} semibold height={20}>
-                  {item.currency_code} {item.specialPrice}
+                  {item.currency_code} {Number(item.price_info)}
                 </Text>
-                {item.price_info !== item.specialPrice && (
-                  <LineAboveText
-                    body
-                    size={12}
-                    color="grey"
-                    margin={[hp(0.2), 0, 0, 0]}>
-                    {item.currency_code} {item.price_info}
-                  </LineAboveText>
-                )}
                 <Text transform="uppercase" size={12} height={20}>
                   be the first to review this product
                 </Text>
@@ -443,28 +460,32 @@ const Details = ({
             </Button>
             <Button
               style={{width: wp(80), alignSelf: 'center', borderRadius: 20}}
-              onPress={() => alert('working')}
+              onPress={() => onBuyNow()}
               color="secondary">
               Buy Now
             </Button>
             <Block margin={[t1, 0, 0, 0]} center middle row>
-              <CustomButton
-                onPress={() => nav.navigate('Wishlist')}
-                flex={false}
-                borderWidth={2}
-                center
-                middle
-                borderRadius={20}
-                margin={[0, w2]}
-                borderColor="#78A942"
-                padding={[hp(0.7)]}>
-                <ImageComponent
-                  name="wishlist_icon"
-                  height="20"
-                  width="23"
-                  color="#78A942"
-                />
-              </CustomButton>
+              {wishlistLoad ? (
+                <ActivityIndicator color={light.secondary} size="large" />
+              ) : (
+                <CustomButton
+                  onPress={() => addToWishlist()}
+                  flex={false}
+                  borderWidth={2}
+                  center
+                  middle
+                  borderRadius={20}
+                  margin={[0, w2]}
+                  borderColor="#78A942"
+                  padding={[hp(0.7)]}>
+                  <ImageComponent
+                    name="wishlist_icon"
+                    height="20"
+                    width="23"
+                    color="#78A942"
+                  />
+                </CustomButton>
+              )}
               <Block
                 flex={false}
                 borderWidth={2}

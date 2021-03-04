@@ -11,9 +11,12 @@ export function* paymentRequest(action) {
     const response = yield call(Api, action.payload);
     if (response) {
       yield put(paymentSuccess(response.data));
-      yield put(createCartRequest());
-
-      RootNavigation.navigate('YourOrder');
+      if (action.payload.method === 'sslcommerz') {
+        RootNavigation.navigate('Payment');
+      } else {
+        RootNavigation.navigate('YourOrder');
+        yield put(createCartRequest());
+      }
     } else {
       yield put(paymentError(response));
     }

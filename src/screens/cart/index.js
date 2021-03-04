@@ -18,7 +18,7 @@ import {
   Input,
   Button,
 } from '../../components';
-import {t1, t2, t4, w3, w4} from '../../components/theme/fontsize';
+import {t1, t2, t4, w2, w3, w4} from '../../components/theme/fontsize';
 import EmptyFile from '../../components/emptyFile';
 import {
   heightPercentageToDP,
@@ -105,10 +105,10 @@ const Cart = () => {
     setList(newData);
   }, [cart_list, errorCartLoad]);
 
-  const changeQty = (text, id, index, price, qtyText, qty) => {
+  const changeQty = (text, id, index, price, qtyText, qty, item) => {
     if (Number(qtyText) === 0 || Number(qtyText) === '') {
       const old = cartlist[index];
-      const updated = {...old, qty: text, qtyText: qty, price_copy: price};
+      const updated = {...old, qtyText: qty, price_copy: price};
       const clone = [...cartlist];
       clone[index] = updated;
       setList(clone);
@@ -120,14 +120,19 @@ const Cart = () => {
       const clone = [...cartlist];
       clone[index] = updated;
       setList(clone);
+      const data = {
+        sku: item.sku,
+        qty: text,
+        quote_id: item.quote_id,
+      };
+      if (strictValidObjectWithKeys(userData)) {
+        dispatch(updateCartRequest({data, id}));
+      } else {
+        dispatch(
+          updateGuestCartRequest({token: guestCartToken, id: id, items: data}),
+        );
+      }
     }
-  };
-  const ChangeQtyText = (text, index) => {
-    const old = cartlist[index];
-    const updated = {...old, qtyText: text};
-    const clone = [...cartlist];
-    clone[index] = updated;
-    setList(clone);
   };
 
   const updateProducts = (item, index) => {
@@ -149,6 +154,14 @@ const Cart = () => {
         updateGuestCartRequest({token: guestCartToken, id: id, items: data}),
       );
     }
+  };
+
+  const ChangeQtyText = (text, index) => {
+    const old = cartlist[index];
+    const updated = {...old, qtyText: text};
+    const clone = [...cartlist];
+    clone[index] = updated;
+    setList(clone);
   };
 
   const deleteProduct = (id, index) => {
@@ -181,17 +194,13 @@ const Cart = () => {
         price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
       });
     } else {
-      Alert.alert(
-        'Error',
-        'Please first login with your registered email address',
-      );
       navigation.navigate('Login');
     }
   };
 
   const _renderItem = ({item, index}) => {
     return (
-      <Block row flex={false} padding={[t4, w4]}>
+      <Block row flex={false} padding={[t2, w2]}>
         <Block flex={false}>
           {item.isDelete ? (
             <ActivityIndicator color={light.secondary} size="small" />
@@ -270,6 +279,7 @@ const Cart = () => {
                   item.price,
                   item.qtyText,
                   item.qty,
+                  item,
                 )
               }
               maxLength={3}

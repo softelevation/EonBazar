@@ -12,6 +12,7 @@ import {Api, authCheckApi, guestCheckApi} from './api';
 import AsyncStorage from '@react-native-community/async-storage';
 import {profileSuccess} from '../profile/action';
 import {authCheckSuccess, guestCheckSuccess} from './action';
+import {Alert} from 'react-native';
 
 const SaveToken = async (token) => {
   return await AsyncStorage.setItem('token', token);
@@ -35,7 +36,8 @@ export function* loginRequest(action) {
       yield put(loginError(response));
     }
   } catch (err) {
-    yield put(loginError('Login Failed'));
+    Alert.alert(err.response.data.message);
+    yield put(loginError(''));
   }
 }
 
@@ -44,10 +46,8 @@ export function* authRequest(action) {
     const response = yield call(authCheckApi, action.payload);
     if (response) {
       console.log('verified user token');
-      yield put(loginSuccess(response.data));
-      yield put(profileRequest());
+      yield put(profileSuccess(response.data));
       yield put(createCartRequest());
-      // yield call(clearGuestToken);
       yield put(authCheckSuccess(response));
     } else {
       yield put(authCheckError(response));

@@ -104,14 +104,7 @@ const Category = (props) => {
         ) : (
           <Cards data={strictValidArray(filteredData) && filteredData} />
         )}
-        <Block margin={[t1, w2, 0, w2]} secondary flex={false} padding={[t1]}>
-          <Text size={12} white>
-            My Wishlist
-          </Text>
-        </Block>
-        <Block margin={[0, w2]} primary flex={false} padding={[t1]}>
-          <Text size={12}>you have no items in your wishlist</Text>
-        </Block>
+
         <Footer images={false} />
       </ScrollView>
     </Block>

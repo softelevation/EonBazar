@@ -44,7 +44,7 @@ const Profile = () => {
           <Formik
             enableReinitialize
             initialValues={{
-              name: `${user.firstname}${user.lastname}`,
+              name: `${user.firstname} ${user.lastname}`,
               mobile: mobile.value || emailMobile,
               email: `${user.email}`,
             }}
@@ -108,7 +108,7 @@ const Profile = () => {
                 </Block>
                 <Block padding={[0, wp(8)]}>
                   {/* <Button color="secondary">Address Book</Button> */}
-                  <Button color="primary">New Address</Button>
+                  {/* <Button color="primary">New Address</Button> */}
                   <FlatList
                     data={user.addresses}
                     renderItem={({item}) => {
