@@ -42,7 +42,7 @@ const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 function Routes() {
-  const user = useSelector((state) => state.user.profile.user);
+  // const user = useSelector((state) => state.user.profile.user);
 
   function PaymentModal() {
     return (
@@ -72,7 +72,7 @@ function Routes() {
         <RootStack.Screen name="Help" component={Help} />
         <RootStack.Screen name="AdvanceSearch" component={AdvanceSearch} />
         <RootStack.Screen name="Wishlist" component={Wishlist} />
-        <RootStack.Screen name="Profile" component={Profile} />
+        <RootStack.Screen name="Profile" component={ProfileStack} />
         <RootStack.Screen name="YourOrder" component={YourOrder} />
         <RootStack.Screen name="Shipping" component={Shipping} />
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
@@ -216,7 +216,12 @@ function Routes() {
           name="Cart"
           component={CartStack}
         />
-        {strictValidObjectWithKeys(user) ? (
+        <Tab.Screen
+          options={{unmountOnBlur: true}}
+          name="Login"
+          component={LoginStack}
+        />
+        {/* {strictValidObjectWithKeys(user) ? (
           <Tab.Screen
             options={{unmountOnBlur: true}}
             name="Profile"
@@ -228,7 +233,7 @@ function Routes() {
             name="Login"
             component={LoginStack}
           />
-        )}
+        )} */}
       </Tab.Navigator>
     );
   };
@@ -239,6 +244,12 @@ function Routes() {
         drawerStyle={{width: widthPercentageToDP(70)}}
         drawerContent={(props) => <DrawerScreen {...props} />}>
         <Drawer.Screen name="Controls" component={TabNav} />
+        <Drawer.Screen name="Faq" component={Faq} />
+        <Drawer.Screen name="Terms" component={Terms} />
+        <Drawer.Screen name="Privacy" component={Privacy} />
+        <Drawer.Screen name="Help" component={Help} />
+        <Drawer.Screen name="AdvanceSearch" component={AdvanceSearch} />
+        <Drawer.Screen name="YourOrder" component={YourOrder} />
       </Drawer.Navigator>
     );
   }

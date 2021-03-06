@@ -80,6 +80,7 @@ export function* createCart(action) {
   try {
     const response = yield call(CreateCartApi, action.payload);
     console.log(response, 'response');
+    console.log(response, 'response');
     if (response) {
       yield put(createCartSuccess(response.data));
     } else {

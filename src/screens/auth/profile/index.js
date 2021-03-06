@@ -8,7 +8,7 @@ import Header from '../../../common/header';
 import {Block, Button, CustomButton, Input, Text} from '../../../components';
 import {t3, w1} from '../../../components/theme/fontsize';
 import Footer from '../../../common/footer';
-import {useNavigation} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import ActivityLoader from '../../../components/activityLoader';
 import {
@@ -23,6 +23,18 @@ const Profile = () => {
   const isLoad = useSelector((state) => state.user.profile.loading);
   const [editable, setEditable] = useState(false);
   const [user, setUser] = useState({});
+
+  useEffect(() => {
+    if (!strictValidObjectWithKeys(userData)) {
+      nav.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [{name: 'Login'}],
+        }),
+      );
+    }
+  }, [userData]);
+
   useEffect(() => {
     setUser(userData);
   }, [userData]);

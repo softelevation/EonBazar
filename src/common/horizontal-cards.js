@@ -196,14 +196,14 @@ const HorizontalCards = ({data}) => {
             <TouchableOpacity
               disabled={item.qty === 1}
               onPress={() => updateQty(item.qty - 1, index)}>
-              <Icon name="ios-remove-outline" size={15} />
+              <Icon name="ios-remove-outline" size={20} />
             </TouchableOpacity>
 
             <Text size={12}>{item.qty}</Text>
             <Icon
               onPress={() => updateQty(item.qty + 1, index)}
               name="add"
-              size={15}
+              size={20}
             />
           </Block>
           <CustomButton

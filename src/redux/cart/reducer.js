@@ -75,6 +75,7 @@ export function cartId(state = initialCartState, action) {
       return {
         ...state,
         loading: true,
+        id: '',
       };
     case ActionConstants.CREATE_CART_SUCCESS:
       return {

@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {profileSuccess} from '../profile/action';
 import {authCheckSuccess, guestCheckSuccess} from './action';
 import {Alert} from 'react-native';
-
+import * as Navigation from '../../../routes/NavigationService';
 const SaveToken = async (token) => {
   return await AsyncStorage.setItem('token', token);
 };
@@ -27,11 +27,14 @@ const clearAuthToken = async () => {
 export function* loginRequest(action) {
   try {
     const response = yield call(Api, action.payload);
+    console.log(response, 'Auth');
     if (response) {
+      yield call(clearAuthToken);
       yield call(SaveToken, response.data);
-      yield put(loginSuccess(response.data));
-      yield put(profileRequest());
       yield put(createCartRequest());
+      yield put(profileRequest());
+      yield put(loginSuccess());
+      Navigation.navigate('Dashboard');
     } else {
       yield put(loginError(response));
     }

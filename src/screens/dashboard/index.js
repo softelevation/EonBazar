@@ -71,7 +71,7 @@ const Dashboard = () => {
     dispatch(topOfferRequest(topOffer));
     dispatch(brandOfferRequest(brandOffer));
     dispatch(bestOfferRequest(bestOffer));
-    dispatch(guestCartRequest(guestCartToken));
+    // dispatch(guestCartRequest(guestCartToken));
     dispatch(
       getAllProductsRequest({
         currentPage,
@@ -79,21 +79,21 @@ const Dashboard = () => {
       }),
     );
     dispatch(getCategoryListRequest());
-    const unsubscribe = navigation.addListener('focus', () => {
-      checkApi();
-      dispatch(bannerRequest());
-      dispatch(topOfferRequest(topOffer));
-      dispatch(brandOfferRequest(brandOffer));
-      dispatch(bestOfferRequest(bestOffer));
-      dispatch(
-        getAllProductsRequest({
-          currentPage,
-          pageSize,
-        }),
-      );
-    });
+    // const unsubscribe = navigation.addListener('focus', () => {
+    //   checkApi();
+    //   dispatch(bannerRequest());
+    //   dispatch(topOfferRequest(topOffer));
+    //   dispatch(brandOfferRequest(brandOffer));
+    //   dispatch(bestOfferRequest(bestOffer));
+    //   dispatch(
+    //     getAllProductsRequest({
+    //       currentPage,
+    //       pageSize,
+    //     }),
+    //   );
+    // });
 
-    return unsubscribe;
+    // return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

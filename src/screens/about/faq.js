@@ -6,7 +6,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {t2, w1, w3} from '../../components/theme/fontsize';
+import {t2, t4, w1, w3} from '../../components/theme/fontsize';
 const Faq = () => {
   const data = [
     {
@@ -68,6 +68,7 @@ const Faq = () => {
       <Header />
       <Block flex={false} margin={[t2, w3]} padding={[0, 0, hp(4), 0]}>
         <FlatList
+          contentContainerStyle={{paddingBottom: t4}}
           showsVerticalScrollIndicator={false}
           data={data}
           renderItem={_renderItem}

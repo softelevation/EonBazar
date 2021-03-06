@@ -392,11 +392,13 @@ const Details = ({
                   <TouchableOpacity
                     disabled={qty === 1}
                     onPress={() => setQty(qty - 1)}>
-                    <Icon name="ios-remove-outline" size={15} />
+                    <Icon name="ios-remove-outline" size={20} />
                   </TouchableOpacity>
 
                   <Text size={12}>{qty}</Text>
-                  <Icon onPress={() => setQty(qty + 1)} name="add" size={15} />
+                  <TouchableOpacity onPress={() => setQty(qty + 1)}>
+                    <Icon name="add" size={20} />
+                  </TouchableOpacity>
                 </Block>
               </Block>
               <Block

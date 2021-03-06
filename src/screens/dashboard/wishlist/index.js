@@ -42,6 +42,7 @@ const Wishlist = () => {
     const newData = [];
     wishlist &&
       wishlist.map((a) => {
+        console.log(a, 'A');
         const {name, special_price, price, thumbnail} = a && a.product;
         newData.push({
           qty: 1,
@@ -49,9 +50,11 @@ const Wishlist = () => {
           image: thumbnail,
           currency_code: currency || 'BDT',
           price: price,
+          price_info: price,
           special_price: special_price,
           isLoad: false,
           id: a.wishlist_item_id,
+          sku: a.product.sku,
         });
       });
     setData(newData);

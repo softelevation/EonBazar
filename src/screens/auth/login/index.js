@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Alert, ScrollView} from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -9,17 +9,33 @@ import {Block, Button, CustomButton, Input, Text} from '../../../components';
 import Search from '../../../components/search';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Footer from '../../../common/footer';
-import {useNavigation} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginRequest} from '../../../redux/action';
-import {strictValidString} from '../../../utils/commonUtils';
+import {
+  strictValidObjectWithKeys,
+  strictValidString,
+} from '../../../utils/commonUtils';
 const Login = () => {
   const nav = useNavigation();
   const dispatch = useDispatch();
   const isLoad = useSelector((state) => state.user.login.loading);
   const isError = useSelector((state) => state.user.login.error);
+  const userProfile = useSelector((state) => state.user.profile.user);
+
+  useEffect(() => {
+    if (strictValidObjectWithKeys(userProfile)) {
+      nav.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [{name: 'Profile'}],
+        }),
+      );
+    }
+  }, [userProfile]);
+
   const renderNavigations = () => {
     return (
       <Block padding={[hp(2), wp(7), hp(2), wp(7)]} flex={false}>
@@ -122,7 +138,7 @@ const Login = () => {
                   errorText={touched.mobile && errors.mobile}
                 />
                 <Text color="#636363" caption>
-                  please add number without counry code.
+                  please add number without country code.
                 </Text>
                 <Input
                   label="Password"
