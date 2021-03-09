@@ -43,4 +43,5 @@ export const images = {
   back_icon: require('./icons/back.png'),
   refresh_icon: require('./icons/refresh.png'),
   empty_icon: require('./icons/empty.png'),
+  home_d_icon: require('./icons/home2.png'),
 };

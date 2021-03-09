@@ -163,7 +163,12 @@ const Cards = ({data}) => {
           center
           flex={false}>
           <ImageComponent name={`${config.Image_Url}${item.image}`} isURL />
-          <Text size={12} center margin={[hp(2), 0, 0, 0]} body>
+          <Text
+            numberOfLines={3}
+            size={12}
+            center
+            margin={[hp(2), 0, 0, 0]}
+            body>
             {item.name}
           </Text>
           <Text size={12} body margin={[hp(1), 0, 0, 0]} semibold>

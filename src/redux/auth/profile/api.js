@@ -14,6 +14,7 @@ export const Api = async (data) => {
     headers,
   });
 };
+
 export const updateApi = async (data) => {
   const token = await AsyncStorage.getItem('token');
   const headers = {

@@ -71,7 +71,7 @@ const Dashboard = () => {
     dispatch(topOfferRequest(topOffer));
     dispatch(brandOfferRequest(brandOffer));
     dispatch(bestOfferRequest(bestOffer));
-    // dispatch(guestCartRequest(guestCartToken));
+    dispatch(guestCartRequest(guestCartToken));
     dispatch(
       getAllProductsRequest({
         currentPage,

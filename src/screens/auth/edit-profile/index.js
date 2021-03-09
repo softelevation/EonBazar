@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Header from '../../../common/header';
 import {Block, Button, Input, Text} from '../../../components';
@@ -9,18 +9,28 @@ import {useDispatch, useSelector} from 'react-redux';
 import {strictValidObjectWithKeys} from '../../../utils/commonUtils';
 import Checkbox from '../../../components/checkbox';
 import {images} from '../../../assets';
-import {heightPercentageToDP} from 'react-native-responsive-screen';
-import {updateProfileRequest} from '../../../redux/action';
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen';
+import {generateOtpRequest, updateProfileRequest} from '../../../redux/action';
+import {eventType} from '../../../utils/static-data';
+import {config} from '../../../utils/config';
 const EditProfile = () => {
   const userData = useSelector((state) => state.user.profile.user);
+  const isOtpLoad = useSelector((state) => state.user.otp.loading);
+  const [generate, setGenerate] = useState(false);
+  const formikRef = useRef();
   const isLoad = useSelector((state) => state.user.profile.loading);
+  const [resend, setResend] = useState(0);
+
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
   useEffect(() => {
     setUser(userData);
   }, [userData]);
 
-  const mobile =
+  const mobileNumber =
     strictValidObjectWithKeys(user) &&
     user.custom_attributes.find((v) => v.attribute_code === 'customer_mobile');
   const emailMobile =
@@ -30,7 +40,7 @@ const EditProfile = () => {
     const data = {
       customer: {
         id: userData.id,
-        email: values.email,
+        email: `${values.mobile}${config.domain_name}`,
         firstname: values.firstname,
         lastname: values.lastname,
         middlename: '',
@@ -47,23 +57,51 @@ const EditProfile = () => {
     console.log(values, data);
   };
 
+  const generateOtp = () => {
+    if (formikRef.current) {
+      const {mobile} = formikRef.current.values;
+      const data = {
+        resend,
+        mobile,
+        eventType: eventType.customer_account_edit_otp,
+      };
+      dispatch(generateOtpRequest(data));
+      setGenerate(true);
+    }
+  };
+  const resendOtp = () => {
+    if (formikRef.current) {
+      const {mobile} = formikRef.current.values;
+      const data = {
+        resend: resend + 1,
+        mobile,
+        eventType: eventType.customer_signup_otp,
+      };
+      setResend(resend + 1);
+      dispatch(generateOtpRequest(data));
+      setGenerate(true);
+    }
+  };
+
   return (
     <Block white>
       <Header leftIcon={false} />
       <KeyboardAwareScrollView>
         <Block white padding={[t3]}>
           <Formik
+            innerRef={formikRef}
             enableReinitialize
             initialValues={{
               firstname: user.firstname,
               lastname: user.lastname,
-              mobile: mobile.value || emailMobile,
+              mobile: mobileNumber.value || emailMobile,
               email: user.email,
               currentpass: '',
               password: '',
               cofirmpassword: '',
               emailCheck: false,
               passwordCheck: false,
+              otp: '',
             }}
             onSubmit={submitValues}
             validationSchema={yup.object().shape({
@@ -110,7 +148,7 @@ const EditProfile = () => {
                   error={touched.lastname && errors.lastname}
                   errorText={touched.lastname && errors.lastname}
                 />
-                <Checkbox
+                {/* <Checkbox
                   checked={values.emailCheck}
                   checkboxStyle={{height: 20, width: 20}}
                   checkedImage={images.checkbox_icon}
@@ -120,7 +158,7 @@ const EditProfile = () => {
                     setFieldValue('emailCheck', !values.emailCheck)
                   }
                   containerStyle={{marginTop: heightPercentageToDP(1)}}
-                />
+                /> */}
                 <Checkbox
                   checked={values.passwordCheck}
                   checkboxStyle={{height: 20, width: 20}}
@@ -132,7 +170,7 @@ const EditProfile = () => {
                   }
                   containerStyle={{marginVertical: heightPercentageToDP(1)}}
                 />
-                {values.emailCheck && (
+                {/* {values.emailCheck && (
                   <Input
                     label="Email"
                     value={values.email}
@@ -141,7 +179,7 @@ const EditProfile = () => {
                     error={touched.email && errors.email}
                     errorText={touched.email && errors.email}
                   />
-                )}
+                )} */}
                 {values.passwordCheck && (
                   <>
                     <Input
@@ -178,6 +216,34 @@ const EditProfile = () => {
                   errorText={touched.mobile && errors.mobile}
                 />
                 <Text size={12}>Please add number without country code.</Text>
+                <Button
+                  isLoading={isOtpLoad}
+                  disabled={generate}
+                  onPress={() => generateOtp()}
+                  style={{width: widthPercentageToDP(30)}}
+                  color="secondary">
+                  GENERATE OTP
+                </Button>
+                {generate && (
+                  <>
+                    <Input
+                      label="Verify Otp"
+                      keyboardType="number-pad"
+                      value={values.otp}
+                      onChangeText={handleChange('otp')}
+                      onBlur={() => setFieldTouched('otp')}
+                      error={touched.otp && errors.otp}
+                      errorText={touched.otp && errors.otp}
+                      maxLength={4}
+                    />
+                    <Button
+                      onPress={() => resendOtp()}
+                      style={{width: widthPercentageToDP(30)}}
+                      color="secondary">
+                      RESEND OTP
+                    </Button>
+                  </>
+                )}
                 <Button
                   isLoading={isLoad}
                   disabled={!dirty}

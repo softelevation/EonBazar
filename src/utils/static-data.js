@@ -30,6 +30,11 @@ export const footerContent = [
 ];
 export const DrawerData = [
   {
+    name: 'Home',
+    icon: 'home_d_icon',
+    nav: 'Dashboard',
+  },
+  {
     name: 'Your Profile',
     icon: 'your_profile_icon',
     nav: 'Profile',
