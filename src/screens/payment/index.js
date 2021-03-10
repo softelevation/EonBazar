@@ -172,9 +172,10 @@ const PaymentMethod = ({
           <CustomButton
             row
             center
+            margin={[hp(1), 0, 0]}
             onPress={() => setdiscount(!discount)}
             flex={false}>
-            <Text margin={[0, wp(1), 0, 0]} grey size={12}>
+            <Text link margin={[0, wp(1), 0, 0]} grey size={12}>
               Apply Discount Code
             </Text>
             <ImageComponent

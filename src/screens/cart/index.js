@@ -9,6 +9,7 @@ import {
   RefreshControl,
   ScrollView,
   TextInput,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Text,
@@ -26,6 +27,8 @@ import {
 } from 'react-native-responsive-screen';
 import styled from 'styled-components';
 import Icon from 'react-native-vector-icons/Entypo';
+import Icons from 'react-native-vector-icons/Ionicons';
+
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -105,34 +108,39 @@ const Cart = () => {
     setList(newData);
   }, [cart_list, errorCartLoad]);
 
-  const changeQty = (text, id, index, price, qtyText, qty, item) => {
-    if (Number(qtyText) === 0 || Number(qtyText) === '') {
-      const old = cartlist[index];
-      const updated = {...old, qtyText: qty, price_copy: price};
-      const clone = [...cartlist];
-      clone[index] = updated;
-      setList(clone);
-      Alert.alert('Please Enter Valid Quanity');
-      return;
-    } else {
-      const old = cartlist[index];
-      const updated = {...old, qty: text, price_copy: price * text};
-      const clone = [...cartlist];
-      clone[index] = updated;
-      setList(clone);
-      const data = {
-        sku: item.sku,
-        qty: text,
-        quote_id: item.quote_id,
-      };
-      if (strictValidObjectWithKeys(userData)) {
-        dispatch(updateCartRequest({data, id}));
-      } else {
-        dispatch(
-          updateGuestCartRequest({token: guestCartToken, id: id, items: data}),
-        );
-      }
-    }
+  const changeQty = (qty, index, item) => {
+    // if (Number(qtyText) === 0 || Number(qtyText) === '') {
+    //   const old = cartlist[index];
+    //   const updated = {...old, qtyText: qty, price_copy: price};
+    //   const clone = [...cartlist];
+    //   clone[index] = updated;
+    //   setList(clone);
+    //   Alert.alert('Please Enter Valid Quanity');
+    //   return;
+    // }
+    //else {
+    // setrefreshing(true);
+
+    console.log(item);
+    const id = item.item_id;
+    const old = cartlist[index];
+    const updated = {...old, qty: qty, price_copy: item.price * qty};
+    const clone = [...cartlist];
+    clone[index] = updated;
+    setList(clone);
+    const data = {
+      sku: item.sku,
+      qty: qty,
+      quote_id: item.quote_id,
+    };
+    // if (strictValidObjectWithKeys(userData)) {
+    //   dispatch(updateCartRequest({data, id}));
+    // } else {
+    //   dispatch(
+    //     updateGuestCartRequest({token: guestCartToken, id: id, items: data}),
+    //   );
+    // }
+    // }
   };
 
   const updateProducts = (item, index) => {
@@ -264,7 +272,7 @@ const Cart = () => {
           <Text bold secondary size={14}>
             {currency} {item.price_copy.toFixed(2)}
           </Text>
-          <Block row flex={false}>
+          {/* <Block row flex={false}>
             <Text margin={[t1, 0]} size={14}>
               Qty:
             </Text>
@@ -285,6 +293,30 @@ const Cart = () => {
               maxLength={3}
               onChangeText={(a) => ChangeQtyText(a, index)}
               value={`${item.qtyText}`}
+            />
+          </Block> */}
+          <Block
+            margin={[heightPercentageToDP(1.5), 0, 0]}
+            style={{width: widthPercentageToDP(18)}}
+            center
+            row
+            space={'between'}
+            borderWidth={1}
+            borderRadius={10}
+            padding={[heightPercentageToDP(0.5)]}
+            borderColorDeafult
+            flex={false}>
+            <TouchableOpacity
+              disabled={item.qty === 1}
+              onPress={() => changeQty(item.qty - 1, index, item)}>
+              <Icons name="ios-remove-outline" size={20} />
+            </TouchableOpacity>
+
+            <Text size={12}>{item.qty}</Text>
+            <Icons
+              onPress={() => changeQty(item.qty + 1, index, item)}
+              name="add"
+              size={20}
             />
           </Block>
         </Block>

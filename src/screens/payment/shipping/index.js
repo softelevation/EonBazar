@@ -176,8 +176,8 @@ const Shipping = ({
       <Formik
         enableReinitialize
         initialValues={{
-          firstname: '',
-          lastname: '',
+          firstname: userData.firstname,
+          lastname: userData.lastname,
           mobile: '',
           company: '',
           streetAddress: '',

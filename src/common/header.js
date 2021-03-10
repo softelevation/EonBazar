@@ -1,11 +1,11 @@
 import React from 'react';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {Block, ImageComponent} from '../components';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { Block, ImageComponent } from '../components';
 import PropTypes from 'prop-types';
-import {DrawerActions, useNavigation} from '@react-navigation/native';
-import {TouchableOpacity} from 'react-native';
-import {w3} from '../components/theme/fontsize';
-const Header = ({leftIcon, Logo, rightIcon}) => {
+import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
+import { w3 } from '../components/theme/fontsize';
+const Header = ({ leftIcon, Logo, rightIcon }) => {
   const nav = useNavigation();
   return (
     <Block
@@ -26,7 +26,10 @@ const Header = ({leftIcon, Logo, rightIcon}) => {
         </TouchableOpacity>
       )}
 
-      <ImageComponent name="logo_white_icon" height={30} width={120} />
+      <TouchableOpacity activeOpacity={1} onPress={() => nav.navigate('Dashboard')}>
+        <ImageComponent name="logo_white_icon" height={30} width={120} />
+      </TouchableOpacity>
+
       <TouchableOpacity onPress={() => nav.navigate('Cart')}>
         <ImageComponent name="cart_icon" height={25} width={25} color="#fff" />
       </TouchableOpacity>

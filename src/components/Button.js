@@ -92,7 +92,7 @@ const Button = ({
     <TouchableOpacity
       style={[buttonStyles, disabled && styles.disabledButton]}
       disabled={!!disabled}
-      activeOpacity={disabled ? opacity || 0.8 : 0.2}
+      activeOpacity={disabled ? opacity || 0.4 : 0.2}
       {...rest}>
       {isLoading ? (
         <ActivityIndicator

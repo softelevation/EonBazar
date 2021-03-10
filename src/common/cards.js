@@ -27,7 +27,7 @@ import {
 } from '../redux/action';
 import {config} from '../utils/config';
 import {light} from '../components/theme/colors';
-const Cards = ({data}) => {
+const Cards = ({data, maxHeight}) => {
   const nav = useNavigation();
   const [products, setData] = useState([]);
   const quote_id = useSelector((state) => state.cart.cartId.id);
@@ -164,7 +164,7 @@ const Cards = ({data}) => {
           flex={false}>
           <ImageComponent name={`${config.Image_Url}${item.image}`} isURL />
           <Text
-            numberOfLines={3}
+            numberOfLines={1}
             size={12}
             center
             margin={[hp(2), 0, 0, 0]}
@@ -238,6 +238,7 @@ const Cards = ({data}) => {
       renderItem={renderItem}
       onEndReachedThreshold={0}
       ListEmptyComponent={_renderEmpty}
+      maxHeight={maxHeight}
     />
   );
 };
@@ -249,5 +250,6 @@ const flatlistContentStyle = {
   flexWrap: 'wrap',
   flexDirection: 'row',
   paddingTop: hp(2),
+  flexGrow: 1,
 };
 export default Cards;

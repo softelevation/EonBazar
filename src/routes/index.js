@@ -127,7 +127,7 @@ function Routes() {
         <RootStack.Screen name="Help" component={Help} />
         <RootStack.Screen name="AdvanceSearch" component={AdvanceSearch} />
         <RootStack.Screen name="Wishlist" component={Wishlist} />
-        <RootStack.Screen name="Profile" component={Profile} />
+        <RootStack.Screen name="Profile" component={ProfileStack} />
         <RootStack.Screen name="YourOrder" component={YourOrder} />
         <RootStack.Screen name="Shipping" component={Shipping} />
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
@@ -155,7 +155,7 @@ function Routes() {
         <RootStack.Screen name="AdvanceSearch" component={AdvanceSearch} />
         <RootStack.Screen name="Wishlist" component={Wishlist} />
         <RootStack.Screen name="ThankYou" component={ThankYou} />
-        <RootStack.Screen name="Profile" component={Profile} />
+        <RootStack.Screen name="Profile" component={ProfileStack} />
         <RootStack.Screen name="PaymentMethod" component={PaymentMethod} />
         <RootStack.Screen name="YourOrder" component={YourOrder} />
         <RootStack.Screen name="Shipping" component={Shipping} />
@@ -184,7 +184,7 @@ function Routes() {
         <RootStack.Screen name="Help" component={Help} />
         <RootStack.Screen name="AdvanceSearch" component={AdvanceSearch} />
         <RootStack.Screen name="Wishlist" component={Wishlist} />
-        <RootStack.Screen name="Profile" component={Profile} />
+        <RootStack.Screen name="Profile" component={ProfileStack} />
         <RootStack.Screen name="YourOrder" component={YourOrder} />
         <RootStack.Screen name="Shipping" component={Shipping} />
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />

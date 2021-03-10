@@ -56,6 +56,8 @@ const HeaderMenu = ({color, onPress}) => {
       <FlatList
         contentContainerStyle={flatlistStyle}
         data={category}
+        horizontal
+        showsHorizontalScrollIndicator={false}
         renderItem={_renderItem}
       />
     </Block>

@@ -188,7 +188,7 @@ const Wishlist = () => {
             onPress={() => nav.navigate('Dashboard')}
             style={{marginTop: t2}}
             color="secondary">
-            Start Shopping
+            Continue Shopping
           </Button>
         </Block>
         <Footer images={false} />
