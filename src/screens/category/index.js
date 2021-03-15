@@ -221,7 +221,7 @@ const Category = (props) => {
           flex={false}>
           <ImageComponent name={`${config.Image_Url}${item.image}`} isURL />
           <Text
-            numberOfLines={3}
+            numberOfLines={2}
             size={12}
             center
             margin={[hp(2), 0, 0, 0]}
@@ -313,7 +313,7 @@ const Category = (props) => {
           <Text semibold size={15}>
             {name || ''}
           </Text>
-          <ShopByButton color="secondary">Shop by</ShopByButton>
+          <ShopByButton style={{marginTop :5}} color="secondary">Shop by</ShopByButton>
         </Block>
         <Block
           margin={[t2, w2, 0, w2]}

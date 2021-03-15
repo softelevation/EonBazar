@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -20,25 +20,26 @@ import {
   Input,
   Text,
 } from '../../../components';
-import {t1, t2, w1, w2, w3} from '../../../components/theme/fontsize';
+import { t1, t2, w1, w2, w3 } from '../../../components/theme/fontsize';
 import Icon from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-rating';
 import Footer from '../../../common/footer';
-import {light} from '../../../components/theme/colors';
-import {useNavigation} from '@react-navigation/native';
-import {strictValidObjectWithKeys} from '../../../utils/commonUtils';
-import {useDispatch, useSelector} from 'react-redux';
+import { light } from '../../../components/theme/colors';
+import { useNavigation } from '@react-navigation/native';
+import { strictValidObjectWithKeys } from '../../../utils/commonUtils';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   addToCartRequest,
   addToGuestCartRequest,
   updateWishlistRequest,
 } from '../../../redux/action';
-import {config} from '../../../utils/config';
+import { config } from '../../../utils/config';
 import styled from 'styled-components/native';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 import Search from '../../../components/search';
 import Swiper from 'react-native-swiper';
-import {WebView} from 'react-native-webview';
+import { WebView } from 'react-native-webview';
+
 
 const initialState = {
   reviews: true,
@@ -46,11 +47,11 @@ const initialState = {
 };
 const Details = ({
   route: {
-    params: {item},
+    params: { item },
   },
 }) => {
   const [action, setAction] = useState(initialState);
-  const {reviews, overview} = action;
+  const { reviews, overview } = action;
   const [type, setType] = useState('overview');
   const [qty, setQty] = useState(1);
   const nav = useNavigation();
@@ -89,7 +90,7 @@ const Details = ({
         quote_id: guestCartToken,
       };
       await dispatch(
-        addToGuestCartRequest({token: guestCartToken, items: newData}),
+        addToGuestCartRequest({ token: guestCartToken, items: newData }),
       );
     }
   };
@@ -124,19 +125,19 @@ const Details = ({
         </Block>
 
         <Block row flex={false} center>
-          <Text style={{height: 12, width: 12}} />
+          <Text style={{ height: 12, width: 12 }} />
           <Text size={12} margin={[0, w2]} height={20} regular>
             Accept money online
           </Text>
         </Block>
         <Block row flex={false} center>
-          <Text style={{height: 12, width: 12}} />
+          <Text style={{ height: 12, width: 12 }} />
           <Text size={12} margin={[0, w2]} height={20} regular>
             Money back guarantee
           </Text>
         </Block>
         <Block row flex={false} center>
-          <Text style={{height: 12, width: 12}} />
+          <Text style={{ height: 12, width: 12 }} />
           <Text size={12} margin={[0, w2]} height={20} regular>
             Ships items quickly
           </Text>
@@ -154,7 +155,7 @@ const Details = ({
         white
         padding={[t2, w3]}>
         <CustomButton
-          onPress={() => setAction({reviews: !reviews})}
+          onPress={() => setAction({ reviews: !reviews })}
           row
           flex={false}
           space="between">
@@ -184,7 +185,7 @@ const Details = ({
                 maxStars={5}
                 fullStarColor={'#78A942'}
                 rating={0}
-                containerStyle={{width: wp(20), marginBottom: hp(0.5)}}
+                containerStyle={{ width: wp(20), marginBottom: hp(0.5) }}
               />
               <Text regular margin={[0, 0, 0, w3]} size={12}>
                 0 Reviews
@@ -192,7 +193,7 @@ const Details = ({
             </Block>
             <FlatList
               data={['5', '4', '3', '2', '1']}
-              renderItem={({item}) => {
+              renderItem={({ item }) => {
                 return (
                   <Block margin={[t1, 0, 0, 0]} row flex={false} center>
                     <Text height={20} margin={[0, w3, 0, 0]} regular size={12}>
@@ -203,7 +204,7 @@ const Details = ({
                       flex={false}
                       borderWidth={1}
                       padding={[hp(0.8)]}
-                      style={{width: wp(40)}}
+                      style={{ width: wp(40) }}
                     />
                   </Block>
                 );
@@ -232,10 +233,10 @@ const Details = ({
                 </Text>
                 <FlatList
                   data={['Quality', 'Value', 'Price']}
-                  renderItem={({item}) => {
+                  renderItem={({ item }) => {
                     return (
                       <Block margin={[t1, 0, 0, 0]} row flex={false} center>
-                        <Block flex={false} style={{width: wp(20)}}>
+                        <Block flex={false} style={{ width: wp(20) }}>
                           <Text height={20} regular size={12}>
                             {item}
                           </Text>
@@ -333,36 +334,38 @@ const Details = ({
                 setScrollHeight(scrollHeight);
               }}>
               <Block center flex={false}>
-                <Swiper
-                  style={{
-                    height: 280,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                  showsButtons={false}>
-                  {item.sliderImages.map((data) =>
-                    data.media_type == 'image' ? (
-                      <View>
-                        <ImageComponent
-                          isURL
-                          name={`${config.Image_Url}${data.file}`}
-                          height="250"
-                          width="250"
+                {item.sliderImages ?
+                  <Swiper style={{ height: 280, justifyContent: 'center', alignContent: 'center' }} showsButtons={false}>
+                    {item.sliderImages.map(data => (
+                      data.media_type == 'image' ?
+                        <View style={{ position :'absolute',left : 40 , width: 250, height: 250, justifyContent: 'center',  }}>
+                          <ImageComponent
+                            isURL
+                            name={`${config.Image_Url}${data.file}`}
+                            height="250"
+                            width="280"
+                          />
+                        </View>
+                        :
+                        <WebView
+                          style={{ marginTop: (Platform.OS == 'ios') ? 20 : 0, }}
+                          javaScriptEnabled={true}
+                          domStorageEnabled={true}
+                          source={{ uri: data.extension_attributes.video_content.video_url }}
                         />
-                      </View>
-                    ) : (
-                      <WebView
-                        style={{marginTop: Platform.OS == 'ios' ? 20 : 0}}
-                        javaScriptEnabled={true}
-                        domStorageEnabled={true}
-                        source={{
-                          uri:
-                            data.extension_attributes.video_content.video_url,
-                        }}
-                      />
-                    ),
-                  )}
-                </Swiper>
+                    ))}
+                  </Swiper>
+                  :
+                  <View>
+                    <ImageComponent
+                      isURL
+                      name={`${config.Image_Url}${item.image}`}
+                      height="250"
+                      width="250"
+                    />
+                  </View>
+                }
+
               </Block>
               <Block margin={[t2, 0]}>
                 <Text regular size={12} height={20}>
@@ -407,7 +410,7 @@ const Details = ({
                   QTY
                 </Text>
                 <Block
-                  style={{width: wp(18)}}
+                  style={{ width: wp(18) }}
                   center
                   row
                   space={'between'}
@@ -452,7 +455,7 @@ const Details = ({
               </Text>
               <Block row flex={false}>
                 <Text
-                  style={{width: wp(50)}}
+                  style={{ width: wp(50) }}
                   numberOfLines={1}
                   margin={[0, w1, 0, w1]}
                   size={12}
@@ -481,14 +484,14 @@ const Details = ({
           </Block>
           <Block flex={false} margin={[hp(4), 0]}>
             <Button
-              style={{width: wp(80), alignSelf: 'center', borderRadius: 20}}
+              style={{ width: wp(80), alignSelf: 'center', borderRadius: 20 }}
               isLoading={isLoad}
               onPress={() => addToCart()}
               color="primary">
               Add to cart
             </Button>
             <Button
-              style={{width: wp(80), alignSelf: 'center', borderRadius: 20}}
+              style={{ width: wp(80), alignSelf: 'center', borderRadius: 20 }}
               onPress={() => onBuyNow()}
               color="secondary">
               Buy Now
