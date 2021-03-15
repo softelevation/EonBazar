@@ -34,7 +34,16 @@ export function* loginRequest(action) {
       yield put(createCartRequest());
       yield put(profileRequest());
       yield put(loginSuccess());
-      Navigation.navigate('Dashboard');
+     if(global.isLoggedIn==true){
+      Navigation.navigate('Cart');
+      global.isLoggedIn=false
+
+      }
+      else{
+        Navigation.navigate('Dashboard');
+        global.isLoggedIn=false
+
+      }
     } else {
       yield put(loginError(response));
     }

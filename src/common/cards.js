@@ -233,6 +233,7 @@ const Cards = ({data, maxHeight}) => {
   };
   return (
     <FlatList
+      scrollEnabled={false}
       contentContainerStyle={flatlistContentStyle}
       data={products && products}
       renderItem={renderItem}

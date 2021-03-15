@@ -8,11 +8,15 @@ import styled from 'styled-components/native';
 import {Block} from '../components';
 import {config} from '../utils/config';
 const {width} = Dimensions.get('window');
+import {SliderBox} from 'react-native-image-slider-box';
 
 const Banner = ({data}) => {
+  console.log(data);
+
   const [indexValue, setIndex] = useState(0);
-  const [slider, setSlider] = useState(0);
+  const [slider, setSlider] = useState([]);
   const flatListref = useRef();
+
   const onScrollEnd = (e) => {
     const {contentOffset} = e.nativeEvent;
     const viewSize = e.nativeEvent.layoutMeasurement;
@@ -26,19 +30,28 @@ const Banner = ({data}) => {
   //   flatListref.current?.scrollToIndex({index, animated});
   // };
 
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     const maxSlider = 2;
-  //     let nextIndex = 0;
+  useEffect(() => {
+    var i;
+    var imgArray = [];
+    for (i = 0; i < data.length; i++) {
+      console.log(data[i]);
+      imgArray.push(config.banner_image_url + data[i].image);
+    }
+    setSlider(imgArray);
 
-  //     if (slider < maxSlider) {
-  //       nextIndex = slider + 1;
-  //     }
+    console.log(slider);
+    // setInterval(() => {
+    //   const maxSlider = 2;
+    //   let nextIndex = 0;
 
-  //     scrollToIndex(nextIndex, true);
-  //     setSlider(nextIndex);
-  //   }, 3000);
-  // }, []);
+    //   if (slider < maxSlider) {
+    //     nextIndex = slider + 1;
+    //   }
+
+    //   scrollToIndex(nextIndex, true);
+    //   setSlider(nextIndex);
+    // }, 3000);
+  }, []);
 
   // console.log(slider);
 
@@ -49,7 +62,43 @@ const Banner = ({data}) => {
       flex={false}
       margin={[hp(2), 0, hp(2), 0]}
       color="transparent">
-      <FlatList
+      <SliderBox
+        images={slider}
+        sliderBoxHeight={200}
+        loop={true}
+        autoplay={true}
+        resizeMethod={'resize'}
+        resizeMode={'cover'}
+        dotColor="#ffffff"
+        inactiveDotColor="#90A4AE"
+        // paginationBoxStyle={{
+        //   position: "absolute",
+        //   bottom: 0,
+        //   padding: 0,
+        //   alignItems: "center",
+        //   alignSelf: "center",
+        //   justifyContent: "center",
+        //   paddingVertical: 10
+        // }}
+        // dotStyle={{
+        //   width: 10,
+        //   height: 10,
+        //   borderRadius: 5,
+        //   marginHorizontal: 0,
+        //   padding: 0,
+        //   margin: 10,
+        //   backgroundColor: "rgba(128, 128, 128, 0.92)"
+
+        // }}
+
+        // ImageComponentStyle={{ borderRadius: 16, width: '96%' }}
+        // imageLoadingColor="#2196F3"
+        // onCurrentImagePressed={index =>
+        //     console.warn(`image ${index} pressed`)
+        // }
+        // parentWidth={wp(100)}
+      />
+      {/* <FlatList
         data={data}
         horizontal
         pagingEnabled
@@ -80,7 +129,7 @@ const Banner = ({data}) => {
             </BackgroundImage>
           );
         }}
-      />
+      />  */}
     </Block>
   );
 };

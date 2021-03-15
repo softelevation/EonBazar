@@ -18,7 +18,7 @@ import {
   strictValidObjectWithKeys,
   strictValidString,
 } from '../../../utils/commonUtils';
-const Login = () => {
+const Login = ({ route }) => {
   const nav = useNavigation();
   const dispatch = useDispatch();
   const isLoad = useSelector((state) => state.user.login.loading);
@@ -26,6 +26,8 @@ const Login = () => {
   const userProfile = useSelector((state) => state.user.profile.user);
 
   useEffect(() => {
+    // console.log(route.param.is)
+    global.isLo
     if (strictValidObjectWithKeys(userProfile)) {
       nav.dispatch(
         CommonActions.reset({

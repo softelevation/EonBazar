@@ -303,7 +303,7 @@ const Category = (props) => {
         scrollEnabled={scrollView}
         showsVerticalScrollIndicator={false}>
         <HeaderMenu onPress={sortingMenu} color={menu} />
-        <Banner />
+        {/* <Banner /> */}
         <Block
           center
           row
@@ -376,7 +376,7 @@ const Category = (props) => {
           </View>
         )}
 
-        <Footer images={false} />
+        {/* <Footer images={false} /> */}
       </ScrollView>
     </Block>
   );

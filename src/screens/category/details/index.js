@@ -37,6 +37,8 @@ import {config} from '../../../utils/config';
 import styled from 'styled-components/native';
 import {useEffect} from 'react';
 import Search from '../../../components/search';
+import Swiper from 'react-native-swiper';
+import {WebView} from 'react-native-webview';
 
 const initialState = {
   reviews: true,
@@ -60,6 +62,7 @@ const Details = ({
   const wishlistLoad = useSelector((state) => state.wishlist.update.loading);
 
   const scrollRef = useRef();
+  const videoRef = useRef();
   const dispatch = useDispatch();
   const [scrollHeight, setScrollHeight] = useState({});
   const [currentScrollHeight, setCurrentScrollHeight] = useState(18);
@@ -330,12 +333,36 @@ const Details = ({
                 setScrollHeight(scrollHeight);
               }}>
               <Block center flex={false}>
-                <ImageComponent
-                  isURL
-                  name={`${config.Image_Url}${item.image}`}
-                  height="250"
-                  width="250"
-                />
+                <Swiper
+                  style={{
+                    height: 280,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  showsButtons={false}>
+                  {item.sliderImages.map((data) =>
+                    data.media_type == 'image' ? (
+                      <View>
+                        <ImageComponent
+                          isURL
+                          name={`${config.Image_Url}${data.file}`}
+                          height="250"
+                          width="250"
+                        />
+                      </View>
+                    ) : (
+                      <WebView
+                        style={{marginTop: Platform.OS == 'ios' ? 20 : 0}}
+                        javaScriptEnabled={true}
+                        domStorageEnabled={true}
+                        source={{
+                          uri:
+                            data.extension_attributes.video_content.video_url,
+                        }}
+                      />
+                    ),
+                  )}
+                </Swiper>
               </Block>
               <Block margin={[t2, 0]}>
                 <Text regular size={12} height={20}>

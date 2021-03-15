@@ -202,7 +202,8 @@ const Cart = () => {
         price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
       });
     } else {
-      navigation.navigate('Login');
+      global.isLoggedIn=true
+      navigation.navigate('Login', { isLoggedIn:true });
     }
   };
 

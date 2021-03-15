@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -6,15 +6,15 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import styled from 'styled-components/native';
-import {Block, Text, ImageComponent, CustomButton} from '../components';
+import { Block, Text, ImageComponent, CustomButton } from '../components';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   strictValidArrayWithLength,
   strictValidObjectWithKeys,
@@ -24,9 +24,9 @@ import {
   addToGuestCartRequest,
   updateWishlistRequest,
 } from '../redux/action';
-import {config} from '../utils/config';
-import {light} from '../components/theme/colors';
-const HorizontalCards = ({data}) => {
+import { config } from '../utils/config';
+import { light } from '../components/theme/colors';
+const HorizontalCards = ({ data }) => {
   const nav = useNavigation();
   const [products, setData] = useState([]);
   const quote_id = useSelector((state) => state.cart.cartId.id);
@@ -74,7 +74,7 @@ const HorizontalCards = ({data}) => {
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = products[index];
-      const updated = {...old, isLoad: true};
+      const updated = { ...old, isLoad: true };
       const clone = [...products];
       clone[index] = updated;
       setData(clone);
@@ -86,7 +86,7 @@ const HorizontalCards = ({data}) => {
       await dispatch(addToCartRequest(newData));
     } else {
       const old = products[index];
-      const updated = {...old, isLoad: true};
+      const updated = { ...old, isLoad: true };
       const clone = [...products];
       clone[index] = updated;
       setData(clone);
@@ -96,14 +96,14 @@ const HorizontalCards = ({data}) => {
         quote_id: guestCartToken,
       };
       await dispatch(
-        addToGuestCartRequest({token: guestCartToken, items: newData}),
+        addToGuestCartRequest({ token: guestCartToken, items: newData }),
       );
     }
   };
   const addToWishlist = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = products[index];
-      const updated = {...old, isWishlist: true};
+      const updated = { ...old, isWishlist: true };
       const clone = [...products];
       clone[index] = updated;
       setData(clone);
@@ -116,7 +116,7 @@ const HorizontalCards = ({data}) => {
 
   const updateQty = (qty, index) => {
     const old = products[index];
-    const updated = {...old, qty: qty};
+    const updated = { ...old, qty: qty };
     const clone = [...products];
     clone[index] = updated;
     setData(clone);
@@ -124,16 +124,16 @@ const HorizontalCards = ({data}) => {
 
   const _renderEmpty = () => {
     return (
-      <Block style={{height: hp(40)}} center middle>
+      <Block style={{ height: hp(40) }} center middle>
         <Text size={16}>Products Not Found</Text>
       </Block>
     );
   };
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
     return (
       <CustomButton
         activeOpacity={1}
-        style={{width: wp(45)}}
+        style={{ width: wp(45) }}
         padding={[hp(2)]}
         margin={[hp(0.5), wp(1.8)]}
         primary
@@ -142,7 +142,7 @@ const HorizontalCards = ({data}) => {
           <ActivityIndicator
             size="small"
             color={light.secondary}
-            style={{alignSelf: 'flex-start'}}
+            style={{ alignSelf: 'flex-start' }}
           />
         ) : (
           <TouchableOpacity onPress={() => addToWishlist(item, index)}>
@@ -184,7 +184,7 @@ const HorizontalCards = ({data}) => {
           space={'between'}
           flex={false}>
           <Block
-            style={{width: wp(18)}}
+            style={{ width: wp(18) }}
             center
             row
             space={'between'}
@@ -226,6 +226,7 @@ const HorizontalCards = ({data}) => {
   };
   return (
     <FlatList
+      scrollEnabled={false}
       contentContainerStyle={flatlistContentStyle}
       data={products && products}
       renderItem={renderItem}

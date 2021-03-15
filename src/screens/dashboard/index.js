@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {ActivityIndicator, Dimensions, ScrollView} from 'react-native';
+import {ActivityIndicator, Dimensions, ScrollView,View} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -103,14 +103,16 @@ const Dashboard = () => {
       <Block flex={false} padding={[0, wp(2), 0, wp(2)]}>
         <Search />
       </Block>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView  showsVerticalScrollIndicator={false}>
         <HeaderMenu onPress={sortingMenu} color={menu} />
         {isLoadBanner ? (
           <Block color="transparent" style={{height: hp(23)}} center middle>
             <ActivityIndicator color={light.secondary} size="large" />
           </Block>
         ) : (
+          <View style={{height:200,width:'100%'}}>
           <Banner data={bannerData} />
+          </View>
         )}
         <Block padding={[0, wp(1)]} flex={false}>
           <Block padding={[0, w3]} row flex={false} space={'between'}>
