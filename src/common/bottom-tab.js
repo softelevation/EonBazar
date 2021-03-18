@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 });
 
 const tabImages = {
-  Dashboard: 'home_icon',
+  Dashboard: 'heart',
   Category: 'category_icon',
   image: 'DashboardLogo',
   Cart: 'your_order_icon',

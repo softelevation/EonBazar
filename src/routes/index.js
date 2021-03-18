@@ -198,12 +198,12 @@ function Routes() {
   const TabNav = () => {
     return (
       <Tab.Navigator
-        initialRouteName="Dashboard"
+        initialRouteName="DashboardLogo"
         tabBar={(props) => <BottomTab {...props} />}>
         <Tab.Screen
           options={{unmountOnBlur: true}}
           name="Dashboard"
-          component={DashboardStack}
+          component={Wishlist}
         />
         <Tab.Screen
           options={{unmountOnBlur: true}}

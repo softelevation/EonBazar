@@ -220,7 +220,7 @@ const SearchList = () => {
       <Block padding={[t2]} flex={false} color="#fdf0d5">
         <Text color="#6f4400" size={14}>
           Don't see what you're looking for?{' '}
-          <Text onPress={() => nav.goBack()} semibold color="#1979c3" size={14}>
+          <Text onPress={() => nav.navigate('AdvanceSearch')} semibold color="#1979c3" size={14}>
             Modify your search.
           </Text>
         </Text>
