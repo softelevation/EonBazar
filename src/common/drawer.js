@@ -60,6 +60,26 @@ const DrawerScreen = () => {
       nav.navigate(val);
     }
   };
+  const _renderLogout = (name, icon, navigation) => {
+    return (
+      <CustomButton
+        onPress={() => navigateHelpers(navigation)}
+        row
+        center
+        flex={false}
+        color="transparent"
+        padding={[hp(1.5), wp(5), hp(1.5), wp(5)]}>
+        <ImageComponent
+          name={icon}
+          height={renderHeight(icon)}
+          width={renderWidth(icon)}
+        />
+        <Text size={16} semibold margin={[0, wp(8), 0, wp(5)]}>
+          {name}
+        </Text>
+      </CustomButton>
+    );
+  };
 
   const _renderItem = ({item}) => {
     return (
