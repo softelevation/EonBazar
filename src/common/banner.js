@@ -1,24 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, FlatList, ImageBackground } from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Dimensions, FlatList, ImageBackground} from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import styled from 'styled-components/native';
-import { Block } from '../components';
-import { config } from '../utils/config';
-const { width } = Dimensions.get('window');
-import { SliderBox } from "react-native-image-slider-box";
+import {Block} from '../components';
+import {config} from '../utils/config';
+const {width} = Dimensions.get('window');
+import {SliderBox} from 'react-native-image-slider-box';
+import {light} from '../components/theme/colors';
 
-const Banner = ({ data }) => {
-  console.log(data)
+const Banner = ({data}) => {
+  console.log(data);
 
   const [indexValue, setIndex] = useState(0);
   const [slider, setSlider] = useState([]);
   const flatListref = useRef();
 
   const onScrollEnd = (e) => {
-    const { contentOffset } = e.nativeEvent;
+    const {contentOffset} = e.nativeEvent;
     const viewSize = e.nativeEvent.layoutMeasurement;
     const pageNum = Math.floor(contentOffset.x / viewSize.width);
     setIndex(pageNum);
@@ -32,14 +33,14 @@ const Banner = ({ data }) => {
 
   useEffect(() => {
     var i;
-    var imgArray = []
+    var imgArray = [];
     for (i = 0; i < data.length; i++) {
-      console.log(data[i])
-      imgArray.push(config.banner_image_url + data[i].image)
+      console.log(data[i]);
+      imgArray.push(config.banner_image_url + data[i].image);
     }
-    setSlider(imgArray)
+    setSlider(imgArray);
 
-    console.log(slider)
+    console.log(slider);
     // setInterval(() => {
     //   const maxSlider = 2;
     //   let nextIndex = 0;
@@ -71,32 +72,33 @@ const Banner = ({ data }) => {
         resizeMode={'cover'}
         dotColor="#ffffff"
         inactiveDotColor="#90A4AE"
-      // paginationBoxStyle={{
-      //   position: "absolute",
-      //   bottom: 0,
-      //   padding: 0,
-      //   alignItems: "center",
-      //   alignSelf: "center",
-      //   justifyContent: "center",
-      //   paddingVertical: 10
-      // }}
-      // dotStyle={{
-      //   width: 10,
-      //   height: 10,
-      //   borderRadius: 5,
-      //   marginHorizontal: 0,
-      //   padding: 0,
-      //   margin: 10,
-      //   backgroundColor: "rgba(128, 128, 128, 0.92)"
+        imageLoadingColor={light.secondary}
+        // paginationBoxStyle={{
+        //   position: "absolute",
+        //   bottom: 0,
+        //   padding: 0,
+        //   alignItems: "center",
+        //   alignSelf: "center",
+        //   justifyContent: "center",
+        //   paddingVertical: 10
+        // }}
+        // dotStyle={{
+        //   width: 10,
+        //   height: 10,
+        //   borderRadius: 5,
+        //   marginHorizontal: 0,
+        //   padding: 0,
+        //   margin: 10,
+        //   backgroundColor: "rgba(128, 128, 128, 0.92)"
 
-      // }}
+        // }}
 
-      // ImageComponentStyle={{ borderRadius: 16, width: '96%' }}
-      // imageLoadingColor="#2196F3"
-      // onCurrentImagePressed={index =>
-      //     console.warn(`image ${index} pressed`)
-      // }
-      // parentWidth={wp(100)}
+        // ImageComponentStyle={{ borderRadius: 16, width: '96%' }}
+        // imageLoadingColor="#2196F3"
+        // onCurrentImagePressed={index =>
+        //     console.warn(`image ${index} pressed`)
+        // }
+        // parentWidth={wp(100)}
       />
       {/* <FlatList
         data={data}
@@ -130,7 +132,6 @@ const Banner = ({ data }) => {
           );
         }}
       />  */}
-
     </Block>
   );
 };

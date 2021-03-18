@@ -5,7 +5,7 @@ import {
 } from 'react-native-responsive-screen';
 import {Block, CustomButton, ImageComponent, Text} from '../components';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {FlatList} from 'react-native';
+import {FlatList, View} from 'react-native';
 import {DrawerData} from '../utils/static-data';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -16,6 +16,7 @@ const DrawerScreen = () => {
   const nav = useNavigation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.profile.user);
+  console.log(user, 'user');
   const renderHeight = (type) => {
     switch (type) {
       case 'your_order_drawer_icon':
@@ -59,6 +60,26 @@ const DrawerScreen = () => {
       nav.navigate(val);
     }
   };
+  const _renderLogout = (name, icon, navigation) => {
+    return (
+      <CustomButton
+        onPress={() => navigateHelpers(navigation)}
+        row
+        center
+        flex={false}
+        color="transparent"
+        padding={[hp(1.5), wp(5), hp(1.5), wp(5)]}>
+        <ImageComponent
+          name={icon}
+          height={renderHeight(icon)}
+          width={renderWidth(icon)}
+        />
+        <Text size={16} semibold margin={[0, wp(8), 0, wp(5)]}>
+          {name}
+        </Text>
+      </CustomButton>
+    );
+  };
 
   const _renderItem = ({item}) => {
     return (
@@ -95,7 +116,9 @@ const DrawerScreen = () => {
             : 'Guest User'}
         </Text>
       </Block>
-      <FlatList data={DrawerData} renderItem={_renderItem} />
+      <Block flex={false}>
+        <FlatList data={DrawerData} renderItem={_renderItem} />
+      </Block>
     </Block>
   );
 };

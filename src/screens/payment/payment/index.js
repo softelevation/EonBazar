@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Alert, View} from 'react-native';
 import {WebView} from 'react-native-webview';
 import {useDispatch, useSelector} from 'react-redux';
@@ -11,6 +11,13 @@ const Payment = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [loader, setloader] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      dispatch(createCartRequest());
+    };
+  }, []);
+
   const handleNavigation = (v) => {
     setloader(v.loading);
     console.log(v, 'pay');
