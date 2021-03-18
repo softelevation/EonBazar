@@ -75,6 +75,7 @@ const Category = (props) => {
   const [name, setname] = useState(saveFiltered.name);
 
   const sortingMenu = (val) => {
+    setstate({data:[]})
     setmenu(val.id);
     setname(val.name);
   };
@@ -324,8 +325,8 @@ const Category = (props) => {
           space={'between'}
           flex={false}
           padding={[t1, w3]}>
-          {filteredData && (
-            <Text size={12}>{filteredData && filteredData.length} items</Text>
+          {data && (
+            <Text size={12}>{data && data.length} items</Text>
           )}
           <Block center flex={false} row>
             {/* <Text size={12}>sort by </Text>

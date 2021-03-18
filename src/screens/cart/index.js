@@ -380,7 +380,7 @@ const Cart = () => {
               onPress={() => nav.navigate('Dashboard')}
               textStyle={{textTransform: 'uppercase'}}
               color="primary">
-              Keep Shopping
+           Continue Shopping
             </CartButton>
             <CartButton
               onPress={() => {

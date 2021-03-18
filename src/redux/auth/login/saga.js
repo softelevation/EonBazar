@@ -40,6 +40,10 @@ export function* loginRequest(action) {
 
       }
       else{
+    //     Navigation.reset({
+    //       index: 0,
+    //       routes: [{ name: 'Dashboard' }]
+    //  })
         Navigation.navigate('Dashboard');
         global.isLoggedIn=false
 

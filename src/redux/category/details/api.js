@@ -11,7 +11,7 @@ export const Api = async (data) => {
   };
   return axios({
     method: 'get',
-    url: `${config.Api_Url}/V1/eonb/categories?rootCategoryId=2`,
+    url: `${config.Api_Url}/V1/eonb/categories?rootCategoryId=2&searchCriteria[filter_groups][1][filters][0][field]=status&searchCriteria[filter_groups][1][filters][0][value]=1`,
     headers,
   });
 };

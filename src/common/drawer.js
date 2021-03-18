@@ -6,7 +6,7 @@ import {
 import {Block, CustomButton, ImageComponent, Text} from '../components';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {FlatList} from 'react-native';
-import {DrawerData} from '../utils/static-data';
+import {DrawerData,DrawerGusetUserData} from '../utils/static-data';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
@@ -16,6 +16,7 @@ const DrawerScreen = () => {
   const nav = useNavigation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.profile.user);
+ // alert(JSON.stringify(user))
   const renderHeight = (type) => {
     switch (type) {
       case 'your_order_drawer_icon':
@@ -95,7 +96,7 @@ const DrawerScreen = () => {
             : 'Guest User'}
         </Text>
       </Block>
-      <FlatList data={DrawerData} renderItem={_renderItem} />
+     {  strictValidObjectWithKeys(user) ? <FlatList data={DrawerData} renderItem={_renderItem} />:<FlatList data={DrawerGusetUserData} renderItem={_renderItem} />}
     </Block>
   );
 };

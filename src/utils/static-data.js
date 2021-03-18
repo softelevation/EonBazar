@@ -85,7 +85,63 @@ export const DrawerData = [
     nav: 'Logout',
   },
 ];
-
+export const DrawerGusetUserData = [
+  {
+    name: 'Home',
+    icon: 'home_d_icon',
+    nav: 'Dashboard',
+  },
+  {
+    name: 'Your Profile',
+    icon: 'your_profile_icon',
+    nav: 'Profile',
+  },
+  {
+    name: 'Your Orders',
+    icon: 'your_order_drawer_icon',
+    nav: 'YourOrder',
+  },
+  {
+    name: 'Wish List',
+    icon: 'wishlist_icon',
+    nav: 'Wishlist',
+  },
+  {
+    name: 'Category',
+    icon: 'dashboard_drawer_icon',
+    nav: 'Category',
+  },
+  {
+    name: 'Help & More',
+    icon: 'help_icon',
+    nav: 'Help',
+  },
+  {
+    name: 'Advance Search',
+    icon: 'search_icon',
+    nav: 'AdvanceSearch',
+  },
+  {
+    name: 'Privacy Policy',
+    icon: 'privacy_icon',
+    nav: 'Privacy',
+  },
+  {
+    name: 'Terms & Conditions',
+    icon: 'terms_icon',
+    nav: 'Terms',
+  },
+  {
+    name: 'FAQ',
+    icon: 'faq_icon',
+    nav: 'Faq',
+  },
+  // {
+  //   name: 'Logout',
+  //   icon: 'logout_icon',
+  //   nav: 'Logout',
+  // },
+];
 // Signup
 // 1. Send otp with eventType “customer_signup_otp”
 // 2. Then use the /V1/customersignupwithotp endpoint
