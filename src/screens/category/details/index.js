@@ -39,6 +39,10 @@ import { useEffect } from 'react';
 import Search from '../../../components/search';
 import Swiper from 'react-native-swiper';
 import { WebView } from 'react-native-webview';
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen';
 
 
 const initialState = {
@@ -67,6 +71,12 @@ const Details = ({
   const dispatch = useDispatch();
   const [scrollHeight, setScrollHeight] = useState({});
   const [currentScrollHeight, setCurrentScrollHeight] = useState(18);
+
+  const cart_list = useSelector((state) => state.cart.list.data);
+  const [cartlist, setList] = useState([]);
+  const userData = useSelector((state) => state.user.profile.user);
+
+
   // useEffect(() => {
   //   Object.keys(scrollHeight).forEach((a) => {
   //     if (scrollHeight[a] > currentScrollHeight) {
@@ -113,6 +123,41 @@ const Details = ({
       nav.navigate('Login');
     }
   };
+
+
+  const navigateToShipping = () => {
+    if (strictValidObjectWithKeys(userData)) {
+      nav.navigate('Shipping', {
+        price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
+      });
+    } else {
+      global.isLoggedIn = true
+      nav.navigate('Login', { isLoggedIn: true });
+    }
+  };
+  useEffect(() => {
+    const newData = [];
+    cart_list &&
+      cart_list.map((a) => {
+        newData.push({
+          qty: a.qty,
+          name: a.name,
+          price: a.price,
+          qtyText: a.qty,
+          sku: a.sku,
+          quote_id: a.quote_id,
+          item_id: a.item_id,
+          product_type: a.product_type,
+          isLoad: false,
+          isDelete: false,
+          price_copy: a.price * a.qty,
+          image: a.extension_attributes.image_url,
+        });
+      });
+
+    setList(newData);
+  }, [cart_list]);
+
 
   const renderConditions = () => {
     return (
@@ -338,7 +383,7 @@ const Details = ({
                   <Swiper style={{ height: 280, justifyContent: 'center', alignContent: 'center' }} showsButtons={false}>
                     {item.sliderImages.map(data => (
                       data.media_type == 'image' ?
-                        <View style={{ position :'absolute',left : 40 , width: 250, height: 250, justifyContent: 'center',  }}>
+                        <View style={{ position: 'absolute', left: 40, width: 250, height: 250, justifyContent: 'center', }}>
                           <ImageComponent
                             isURL
                             name={`${config.Image_Url}${data.file}`}
@@ -539,6 +584,41 @@ const Details = ({
           <Footer images={false} />
         </Block>
       </ScrollView>
+
+
+      { cartlist.length > 0 ? <Block
+        borderWidth={[0.5, 0, 0, 0]}
+        borderColorDeafult
+        flex={false}
+        primary>
+        <Block center flex={false} row space={'between'} margin={[t2, w3]}>
+          <Text transform="uppercase" bold size={24}>
+            Cart Subtotal :
+            </Text>
+
+          <Text bold secondary>
+            BDT{' '}
+            {cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2)}
+          </Text>
+        </Block>
+
+        <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
+          <CartButton
+            onPress={() => nav.navigate('Dashboard')}
+            textStyle={{ textTransform: 'uppercase' }}
+            color="primary">
+            Continue Shopping
+            </CartButton>
+          <CartButton
+            onPress={() => {
+              navigateToShipping();
+            }}
+            textStyle={{ textTransform: 'uppercase' }}
+            color="secondary">
+            Buy Now
+            </CartButton>
+        </Block>
+      </Block> : null}
     </Block>
   );
 };
@@ -554,4 +634,8 @@ const selected = {
   borderBottomWidth: 3,
   borderBottomColor: light.secondary,
 };
+const CartButton = styled(Button)({
+  width: widthPercentageToDP(45),
+  borderRadius: 30,
+});
 export default Details;

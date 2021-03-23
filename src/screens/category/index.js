@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -22,9 +22,9 @@ import {
   Text,
 } from '../../components';
 import Search from '../../components/search';
-import {t1, t2, w2, w3} from '../../components/theme/fontsize';
+import { t1, t2, w2, w3 } from '../../components/theme/fontsize';
 import HeaderMenu from '../../common/headerMenu';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   addToCartRequest,
   addToGuestCartRequest,
@@ -34,10 +34,10 @@ import {
   strictValidArray,
   strictValidObjectWithKeys,
 } from '../../utils/commonUtils';
-import {light} from '../../components/theme/colors';
-import {useNavigation} from '@react-navigation/core';
+import { light } from '../../components/theme/colors';
+import { useNavigation } from '@react-navigation/core';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {config} from '../../utils/config';
+import { config } from '../../utils/config';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 const initialState = {
@@ -51,7 +51,7 @@ const Category = (props) => {
   const [state, setstate] = useState(initialState);
   const [currentPage, setCurrentPage] = useState(1);
   const [loader, setloader] = useState(false);
-  const {data} = state;
+  const { data } = state;
 
   // Reducers Values
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
@@ -74,8 +74,14 @@ const Category = (props) => {
   const [menu, setmenu] = useState(saveFiltered.id);
   const [name, setname] = useState(saveFiltered.name);
 
+  
+  const cart_list = useSelector((state) => state.cart.list.data);
+  const [cartlist, setList] = useState([]);  
+  const userData = useSelector((state) => state.user.profile.user);
+
+
   const sortingMenu = (val) => {
-    setstate({data:[]})
+    setstate({ data: [] })
     setmenu(val.id);
     setname(val.name);
   };
@@ -135,7 +141,7 @@ const Category = (props) => {
           sku: a.sku,
         });
       });
-    setstate({...state, data: data.concat(newData)});
+    setstate({ ...state, data: data.concat(newData) });
   }, [filteredData]);
   console.log(filteredData, 'filteredData');
 
@@ -149,10 +155,10 @@ const Category = (props) => {
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = data[index];
-      const updated = {...old, isLoad: true};
+      const updated = { ...old, isLoad: true };
       const clone = [...data];
       clone[index] = updated;
-      setstate({data: clone});
+      setstate({ data: clone });
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -161,27 +167,27 @@ const Category = (props) => {
       await dispatch(addToCartRequest(newData));
     } else {
       const old = data[index];
-      const updated = {...old, isLoad: true};
+      const updated = { ...old, isLoad: true };
       const clone = [...data];
       clone[index] = updated;
-      setstate({data: clone});
+      setstate({ data: clone });
       const newData = {
         sku: val.sku,
         qty: val.qty,
         quote_id: guestCartToken,
       };
       await dispatch(
-        addToGuestCartRequest({token: guestCartToken, items: newData}),
+        addToGuestCartRequest({ token: guestCartToken, items: newData }),
       );
     }
   };
 
   const updateQty = (qty, index) => {
     const old = data[index];
-    const updated = {...old, qty: qty};
+    const updated = { ...old, qty: qty };
     const clone = [...data];
     clone[index] = updated;
-    setstate({data: clone});
+    setstate({ data: clone });
   };
 
   const renderFooter = () => {
@@ -200,10 +206,46 @@ const Category = (props) => {
     }
   };
 
-  const renderItem = ({item, index}) => {
+
+
+  const navigateToShipping = () => {
+    if (strictValidObjectWithKeys(userData)) {
+      nav.navigate('Shipping', {
+        price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
+      });
+    } else {
+      global.isLoggedIn = true
+      nav.navigate('Login', { isLoggedIn: true });
+    }
+  };
+  useEffect(() => {
+    const newData = [];
+    cart_list &&
+      cart_list.map((a) => {
+        newData.push({
+          qty: a.qty,
+          name: a.name,
+          price: a.price,
+          qtyText: a.qty,
+          sku: a.sku,
+          quote_id: a.quote_id,
+          item_id: a.item_id,
+          product_type: a.product_type,
+          isLoad: false,
+          isDelete: false,
+          price_copy: a.price * a.qty,
+          image: a.extension_attributes.image_url,
+        });
+      });
+
+    setList(newData);
+  }, [cart_list]);
+
+
+  const renderItem = ({ item, index }) => {
     return (
       <Block
-        style={{width: widthPercentageToDP(45), minHeight: hp(35)}}
+        style={{ width: widthPercentageToDP(45), minHeight: hp(35) }}
         padding={[hp(2)]}
         margin={[hp(0.5), widthPercentageToDP(1.8)]}
         primary
@@ -249,7 +291,7 @@ const Category = (props) => {
           space={'between'}
           flex={false}>
           <Block
-            style={{width: widthPercentageToDP(18)}}
+            style={{ width: widthPercentageToDP(18) }}
             center
             row
             space={'between'}
@@ -314,7 +356,7 @@ const Category = (props) => {
           <Text semibold size={15}>
             {name || ''}
           </Text>
-          <ShopByButton style={{marginTop :5}} color="secondary">Shop by</ShopByButton>
+          <ShopByButton style={{ marginTop: 5 }} color="secondary">Shop by</ShopByButton>
         </Block>
         <Block
           margin={[t2, w2, 0, w2]}
@@ -349,12 +391,12 @@ const Category = (props) => {
           </Block>
         </Block>
         {loading ? (
-          <Block color="transparent" style={{height: hp(30)}} center middle>
+          <Block color="transparent" style={{ height: hp(30) }} center middle>
             <ActivityIndicator color={light.secondary} size="large" />
           </Block>
         ) : (
           <View
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             onStartShouldSetResponderCapture={() => {
               setScrollView(false);
               if (
@@ -379,6 +421,40 @@ const Category = (props) => {
 
         {/* <Footer images={false} /> */}
       </ScrollView>
+
+      { cartlist.length > 0 ? <Block
+        borderWidth={[0.5, 0, 0, 0]}
+        borderColorDeafult
+        flex={false}
+        primary>
+        <Block center flex={false} row space={'between'} margin={[t2, w3]}>
+          <Text transform="uppercase" bold size={24}>
+            Cart Subtotal :
+            </Text>
+
+          <Text bold secondary>
+            BDT{' '}
+            {cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2)}
+          </Text>
+        </Block>
+
+        <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
+          <CartButton
+            onPress={() => nav.navigate('Dashboard')}
+            textStyle={{ textTransform: 'uppercase' }}
+            color="primary">
+            Continue Shopping
+            </CartButton>
+          <CartButton
+            onPress={() => {
+              navigateToShipping();
+            }}
+            textStyle={{ textTransform: 'uppercase' }}
+            color="secondary">
+            Buy Now
+            </CartButton>
+        </Block>
+      </Block> : null}
     </Block>
   );
 };
@@ -427,4 +503,9 @@ const flatlistContentStyle = {
   flexGrow: 1,
   justifyContent: 'center',
 };
+
+const CartButton = styled(Button)({
+  width: widthPercentageToDP(45),
+  borderRadius: 30,
+});
 export default Category;

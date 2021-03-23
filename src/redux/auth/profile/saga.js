@@ -50,7 +50,7 @@ export function* updateRequest(action) {
     const response = yield call(updateApi, action.payload);
     if (response) {
       yield put(profileSuccess(response.data));
-      Alert.alert('Your Profile has been sucessfully updated');
+     // Alert.alert('Your Profile has been sucessfully updated');
     } else {
       yield put(profileError(response));
     }

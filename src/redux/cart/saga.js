@@ -66,7 +66,7 @@ export function* requestSaveList(action) {
     if (response) {
       yield put(addToCartSuccess(response.data));
       yield put(getCartDetailsRequest());
-      RootNavigation.navigate('Cart');
+      // RootNavigation.navigate('Cart');
     } else {
       yield put(addToCartError(response));
     }
@@ -167,7 +167,7 @@ export function* guestSaveList(action) {
         yield put(guestCartRequest(token));
       }
 
-      RootNavigation.navigate('Cart');
+      // RootNavigation.navigate('Cart');
     } else {
       yield put(addToGuestCartError(response));
     }
