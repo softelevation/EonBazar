@@ -32,6 +32,7 @@ import { config } from '../../../utils/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
+global.shippingAddress = '';
 const stylesPicker = StyleSheet.create({
   placeholder: {
     color: '#000',
@@ -103,10 +104,6 @@ const Shipping = ({
   const [shippingTextColor, setShippingTextColor] = useState('#ffffff');
   const [shippingAddress, setShippingAddress] = useState([]);
 
-
-
-
-
   useEffect(() => {
     strictValidArray(district.items) && selectDistrict(1);
     if (strictValidObjectWithKeys(userData)) {
@@ -132,6 +129,7 @@ const Shipping = ({
       headers,
     }).then((res) => setShippingAddress(res.data.addresses));
   };
+
 
 
   const getShippingCharge = async () => {
@@ -244,8 +242,13 @@ const Shipping = ({
         ]
       }
     }
+
     dispatch(updateProfileRequest(savedata));
-    dispatch(addShippingRequest(data));
+    setTimeout(() => {
+      listClick(), global.shippingAddress = data;
+    }, 2000);
+
+    // dispatch(addShippingRequest(data));
   }
 
 
@@ -307,6 +310,7 @@ const Shipping = ({
   };
 
   const listClick = () => {
+    getShippingAddress()
     setSelectTab('List');
     setListMainColor('#78A942');
     setListTextColor('#ffffff');
@@ -315,7 +319,6 @@ const Shipping = ({
   }
 
   const shippingClick = () => {
-    getShippingAddress()
     setSelectTab('Shipping')
     setListMainColor('#ffffff')
     setListTextColor('#7D7F86')
@@ -324,8 +327,10 @@ const Shipping = ({
   }
 
 
-  const listPress =(item) => {
-          alert(item)
+  const listPress = (item) => {
+    global.shippingAddress || global.shippingAddress != '' ?
+      dispatch(addShippingRequest(global.shippingAddress)) :
+      null
   }
 
 
@@ -593,13 +598,18 @@ const Shipping = ({
                   {shippingAddress ? <FlatList
                     data={shippingAddress}
                     renderItem={({ item }) =>
-                      <TouchableOpacity onPress={listPress(item)} style={{ backgroundColor: 'white', margin: 20, marginTop: 10, marginBottom: 10, padding: 15, borderRadius: 20 }}>
+                      <View style={{ backgroundColor: 'white', margin: 20, marginTop: 10, marginBottom: 10, padding: 15, borderRadius: 20 }}>
                         <Text style={stylesPicker.itemStyle}>{item.firstname + ' ' + item.lastname}</Text>
                         <Text style={stylesPicker.itemStyle}>Mobile No: {item.telephone}</Text>
                         <Text style={stylesPicker.itemStyle}>City: {item.city}</Text>
                         <Text style={stylesPicker.itemStyle}>Street Address: {item.street}</Text>
                         <Text style={stylesPicker.itemStyle}>Postcode: {item.postcode}</Text>
-                      </TouchableOpacity>}
+
+                        <TouchableOpacity onPress={listPress.bind(this, item)} style={[stylesPicker.inputBox, { margin: 15, borderColor: 'transparent', flex: 1, borderWidth: 0, backgroundColor: '#78A942', justifyContent: 'center', }]}>
+                          <Text style={{ textAlign: 'center', color: 'white', fontSize: 14, }}>Next</Text>
+                        </TouchableOpacity>
+
+                      </View>}
                   // ItemSeparatorComponent={this.renderSeparator}
                   />
                     :
