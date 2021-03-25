@@ -52,7 +52,7 @@ const Category = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loader, setloader] = useState(false);
   const { data } = state;
-
+  const [scrollHeight, setScrollHeight] = useState(0);
   // Reducers Values
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
   const userProfile = useSelector((v) => v.user.profile.user);
@@ -81,6 +81,15 @@ const Category = (props) => {
 
 
   const sortingMenu = (val) => {
+ //   scrollRef.scrollToEnd()
+    // scrollRef.scrollView.getScrollResponder().scrollResponderScrollTo({
+    //   x: 0,
+    //   y: scrollHeight,
+    //   animated: true
+    // });
+    scrollRef.current.scrollToEnd()
+
+    //scrollRef.current && scrollRef.current.scrollIntoView({ behavior: 'smooth' })
     setstate({ data: [] })
     setmenu(val.id);
     setname(val.name);
@@ -206,7 +215,7 @@ const Category = (props) => {
     }
   };
 
-
+  
 
   const navigateToShipping = () => {
     if (strictValidObjectWithKeys(userData)) {
@@ -341,9 +350,30 @@ const Category = (props) => {
       <Block flex={false} padding={[0, w3, 0, w3]}>
         <Search />
       </Block>
+      {scrollHeight > 500 && (
+        <BackButton
+          onPress={() => scrollRef.current && scrollRef.current.scrollTo()}
+          style={{
+            position: 'absolute',
+            right: 10,
+            top: 80,
+            zIndex: 2,
+          }}>
+            {/* <Text>Top</Text> */}
+          <ImageComponent
+            name="scroll_icon"
+            height="15"
+            width="15"
+            color="green"
+          />
+        </BackButton>
+      )}
       <ScrollView
         ref={scrollRef}
         scrollEnabled={scrollView}
+        onScroll={(e) => {
+          setScrollHeight(e.nativeEvent.contentOffset.y)
+        }}
         showsVerticalScrollIndicator={false}>
         <HeaderMenu onPress={sortingMenu} color={menu} />
         {/* <Banner /> */}
@@ -421,7 +451,10 @@ const Category = (props) => {
 
         {/* <Footer images={false} /> */}
       </ScrollView>
-
+      
+      {/* <TouchableOpacity style={{flex:1,borderRadius: 20, height: 80,marginTop:10, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.8, shadowRadius: 2, elevation: 5,flex:1,bottom:0,position:'absolute'}}>
+                
+                </TouchableOpacity> */}
       { cartlist.length > 0 ? <Block
         borderWidth={[0.5, 0, 0, 0]}
         borderColorDeafult
@@ -507,5 +540,23 @@ const flatlistContentStyle = {
 const CartButton = styled(Button)({
   width: widthPercentageToDP(45),
   borderRadius: 30,
+});
+const BackButton = styled.TouchableOpacity({
+  height: 40,
+  width: 40,
+  borderRadius: 40/2,
+  backgroundColor: '#fff',
+  justifyContent: 'center',
+  alignItems: 'center',
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+
+  elevation: 5,
+  marginBottom: hp(1),
 });
 export default Category;

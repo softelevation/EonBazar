@@ -31,6 +31,7 @@ import {
 import { config } from '../../../utils/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import { color, onChange } from 'react-native-reanimated';
 
 global.shippingAddress = '';
 const stylesPicker = StyleSheet.create({
@@ -103,6 +104,11 @@ const Shipping = ({
   const [shippingMainColor, setShippingMainColor] = useState('#78A942');
   const [shippingTextColor, setShippingTextColor] = useState('#ffffff');
   const [shippingAddress, setShippingAddress] = useState([]);
+  const [checkedList, setCheckedList] = useState([]);
+  const [carrier, setCarrier] = useState('');
+  const [method, setMethod] = useState('');
+
+
 
   useEffect(() => {
     strictValidArray(district.items) && selectDistrict(1);
@@ -127,7 +133,9 @@ const Shipping = ({
       method: 'get',
       url: `${config.Api_Url}/V1/customers/me`,
       headers,
-    }).then((res) => setShippingAddress(res.data.addresses));
+    }).then((res) => {
+      setShippingAddress(res.data.addresses)
+    });
   };
 
 
@@ -249,6 +257,7 @@ const Shipping = ({
     }, 2000);
 
     // dispatch(addShippingRequest(data));
+
   }
 
 
@@ -328,9 +337,51 @@ const Shipping = ({
 
 
   const listPress = (item) => {
-    global.shippingAddress || global.shippingAddress != '' ?
-      dispatch(addShippingRequest(global.shippingAddress)) :
-      null
+
+    console.log(item)
+
+    const data = {
+      addressInformation: {
+        shipping_address: {
+          region: item.region.region,
+          region_id: item.region.region_id,
+          country_id: item.country_id,
+          street: [item.street[0]],
+          postcode: item.postcode,
+          city: item.city,
+          firstname: item.firstname,
+          lastname: item.lastname,
+          customer_id: item.id,
+          email: '',
+          telephone: item.telephone,
+        },
+        billing_address: {
+          region: item.region.region,
+          region_id: item.region.region_id,
+          country_id: item.country_id,
+          street: [item.street[0]],
+          postcode: item.postcode,
+          city: item.city,
+          firstname: item.firstname,
+          lastname: item.lastname,
+          customer_id: item.id,
+          email: '',
+          telephone: item.telephone,
+          same_as_billing: 1,
+        },
+        shipping_carrier_code: carrier ? carrier : 'freeshipping',
+        shipping_method_code: method ? method : 'freeshipping',
+      }
+
+    }
+
+
+    console.log("===>>", data)
+
+    // global.shippingAddress || global.shippingAddress != '' ?
+     dispatch(addShippingRequest(data))
+    //   null
+
   }
 
 
@@ -597,7 +648,7 @@ const Shipping = ({
                 <View style={{ flex: 1, marginTop: 10 }}>
                   {shippingAddress ? <FlatList
                     data={shippingAddress}
-                    renderItem={({ item }) =>
+                    renderItem={({ item, index }) =>
                       <View style={{ backgroundColor: 'white', margin: 20, marginTop: 10, marginBottom: 10, padding: 15, borderRadius: 20 }}>
                         <Text style={stylesPicker.itemStyle}>{item.firstname + ' ' + item.lastname}</Text>
                         <Text style={stylesPicker.itemStyle}>Mobile No: {item.telephone}</Text>
@@ -605,9 +656,48 @@ const Shipping = ({
                         <Text style={stylesPicker.itemStyle}>Street Address: {item.street}</Text>
                         <Text style={stylesPicker.itemStyle}>Postcode: {item.postcode}</Text>
 
-                        <TouchableOpacity onPress={listPress.bind(this, item)} style={[stylesPicker.inputBox, { margin: 15, borderColor: 'transparent', flex: 1, borderWidth: 0, backgroundColor: '#78A942', justifyContent: 'center', }]}>
-                          <Text style={{ textAlign: 'center', color: 'white', fontSize: 14, }}>Next</Text>
-                        </TouchableOpacity>
+
+                        <Block margin={[t4, 0, 0, 0]}>
+                          <Text transform="uppercase" bold>
+                            Shipping Charge
+                  </Text>
+                          {shipping.map((a) => {
+                            return (
+                              <Block
+                                margin={[t2, 0, 0, 0]}
+                                row
+                                space={'between'}
+                                center>
+                                <Checkbox
+                                  checkboxStyle={checkboxStyle}
+                                  labelStyle={labelStyle}
+                                  label={`BDT ${a.amount.toFixed(2)}`}
+                                  checked={a.carrier_code === values.shipping}
+                                  onChange={(b) => {
+                                    setFieldValue('shipping', a.carrier_code);
+                                    setFieldValue('method_code', a.method_code);
+                                    setCarrier(a.carrier_code)
+                                    setMethod(a.method_code)
+                                  }}
+                                />
+                                <Text size={12}>{a.method_title}</Text>
+                                <Text
+                                  style={{ width: widthPercentageToDP(27) }}
+                                  size={12}>
+                                  {a.carrier_title}
+                                </Text>
+                              </Block>
+                            );
+                          })}
+                          {touched.firstname && errors.firstname && (
+                            <Text size={12} errorColor>
+                              {touched.firstname && errors.firstname}
+                            </Text>
+                          )}
+                          <TouchableOpacity onPress={listPress.bind(this, item)} style={[stylesPicker.inputBox, { margin: 15, borderColor: 'transparent', flex: 1, borderWidth: 0, backgroundColor: '#78A942', justifyContent: 'center', }]}>
+                            <Text style={{ textAlign: 'center', color: 'white', fontSize: 14, }}>Next</Text>
+                          </TouchableOpacity>
+                        </Block>
 
                       </View>}
                   // ItemSeparatorComponent={this.renderSeparator}

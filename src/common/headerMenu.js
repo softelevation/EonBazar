@@ -1,34 +1,37 @@
 import React from 'react';
-import {FlatList} from 'react-native';
+import { FlatList, View, TouchableOpacity } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useSelector} from 'react-redux';
-import {images} from '../assets';
-import {Block, CustomButton, ImageComponent, Text} from '../components';
-import {light} from '../components/theme/colors';
-import {t1, w3} from '../components/theme/fontsize';
+import { useSelector } from 'react-redux';
+import { images } from '../assets';
+import { Block, CustomButton, ImageComponent, Text } from '../components';
+import { light } from '../components/theme/colors';
+import { t1, w3 } from '../components/theme/fontsize';
 import Icon from 'react-native-vector-icons/Ionicons';
-const HeaderMenu = ({color, onPress}) => {
+import styled from 'styled-components/native';
+const HeaderMenu = ({ color, onPress }) => {
   const category = useSelector(
     (state) => state.category.categoryList.data.children_data,
   );
-  const _renderItem = ({item}) => {
+  const _renderItem = ({ item }) => {
+    //  alert(JSON.stringify(item.children_data[0].name))
     return (
-      <CustomButton
+      <Block
         center
         margin={[hp(1), wp(1)]}
-        style={{width: wp(20)}}
-        onPress={() => onPress(item)}>
-        <Block
+      //style={{width: '100%'}}
+      >
+        <CustomButton
           color={color === item.id ? light.warning : light.secondary}
           flex={false}
           borderRadius={60}
+          onPress={() => onPress(item)}
           center
           middle
           margin={[0, w3]}
-          style={{height: 40, width: 40}}>
+          style={{ height: 40, width: 40 }}>
           {item.image ? (
             <ImageComponent
               isURL
@@ -39,24 +42,36 @@ const HeaderMenu = ({color, onPress}) => {
           ) : (
             <Icon name="bookmark-outline" size={22} color="#fff" />
           )}
-        </Block>
+        </CustomButton>
+
         <Text
           center
           margin={[hp(0.5), 0, 0, 0]}
+          style={{ marinLeft: 50 }}
           height={16}
           transform="uppercase"
           size={10}>
           {item.name}
         </Text>
-      </CustomButton>
+        {
+          item.children_data.map((element, index) => {
+            return <TouchableOpacity onPress={() => onPress(element)} style={{ flex: 1, borderRadius: 20, height: 80, marginTop: 10, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.8, shadowRadius: 2, elevation: 5, height: 50, width: 300, backgroundColor: 'gray' }}>
+              <Text style={{ color: 'black', fontSize: 20, textAlign: 'center', top: 10 }}> {element.name} </Text>
+            </TouchableOpacity>
+          })
+        }
+
+      </Block>
     );
   };
+  
   return (
     <Block white margin={[0, w3]} padding={[hp(0.5), 0]} flex={false}>
+     
       <FlatList
         contentContainerStyle={flatlistStyle}
         data={category}
-        horizontal
+        // horizontal
         showsHorizontalScrollIndicator={false}
         renderItem={_renderItem}
       />
@@ -64,6 +79,7 @@ const HeaderMenu = ({color, onPress}) => {
   );
 };
 const flatlistStyle = {
-  flexDirection: 'row',
+  //  flexDirection: 'row',
 };
+
 export default HeaderMenu;
