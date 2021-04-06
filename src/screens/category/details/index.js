@@ -604,7 +604,7 @@ const Details = ({
 
         <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
           <CartButton
-            onPress={() => nav.navigate('Dashboard')}
+            onPress={() => nav.navigate('Category')}
             textStyle={{ textTransform: 'uppercase' }}
             color="primary">
             Continue Shopping

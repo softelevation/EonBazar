@@ -32,7 +32,7 @@ export const DrawerData = [
   {
     name: 'Home',
     icon: 'home_d_icon',
-    nav: 'Dashboard',
+    nav: 'DashboardLogo',
   },
   {
     name: 'Your Profile',
@@ -89,7 +89,7 @@ export const DrawerGusetUserData = [
   {
     name: 'Home',
     icon: 'home_d_icon',
-    nav: 'Dashboard',
+    nav: 'DashboardLogo',
   },
   {
     name: 'Your Profile',

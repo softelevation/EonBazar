@@ -252,11 +252,11 @@ const Shipping = ({
     }
 
     dispatch(updateProfileRequest(savedata));
-    setTimeout(() => {
-      listClick(), global.shippingAddress = data;
-    }, 2000);
+    // setTimeout(() => {
+    //   listClick(), global.shippingAddress = data;
+    // }, 2000);
 
-    // dispatch(addShippingRequest(data));
+     dispatch(addShippingRequest(data));
 
   }
 
@@ -400,7 +400,7 @@ const Shipping = ({
           city: '',
           postalCode: '',
           country: 'Bangladesh',
-          district: 1,
+          district: '',
           region: '',
           shipping: '',
           carrier_code: '',
@@ -444,7 +444,7 @@ const Shipping = ({
                 </TouchableOpacity>
 
                 <TouchableOpacity style={[stylesPicker.inputBox, { borderColor: 'transparent', flex: 1, borderWidth: 0, backgroundColor: listMainColor, justifyContent: 'center', }]} onPress={() => listClick()}>
-                  <Text style={{ textAlign: 'center', color: listTextColor, fontSize: 14, }}>Shipped Address</Text>
+                  <Text style={{ textAlign: 'center', color: listTextColor, fontSize: 14, }}>Billing  Address</Text>
                 </TouchableOpacity>
               </View>
 
@@ -462,10 +462,11 @@ const Shipping = ({
                   <Text margin={[t2, 0]} bold transform="uppercase">
                     Shipping Address
                 </Text>
+                {strictValidNumber(values.district)?
                   <Text margin={[t1, 0, 0]} body color="#636363">
                     {'Select District'}
-                  </Text>
-                  <RNPickerSelect
+                  </Text>:null}
+                  {strictValidNumber(values.district)?<RNPickerSelect
                     placeholder={
                       {
                         // label: '',
@@ -486,10 +487,10 @@ const Shipping = ({
                         value: v.id,
                       }))
                     }
-                  />
-                  <Text margin={[t1, 0, 0]} body color="#636363">
+                  />:null}
+                  {strictValidNumber(values.district)? <Text margin={[t1, 0, 0]} body color="#636363">
                     {'Select Delievery Area'}
-                  </Text>
+                  </Text>:null}
                   {strictValidNumber(values.district) &&
                     strictValidArrayWithLength(city.items) ? (
                     <>
@@ -516,9 +517,9 @@ const Shipping = ({
                       />
                     </>
                   ) : (
-                    <Text size={12} errorColor>
+                    strictValidNumber(values.district)? <Text size={12} errorColor>
                       Please choose another District
-                    </Text>
+                    </Text>:null
                   )}
                   <Input
                     label="First Name"

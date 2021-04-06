@@ -23,7 +23,7 @@ import {
 } from '../../components';
 import Search from '../../components/search';
 import { t1, t2, w2, w3 } from '../../components/theme/fontsize';
-import HeaderMenu from '../../common/headerMenu';
+import HeaderCatgoryMenu from '../../common/HeaderCatgoryMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addToCartRequest,
@@ -51,6 +51,8 @@ const Category = (props) => {
   const [state, setstate] = useState(initialState);
   const [currentPage, setCurrentPage] = useState(1);
   const [loader, setloader] = useState(false);
+  const [showPrice, setShowPrice] = useState(false);
+  const [endReached, setEndReached] = useState(false);
   const { data } = state;
   const [scrollHeight, setScrollHeight] = useState(0);
   // Reducers Values
@@ -118,7 +120,7 @@ const Category = (props) => {
       const res = await dispatch(
         filterCategoryListRequest({
           currentPage,
-          pageSize: 10,
+          pageSize: pageSize+1,
           menu,
         }),
       );
@@ -155,8 +157,9 @@ const Category = (props) => {
   console.log(filteredData, 'filteredData');
 
   const LoadMoreRandomData = async () => {
-    if (data.length <= totalCount) {
+    if (data.length <= totalCount && !endReached) {
       await setCurrentPage(currentPage + 1);
+      setEndReached(true)
       LoadRandomData();
     }
   };
@@ -189,6 +192,7 @@ const Category = (props) => {
         addToGuestCartRequest({ token: guestCartToken, items: newData }),
       );
     }
+    setShowPrice(true)
   };
 
   const updateQty = (qty, index) => {
@@ -197,6 +201,8 @@ const Category = (props) => {
     const clone = [...data];
     clone[index] = updated;
     setstate({ data: clone });
+    setShowPrice(true)
+
   };
 
   const renderFooter = () => {
@@ -330,11 +336,13 @@ const Category = (props) => {
             center
             middle
             flex={false}>
-            {item.isLoad ? (
+            {/* {item.isLoad ? (
               <ActivityIndicator size="small" color="#fff" />
             ) : (
               <MaterialIcon name="shopping-bag" size={20} color="#fff" />
-            )}
+            )} */}
+                          <MaterialIcon name="shopping-bag" size={20} color="#fff" />
+
           </CustomButton>
         </Block>
       </Block>
@@ -375,7 +383,7 @@ const Category = (props) => {
           setScrollHeight(e.nativeEvent.contentOffset.y)
         }}
         showsVerticalScrollIndicator={false}>
-        <HeaderMenu onPress={sortingMenu} color={menu} />
+        <HeaderCatgoryMenu onPress={sortingMenu} color={menu} />
         {/* <Banner /> */}
         <Block
           center
@@ -443,8 +451,10 @@ const Category = (props) => {
               renderItem={renderItem}
               onEndReached={LoadMoreRandomData}
               onEndReachedThreshold={0.1}
+              bounces={false}
               ListFooterComponent={renderFooter}
               maxHeight={500}
+              onMomentumScrollBegin={() => { setEndReached(false) }}
             />
           </View>
         )}
@@ -455,7 +465,7 @@ const Category = (props) => {
       {/* <TouchableOpacity style={{flex:1,borderRadius: 20, height: 80,marginTop:10, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.8, shadowRadius: 2, elevation: 5,flex:1,bottom:0,position:'absolute'}}>
                 
                 </TouchableOpacity> */}
-      { cartlist.length > 0 ? <Block
+      { cartlist.length >0 && showPrice ? <Block
         borderWidth={[0.5, 0, 0, 0]}
         borderColorDeafult
         flex={false}
@@ -473,7 +483,7 @@ const Category = (props) => {
 
         <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
           <CartButton
-            onPress={() => nav.navigate('Dashboard')}
+            onPress={() => nav.navigate('DashboardLogo',setShowPrice(false))}
             textStyle={{ textTransform: 'uppercase' }}
             color="primary">
             Continue Shopping

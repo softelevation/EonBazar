@@ -214,11 +214,11 @@ const HorizontalCards = ({ data }) => {
             center
             middle
             flex={false}>
-            {item.isLoad ? (
+            {/* {item.isLoad ? (
               <ActivityIndicator size="small" color="#fff" />
-            ) : (
+            ) : ( */}
               <MaterialIcon name="shopping-bag" size={20} color="#fff" />
-            )}
+            {/* )} */}
           </CustomButton>
         </Block>
       </CustomButton>

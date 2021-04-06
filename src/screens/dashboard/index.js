@@ -56,12 +56,13 @@ const Dashboard = () => {
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
   const cart_list = useSelector((state) => state.cart.list.data);
   const [cartlist, setList] = useState([]);
+  const [showPrice, setShowPrice] = useState(false);
 
   const bestOffer = 10;
   const topOffer = 11;
   const brandOffer = 12;
   const currentPage = 1;
-  const pageSize = 10;
+  const pageSize = 1;
 
   const sortingMenu = (val) => {
     dispatch(filterIdRequest(val));
@@ -107,8 +108,9 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const navigateToShipping = () => {
+   // alert(JSON.stringify(userData))
     if (strictValidObjectWithKeys(userData)) {
-      navigation.navigate('Shipping', {
+            navigation.navigate('Shipping', {
         price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
       });
     } else {
@@ -135,7 +137,7 @@ const Dashboard = () => {
           image: a.extension_attributes.image_url,
         });
       });
-
+      setShowPrice(true)
     setList(newData);
   }, [cart_list]);
   return (
@@ -238,7 +240,7 @@ const Dashboard = () => {
       </ScrollView>
       {/* <View></View> */}
       {/* {strictValidArrayWithLength(cartlist) && ( */}
-      { cartlist.length > 0 ? <Block
+      { cartlist.length > 0 && showPrice? <Block
         borderWidth={[0.5, 0, 0, 0]}
         borderColorDeafult
         flex={false}
@@ -256,7 +258,7 @@ const Dashboard = () => {
 
         <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
           <CartButton
-            onPress={() => navigation.navigate('Dashboard')}
+            onPress={() =>  setShowPrice(false)}
             textStyle={{ textTransform: 'uppercase' }}
             color="primary">
             Continue Shopping

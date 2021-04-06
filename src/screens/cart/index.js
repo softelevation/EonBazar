@@ -377,7 +377,7 @@ const Cart = () => {
 
           <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
             <CartButton
-              onPress={() => nav.navigate('Dashboard')}
+              onPress={() => nav.navigate('DashboardLogo')}
               textStyle={{textTransform: 'uppercase'}}
               color="primary">
            Continue Shopping
