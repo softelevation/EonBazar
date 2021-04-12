@@ -112,7 +112,7 @@ const NewCustomer = () => {
           touched,
           handleSubmit,
           setFieldValue,
-          isValid,
+          // isValid,
           dirty,
         }) => {
           return (
@@ -229,7 +229,7 @@ const NewCustomer = () => {
                   <Button
                     isLoading={isLoad}
                     onPress={handleSubmit}
-                    disabled={!isValid}
+                    // disabled={!isValid}
                     color="secondary">
                     Create an acount
                   </Button>

@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -12,22 +12,22 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import Header from '../../../common/header';
-import {Block, CustomButton, ImageComponent, Text} from '../../../components';
+import { Block, CustomButton, ImageComponent, Text } from '../../../components';
 import {
   addToCartRequest,
   addToGuestCartRequest,
   getAllProductsRequest,
 } from '../../../redux/action';
 import ActivityLoader from '../../../components/activityLoader';
-import {light} from '../../../components/theme/colors';
+import { light } from '../../../components/theme/colors';
 import {
   strictValidArray,
   strictValidObjectWithKeys,
 } from '../../../utils/commonUtils';
-import {config} from '../../../utils/config';
+import { config } from '../../../utils/config';
 
 const initialState = {
   data: [],
@@ -47,7 +47,7 @@ const SeeAllDetails = () => {
   );
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
   const guestCartError = useSelector((v) => v.cart.guestsave.error);
-  const {data} = state;
+  const { data } = state;
 
   const LoadRandomData = async () => {
     if (!isLoad) {
@@ -85,7 +85,7 @@ const SeeAllDetails = () => {
           sku: a.sku,
         });
       });
-    setstate({...state, data: data.concat(newData)});
+    setstate({ ...state, data: data.concat(newData) });
   }, [productsData]);
   const LoadMoreRandomData = async () => {
     if (data.length <= 59) {
@@ -102,10 +102,20 @@ const SeeAllDetails = () => {
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = data[index];
-      const updated = {...old, isLoad: true};
+      const updated = { ...old, isLoad: true };
       const clone = [...data];
       clone[index] = updated;
-      setstate({data: clone});
+      setstate({ data: clone });
+
+      setTimeout(() => {
+        const old = data[index];
+        const updated = { ...old, isLoad: false };
+        const clone = [...data];
+        clone[index] = updated;
+        setstate({ data: clone });
+      }, 5000);
+
+
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -114,27 +124,37 @@ const SeeAllDetails = () => {
       await dispatch(addToCartRequest(newData));
     } else {
       const old = data[index];
-      const updated = {...old, isLoad: true};
+      const updated = { ...old, isLoad: true };
       const clone = [...data];
       clone[index] = updated;
-      setstate({data: clone});
+      setstate({ data: clone });
+
+      setTimeout(() => {
+        const old = data[index];
+        const updated = { ...old, isLoad: false };
+        const clone = [...data];
+        clone[index] = updated;
+        setstate({ data: clone });
+      }, 5000);
+
+
       const newData = {
         sku: val.sku,
         qty: val.qty,
         quote_id: guestCartToken,
       };
       await dispatch(
-        addToGuestCartRequest({token: guestCartToken, items: newData}),
+        addToGuestCartRequest({ token: guestCartToken, items: newData }),
       );
     }
   };
 
   const updateQty = (qty, index) => {
     const old = data[index];
-    const updated = {...old, qty: qty};
+    const updated = { ...old, qty: qty };
     const clone = [...data];
     clone[index] = updated;
-    setstate({data: clone});
+    setstate({ data: clone });
   };
 
   const renderFooter = () => {
@@ -153,10 +173,10 @@ const SeeAllDetails = () => {
     }
   };
 
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
     return (
       <Block
-        style={{width: wp(45), minHeight: hp(35)}}
+        style={{ width: wp(45), minHeight: hp(35) }}
         padding={[hp(2)]}
         margin={[hp(0.5), wp(1.8)]}
         primary
@@ -175,7 +195,7 @@ const SeeAllDetails = () => {
           flex={false}>
           <ImageComponent name={`${config.Image_Url}${item.image}`} isURL />
           <Text
-            numberOfLines={3}
+            numberOfLines={1}
             size={12}
             center
             margin={[hp(2), 0, 0, 0]}
@@ -202,7 +222,7 @@ const SeeAllDetails = () => {
           space={'between'}
           flex={false}>
           <Block
-            style={{width: wp(18)}}
+            style={{ width: wp(18) }}
             center
             row
             space={'between'}

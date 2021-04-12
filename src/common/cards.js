@@ -79,6 +79,16 @@ const Cards = ({data, maxHeight}) => {
       const clone = [...products];
       clone[index] = updated;
       setData(clone);
+
+      setTimeout(() => {
+        const old = products[index];
+        const updated = {...old, isLoad: false};
+        const clone = [...products];
+        clone[index] = updated;
+        setData(clone);
+      }, 5000);
+
+
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -91,6 +101,16 @@ const Cards = ({data, maxHeight}) => {
       const clone = [...products];
       clone[index] = updated;
       setData(clone);
+
+      setTimeout(() => {
+        const old = products[index];
+        const updated = {...old, isLoad: false};
+        const clone = [...products];
+        clone[index] = updated;
+        setData(clone);
+      }, 5000);
+
+
       const newData = {
         sku: val.sku,
         qty: val.qty,

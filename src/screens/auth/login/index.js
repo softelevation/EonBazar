@@ -113,7 +113,7 @@ const Login = ({ route }) => {
             <Block flex={false} padding={[0, wp(3), hp(2), wp(3)]}>
               <Search />
             </Block>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView  keyboardShouldPersistTaps='handled' showsVerticalScrollIndicator={false}>
               <Text semibold transform="uppercase" center>
                 Customer Login
               </Text>

@@ -66,7 +66,9 @@ const Dashboard = () => {
 
   const sortingMenu = (val) => {
     dispatch(filterIdRequest(val));
-    navigation.jumpTo('Category');
+    global.dashboard = 'dashboard'
+    navigation.navigate('SubCategory')
+    // navigation.jumpTo('SubCategory');
   };
 
   const checkApi = async () => {

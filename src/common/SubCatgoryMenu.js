@@ -11,7 +11,8 @@ import { light } from '../components/theme/colors';
 import { t1, w3 } from '../components/theme/fontsize';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styled from 'styled-components/native';
-const HeaderCatgoryMenu = ({ color, onPress }) => {
+ 
+const SubCatgoryMenu = ({ color, onPress }) => {
   const category = useSelector(
     (state) => state.category.categoryList.data.children_data,
   );
@@ -55,14 +56,14 @@ const HeaderCatgoryMenu = ({ color, onPress }) => {
             {item.name}
           </Text>
         </View>
-        {
+        {/* {
           item.children_data.map((element, index) => {
             return <TouchableOpacity onPress={() => onPress(element)} style={{ flex: 1, with: '100%', margin: 1, padding: 3,}}>
               <Text style={{ color: 'black', fontSize: 12, textAlign: 'left', left: 60 }}> {element.name} </Text>
             </TouchableOpacity>
           })
         }
-        <View style={{ borderWidth: 1, borderColor: '#d3d3d3' , marginTop : 2 }}></View>
+        <View style={{ borderWidth: 1, borderColor: '#d3d3d3' , marginTop : 2 }}></View> */}
 
 
       </Block>
@@ -75,7 +76,7 @@ const HeaderCatgoryMenu = ({ color, onPress }) => {
       <FlatList
         contentContainerStyle={flatlistStyle}
         data={category}
-        // horizontal
+        horizontal
         showsHorizontalScrollIndicator={false}
         renderItem={_renderItem}
       />
@@ -86,4 +87,4 @@ const flatlistStyle = {
   //  flexDirection: 'row',
 };
 
-export default HeaderCatgoryMenu;
+export default SubCatgoryMenu;

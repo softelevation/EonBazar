@@ -11,39 +11,39 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import styled from 'styled-components/native';
-import Banner from '../../common/banner';
-import Footer from '../../common/footer';
-import Header from '../../common/header';
+import Banner from '../../../common/banner';
+import Footer from '../../../common/footer';
+import Header from '../../../common/header';
 import {
   Block,
   Button,
   CustomButton,
   ImageComponent,
   Text,
-} from '../../components';
-import Search from '../../components/search';
-import { t1, t2, w2, w3 } from '../../components/theme/fontsize';
-import HeaderCatgoryMenu from '../../common/HeaderCatgoryMenu';
+} from '../../../components';
+import Search from '../../../components/search';
+import { t1, t2, w2, w3 } from '../../../components/theme/fontsize';
+import SubCatgoryMenu from '../../../common/SubCatgoryMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addToCartRequest,
   addToGuestCartRequest,
   filterCategoryListRequest,
-} from '../../redux/action';
+} from '../../../redux/action';
 import {
   strictValidArray,
   strictValidObjectWithKeys,
-} from '../../utils/commonUtils';
-import { light } from '../../components/theme/colors';
+} from '../../../utils/commonUtils';
+import { light } from '../../../components/theme/colors';
 import { useNavigation } from '@react-navigation/core';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { config } from '../../utils/config';
+import { config } from '../../../utils/config';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 const initialState = {
   data: [],
 };
-const Category = (props) => {
+const SubCategory = (props) => {
   const dispatch = useDispatch();
   const nav = useNavigation();
 
@@ -358,7 +358,7 @@ const Category = (props) => {
       <Block flex={false} padding={[0, w3, 0, w3]}>
         <Search />
       </Block>
-      {scrollHeight > 500 && (
+      {scrollHeight > 100 && (
         <BackButton
           onPress={() => scrollRef.current && scrollRef.current.scrollTo()}
           style={{
@@ -383,7 +383,7 @@ const Category = (props) => {
           setScrollHeight(e.nativeEvent.contentOffset.y)
         }}
         showsVerticalScrollIndicator={false}>
-        <HeaderCatgoryMenu onPress={sortingMenu} color={menu} />
+        <SubCatgoryMenu onPress={sortingMenu} color={menu} />
         {/* <Banner /> */}
         <Block
           center
@@ -569,4 +569,4 @@ const BackButton = styled.TouchableOpacity({
   elevation: 5,
   marginBottom: hp(1),
 });
-export default Category;
+export default SubCategory;

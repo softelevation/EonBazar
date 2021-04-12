@@ -3,20 +3,20 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {Block, CustomButton, ImageComponent, Text} from '../components';
+import { Block, CustomButton, ImageComponent, Text } from '../components';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {FlatList} from 'react-native';
-import {DrawerData,DrawerGusetUserData} from '../utils/static-data';
-import {DrawerActions, useNavigation} from '@react-navigation/native';
+import { FlatList } from 'react-native';
+import { DrawerData, DrawerGusetUserData } from '../utils/static-data';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
-import {useDispatch, useSelector} from 'react-redux';
-import {loginSuccess, profileFlush} from '../redux/action';
-import {strictValidObjectWithKeys} from '../utils/commonUtils';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginSuccess, profileFlush } from '../redux/action';
+import { strictValidObjectWithKeys } from '../utils/commonUtils';
 const DrawerScreen = () => {
   const nav = useNavigation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.profile.user);
- // alert(JSON.stringify(user))
+  // alert(JSON.stringify(user))
   const renderHeight = (type) => {
     switch (type) {
       case 'your_order_drawer_icon':
@@ -46,14 +46,18 @@ const DrawerScreen = () => {
         nav.dispatch(DrawerActions.closeDrawer());
         dispatch(loginSuccess(''));
         dispatch(profileFlush());
-      } catch (error) {}
+        setTimeout(() => { alert('Logout Successfully...') }, 2000)
+        nav.reset({
+          routes: [{ name: 'Login' }],
+        });
+      } catch (error) { }
     } else if (val === 'Profile' || val === 'YourOrder' || val === 'Wishlist') {
       if (strictValidObjectWithKeys(user)) {
         nav.navigate(val);
       } else {
         nav.dispatch(DrawerActions.closeDrawer());
         nav.reset({
-          routes: [{name: 'Login'}],
+          routes: [{ name: 'Login' }],
         });
       }
     } else {
@@ -81,7 +85,7 @@ const DrawerScreen = () => {
     );
   };
 
-  const _renderItem = ({item}) => {
+  const _renderItem = ({ item }) => {
     return (
       <CustomButton
         onPress={() => navigateHelpers(item.nav)}
@@ -116,7 +120,7 @@ const DrawerScreen = () => {
             : 'Guest User'}
         </Text>
       </Block>
-     {  strictValidObjectWithKeys(user) ? <FlatList data={DrawerData} renderItem={_renderItem} />:<FlatList data={DrawerGusetUserData} renderItem={_renderItem} />}
+      {  strictValidObjectWithKeys(user) ? <FlatList data={DrawerData} renderItem={_renderItem} /> : <FlatList data={DrawerGusetUserData} renderItem={_renderItem} />}
     </Block>
   );
 };

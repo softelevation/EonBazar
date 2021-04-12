@@ -78,6 +78,18 @@ const HorizontalCards = ({ data }) => {
       const clone = [...products];
       clone[index] = updated;
       setData(clone);
+
+      setTimeout(() => {
+        const old = products[index];
+        const updated = { ...old, isLoad: false };
+        const clone = [...products];
+        clone[index] = updated;
+        setData(clone);
+      }, 5000);
+
+
+
+
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -90,6 +102,16 @@ const HorizontalCards = ({ data }) => {
       const clone = [...products];
       clone[index] = updated;
       setData(clone);
+
+      setTimeout(() => {
+        const old = products[index];
+        const updated = { ...old, isLoad: false };
+        const clone = [...products];
+        clone[index] = updated;
+        setData(clone);
+      }, 5000);
+
+
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -214,11 +236,11 @@ const HorizontalCards = ({ data }) => {
             center
             middle
             flex={false}>
-            {/* {item.isLoad ? (
+            {item.isLoad ? (
               <ActivityIndicator size="small" color="#fff" />
-            ) : ( */}
+            ) : (
               <MaterialIcon name="shopping-bag" size={20} color="#fff" />
-            {/* )} */}
+             )}
           </CustomButton>
         </Block>
       </CustomButton>

@@ -186,7 +186,7 @@ const Wishlist = () => {
                 rating={item.rating || 0}
                 containerStyle={{ width: wp(20) }}
               />
-              
+
             </Block>
             {/* <CustomButton
               onPress={() => addToCart(item, index)}
@@ -226,21 +226,21 @@ const Wishlist = () => {
                 />
               </CustomButton>
             )}
-              <CustomButton
-            onPress={() => addToCart(item, index)}
-            secondary
-            style={{ marginTop:40,marginRight:30 }}
-            padding={[hp(1)]}
-            borderRadius={20}
-            center
-            right
-            flex={false}>
-            {item.isAddtoCart ? (
-              <ActivityIndicator size="small" color="#fff" />
-            ) : (
-              <MaterialIcon name="shopping-bag" size={20} color="#fff" />
-            )}
-          </CustomButton>
+            <CustomButton
+              onPress={() => addToCart(item, index)}
+              secondary
+              style={{ marginTop: 40, marginRight: 30 }}
+              padding={[hp(1)]}
+              borderRadius={20}
+              center
+              right
+              flex={false}>
+              {item.isAddtoCart ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <MaterialIcon name="shopping-bag" size={20} color="#fff" />
+              )}
+            </CustomButton>
             <Block alignSelf="center" middle margin={[-hp(2), 0, 0, 0]}>
               <ImageComponent
                 name="right_arrow_icon"
@@ -256,9 +256,15 @@ const Wishlist = () => {
   };
   const _renderEmpty = () => {
     return (
-      <Block style={{ height: hp(20) }} center middle>
-        <Text size={14}>You have no items in your wish list.</Text>
-      </Block>
+      strictValidObjectWithKeys(userProfile) ?
+        <Block style={{ height: hp(20) }} center middle>
+          <Text size={14}>You have no items in your wish list.</Text>
+        </Block>
+        :
+        <Block style={{ height: hp(20) }} center middle>
+          <Text size={14}>Click here login to access wishlist.</Text>
+        </Block>
+
     );
   };
   return (
@@ -294,10 +300,10 @@ const Wishlist = () => {
             renderItem={_renderItem}
           />
           <Button
-            onPress={() => nav.navigate('DashboardLogo')}
+            onPress={() => strictValidObjectWithKeys(userProfile) ? nav.navigate('DashboardLogo') : nav.navigate('Login')}
             style={{ marginTop: t2 }}
-            color="secondary">
-            Continue Shopping
+            color="secondary">{strictValidObjectWithKeys(userProfile) ? ' Continue Shopping' : 'Login' }
+            
           </Button>
         </Block>
         <Footer images={false} />

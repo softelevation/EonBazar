@@ -37,6 +37,9 @@ import EditProfile from '../screens/auth/edit-profile';
 import SearchList from '../screens/dashboard/advance-search/list';
 import Payment from '../screens/payment/payment';
 
+import SubCategory from '../screens/category/subcategory'
+
+
 const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -78,6 +81,7 @@ function Routes() {
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
         <RootStack.Screen name="Details" component={Details} />
         <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
+        <RootStack.Screen name="SubCategory" component={SubCategory} />
         <RootStack.Screen name="SearchList" component={SearchList} />
         <RootStack.Screen name="Payment" component={PaymentModal} />
       </RootStack.Navigator>
@@ -105,6 +109,7 @@ function Routes() {
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
         <RootStack.Screen name="Details" component={Details} />
         <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
+        <RootStack.Screen name="SubCategory" component={SubCategory} />
         <RootStack.Screen name="EditProfile" component={EditProfile} />
         <RootStack.Screen name="SearchList" component={SearchList} />
         <RootStack.Screen name="Payment" component={PaymentModal} />
@@ -133,6 +138,7 @@ function Routes() {
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
         <RootStack.Screen name="Details" component={Details} />
         <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
+        <RootStack.Screen name="SubCategory" component={SubCategory} />
         <RootStack.Screen name="SearchList" component={SearchList} />
         <RootStack.Screen name="Payment" component={PaymentModal} />
       </RootStack.Navigator>
@@ -162,6 +168,7 @@ function Routes() {
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
         <RootStack.Screen name="Details" component={Details} />
         <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
+        <RootStack.Screen name="SubCategory" component={SubCategory} />
         <RootStack.Screen name="Login" component={Login} />
         <RootStack.Screen name="SearchList" component={SearchList} />
         <RootStack.Screen name="Payment" component={PaymentModal} />
@@ -176,7 +183,7 @@ function Routes() {
         }}
         initialRouteName="Category"
         headerMode="none">
-        <RootStack.Screen name="Category" component={Category} />
+        <RootStack.Screen name="Category" component={Category} />       
         <RootStack.Screen name="NewCustomer" component={NewCustomer} />
         <RootStack.Screen name="Faq" component={Faq} />
         <RootStack.Screen name="Terms" component={Terms} />
@@ -190,6 +197,7 @@ function Routes() {
         <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
         <RootStack.Screen name="Details" component={Details} />
         <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
+        <RootStack.Screen name="SubCategory" component={SubCategory} />
         <RootStack.Screen name="SearchList" component={SearchList} />
         <RootStack.Screen name="Payment" component={PaymentModal} />
       </RootStack.Navigator>
