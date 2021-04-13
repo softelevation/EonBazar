@@ -41,7 +41,7 @@ const Login = ({ route }) => {
   const renderNavigations = () => {
     return (
       <Block padding={[hp(2), wp(7), hp(2), wp(7)]} flex={false}>
-        <CustomButton
+        {/* <CustomButton
           onPress={() => Alert.alert('Please login first')}
           margin={[hp(0.7), 0, 0, 0]}
           flex={false}
@@ -62,7 +62,7 @@ const Login = ({ route }) => {
           <Text margin={[0, 0, 0, wp(1)]} transform="uppercase" body>
             My Order
           </Text>
-        </CustomButton>
+        </CustomButton> */}
         <CustomButton
           onPress={() => nav.navigate('Help')}
           margin={[hp(0.7), 0, 0, 0]}

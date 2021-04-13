@@ -5,7 +5,7 @@ import {
 } from 'react-native-responsive-screen';
 import { Block, CustomButton, ImageComponent, Text } from '../components';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { FlatList } from 'react-native';
+import { Alert, FlatList } from 'react-native';
 import { DrawerData, DrawerGusetUserData } from '../utils/static-data';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -38,19 +38,55 @@ const DrawerScreen = () => {
     }
   };
 
+
+  const showAlert =async () => {
+    Alert.alert(
+      "",
+      "Are you sure you want to logout?",
+      [
+        {
+          text: "No",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Yes", onPress: () => logoutFun() }
+      ],
+      { cancelable: false }
+    );
+  }
+
+
+  const logoutFun = async() => {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      await AsyncStorage.multiRemove(keys);
+      nav.dispatch(DrawerActions.closeDrawer());
+      dispatch(loginSuccess(''));
+      dispatch(profileFlush());
+      // setTimeout(() => { alert('Logout Successfully...') }, 2000)
+      nav.reset({
+        routes: [{ name: 'Login' }],
+      });
+    } catch (error) { }
+  }
+
+
   const navigateHelpers = async (val) => {
     if (val === 'Logout') {
-      try {
-        const keys = await AsyncStorage.getAllKeys();
-        await AsyncStorage.multiRemove(keys);
-        nav.dispatch(DrawerActions.closeDrawer());
-        dispatch(loginSuccess(''));
-        dispatch(profileFlush());
-        setTimeout(() => { alert('Logout Successfully...') }, 2000)
-        nav.reset({
-          routes: [{ name: 'Login' }],
-        });
-      } catch (error) { }
+
+       showAlert();
+
+      // try {
+      //   const keys = await AsyncStorage.getAllKeys();
+      //   await AsyncStorage.multiRemove(keys);
+      //   nav.dispatch(DrawerActions.closeDrawer());
+      //   dispatch(loginSuccess(''));
+      //   dispatch(profileFlush());
+      //   setTimeout(() => { alert('Logout Successfully...') }, 2000)
+      //   nav.reset({
+      //     routes: [{ name: 'Login' }],
+      //   });
+      // } catch (error) { }
     } else if (val === 'Profile' || val === 'YourOrder' || val === 'Wishlist') {
       if (strictValidObjectWithKeys(user)) {
         nav.navigate(val);

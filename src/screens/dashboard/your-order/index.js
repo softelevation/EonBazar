@@ -162,7 +162,7 @@ const YourOrder = () => {
         />
       </ScrollView>
       <Block flex={false} margin={[t1, w4]}>
-        <Button onPress={() => nav.navigate('Dashboard')} color="secondary">
+        <Button onPress={() => nav.navigate('DashboardLogo')} color="secondary">
           Start Shopping
         </Button>
       </Block>

@@ -113,11 +113,14 @@ const Details = ({
       Alert.alert('Error', 'Please login First');
     }
   };
-  console.log(Number(qty * item.price_info).toFixed(2));
   const onBuyNow = () => {
+    console.log("====>>>>",Number(qty * item.price_info, 0).toFixed(2));
+    console.log("====>>>>",cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2))
+
+
     if (strictValidObjectWithKeys(userProfile)) {
       nav.navigate('Shipping', {
-        price: Number(qty * item.price_info).toFixed(2),
+        price: Number(qty * item.price_info, 0).toFixed(2),
       });
     } else {
       nav.navigate('Login');

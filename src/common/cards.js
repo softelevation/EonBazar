@@ -123,6 +123,7 @@ const Cards = ({data, maxHeight}) => {
     }
   };
   const addToWishlist = async (val, index) => {
+   // alert('sssss')
     if (strictValidObjectWithKeys(userProfile)) {
       const old = products[index];
       const updated = {...old, isWishlist: true};
@@ -132,7 +133,10 @@ const Cards = ({data, maxHeight}) => {
       const id = val.id;
       await dispatch(updateWishlistRequest(id));
     } else {
-      Alert.alert('Error', 'Please login First');
+      nav.reset({
+        routes: [{ name: 'Login' }],
+      });
+     // Alert.alert('Error', 'Please login First');
     }
   };
 

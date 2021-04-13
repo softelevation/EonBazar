@@ -132,7 +132,10 @@ const HorizontalCards = ({ data }) => {
       const id = val.id;
       await dispatch(updateWishlistRequest(id));
     } else {
-      Alert.alert('Error', 'Please login First');
+      nav.reset({
+        routes: [{ name: 'Login' }],
+      });
+   //   Alert.alert('Error', 'Please login First');
     }
   };
 

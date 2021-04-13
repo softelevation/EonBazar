@@ -181,7 +181,8 @@ const Shipping = ({
     const data = {
       addressInformation: {
         shipping_address: {
-          region: `${values.region} - ${State}`,
+          // region: `${values.region} - ${State}`,
+          region: State ? State : 'Dhaka',
           region_id: region,
           country_id: 'BD',
           street: [values.streetAddress, values.streetAddress2],
@@ -194,7 +195,8 @@ const Shipping = ({
           telephone: values.mobile,
         },
         billing_address: {
-          region: `${values.region} - ${State}`,
+          // region: `${values.region} - ${State}`,
+          region: State ? State : 'Dhaka',
           region_id: region,
           country_id: 'BD',
           street: [values.streetAddress, values.streetAddress2],
@@ -211,7 +213,6 @@ const Shipping = ({
         shipping_method_code: values.method_code,
       },
     };
-    console.log(JSON.stringify(savedata))
     //updateAddress (data);
     // const savedata = {
     const savedata = {
@@ -233,7 +234,8 @@ const Shipping = ({
             "customer_id": userData.id,
             "region": {
               "region_code": region,
-              "region": `${values.region} - ${State}`,
+              // "region": `${values.region} - ${State}`,
+              region: State ? State : 'Dhaka',
               "region_id": region
             },
             "region_id": region,
@@ -252,11 +254,12 @@ const Shipping = ({
     }
 
     dispatch(updateProfileRequest(savedata));
-    // setTimeout(() => {
-    //   listClick(), global.shippingAddress = data;
-    // }, 2000);
+    dispatch(addShippingRequest(data));
 
-     dispatch(addShippingRequest(data));
+    console.log("=======>>>>", JSON.stringify(data))
+
+    console.log('savedata=========>>>>',JSON.stringify(savedata))
+
 
   }
 
@@ -379,7 +382,7 @@ const Shipping = ({
     console.log("===>>", data)
 
     // global.shippingAddress || global.shippingAddress != '' ?
-     dispatch(addShippingRequest(data))
+    dispatch(addShippingRequest(data))
     //   null
 
   }
@@ -462,11 +465,11 @@ const Shipping = ({
                   <Text margin={[t2, 0]} bold transform="uppercase">
                     Shipping Address
                 </Text>
-                {strictValidNumber(values.district)?
-                  <Text margin={[t1, 0, 0]} body color="#636363">
-                    {'Select District'}
-                  </Text>:null}
-                  {strictValidNumber(values.district)?<RNPickerSelect
+                  {strictValidNumber(values.district) ?
+                    <Text margin={[t1, 0, 0]} body color="#636363">
+                      {'Select District'}
+                    </Text> : null}
+                  {strictValidNumber(values.district) ? <RNPickerSelect
                     placeholder={
                       {
                         // label: '',
@@ -487,10 +490,10 @@ const Shipping = ({
                         value: v.id,
                       }))
                     }
-                  />:null}
-                  {strictValidNumber(values.district)? <Text margin={[t1, 0, 0]} body color="#636363">
+                  /> : null}
+                  {strictValidNumber(values.district) ? <Text margin={[t1, 0, 0]} body color="#636363">
                     {'Select Delievery Area'}
-                  </Text>:null}
+                  </Text> : null}
                   {strictValidNumber(values.district) &&
                     strictValidArrayWithLength(city.items) ? (
                     <>
@@ -517,9 +520,9 @@ const Shipping = ({
                       />
                     </>
                   ) : (
-                    strictValidNumber(values.district)? <Text size={12} errorColor>
+                    strictValidNumber(values.district) ? <Text size={12} errorColor>
                       Please choose another District
-                    </Text>:null
+                    </Text> : null
                   )}
                   <Input
                     label="First Name"

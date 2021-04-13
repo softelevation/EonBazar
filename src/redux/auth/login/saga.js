@@ -44,7 +44,7 @@ export function* loginRequest(action) {
     //       index: 0,
     //       routes: [{ name: 'Dashboard' }]
     //  })
-        Navigation.navigate('Dashboard');
+        Navigation.navigate('DashboardLogo');
         global.isLoggedIn=false
 
       }
