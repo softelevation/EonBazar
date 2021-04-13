@@ -110,9 +110,9 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const navigateToShipping = () => {
-   // alert(JSON.stringify(userData))
+    // alert(JSON.stringify(userData))
     if (strictValidObjectWithKeys(userData)) {
-            navigation.navigate('Shipping', {
+      navigation.navigate('Shipping', {
         price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
       });
     } else {
@@ -139,7 +139,7 @@ const Dashboard = () => {
           image: a.extension_attributes.image_url,
         });
       });
-      setShowPrice(true)
+    setShowPrice(true)
     setList(newData);
   }, [cart_list]);
   return (
@@ -242,7 +242,7 @@ const Dashboard = () => {
       </ScrollView>
       {/* <View></View> */}
       {/* {strictValidArrayWithLength(cartlist) && ( */}
-      { cartlist.length > 0 && showPrice? <Block
+      { cartlist.length > 0 && showPrice ? <Block
         borderWidth={[0.5, 0, 0, 0]}
         borderColorDeafult
         flex={false}
@@ -260,11 +260,13 @@ const Dashboard = () => {
 
         <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
           <CartButton
-            onPress={() =>  setShowPrice(false)}
+            onPress={() => setShowPrice(false)}
             textStyle={{ textTransform: 'uppercase' }}
             color="primary">
             Continue Shopping
             </CartButton>
+
+
           <CartButton
             onPress={() => {
               navigateToShipping();
@@ -273,6 +275,9 @@ const Dashboard = () => {
             color="secondary">
             Buy Now
             </CartButton>
+          {cartlist.length > 0 ? <View style={{ backgroundColor: 'red', justifyContent: 'center', padding: 5, borderRadius: 10, position: 'absolute', width: 16, height: 16, right: 30, top: 20, }}>
+            <Text center color={'white'} size={10}>{cartlist.length}</Text>
+          </View> : null}
         </Block>
       </Block> : null}
       {/* )} */}

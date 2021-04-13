@@ -53,7 +53,14 @@ const EditProfile = () => {
       mobile: values.mobile,
       websiteId: 1,
     };
-    dispatch(updateProfileRequest(data));
+    if(values.passwordCheck==true){
+      dispatch(updateProfileRequest({data:data,type:'customereditwithotp'}));
+
+    }
+    else{
+      dispatch(updateProfileRequest({data:data,type:'customers/me'}));
+
+    }
     console.log(values, data);
   };
 

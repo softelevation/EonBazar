@@ -35,7 +35,7 @@ const initialState = {
 const SeeAllDetails = () => {
   const dispatch = useDispatch();
   const nav = useNavigation();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(2);
   const [loader, setloader] = useState(false);
   const [state, setstate] = useState(initialState);
   const productsData = useSelector((v) => v.category.productList.data);

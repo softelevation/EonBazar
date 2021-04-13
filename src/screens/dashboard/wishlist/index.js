@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, ScrollView } from 'react-native';
+import { ActivityIndicator, FlatList, ScrollView , View } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -339,6 +339,9 @@ const Wishlist = () => {
             color="secondary">
             Buy Now
             </CartButton>
+            {cartlist.length > 0 ? <View style={{ backgroundColor: 'red', justifyContent: 'center', padding: 5, borderRadius: 10, position: 'absolute', width: 16, height: 16, right: 30, top: 20, }}>
+            <Text center color={'white'} size={10}>{cartlist.length}</Text>
+          </View> : null}
         </Block>
       </Block> : null}
 

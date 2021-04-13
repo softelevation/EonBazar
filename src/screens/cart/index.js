@@ -10,6 +10,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  View
 } from 'react-native';
 import {
   Text,
@@ -390,6 +391,9 @@ const Cart = () => {
               color="secondary">
               Buy Now
             </CartButton>
+            {cartlist.length > 0 ? <View style={{ backgroundColor: 'red', justifyContent: 'center', padding: 5, borderRadius: 10, position: 'absolute', width: 16, height: 16, right: 30, top: 20, }}>
+            <Text center color={'white'} size={10}>{cartlist.length}</Text>
+          </View> : null}
           </Block>
         </Block>
       )}

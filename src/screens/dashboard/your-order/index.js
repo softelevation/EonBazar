@@ -15,6 +15,9 @@ import {myOrderRequest} from '../../../redux/action';
 import ActivityLoader from '../../../components/activityLoader';
 import moment from 'moment';
 import EmptyFile from '../../../components/emptyFile';
+import * as Navigation from '../../../routes/NavigationService';
+
+
 const YourOrder = () => {
   const [toggle, setToggle] = useState();
   const nav = useNavigation();
@@ -162,7 +165,7 @@ const YourOrder = () => {
         />
       </ScrollView>
       <Block flex={false} margin={[t1, w4]}>
-        <Button onPress={() => nav.navigate('DashboardLogo')} color="secondary">
+      <Button onPress={() => Navigation.navigate('Category')} color="secondary">
           Start Shopping
         </Button>
       </Block>
