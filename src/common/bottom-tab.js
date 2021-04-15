@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {
@@ -10,6 +10,9 @@ import {Block, ImageComponent, Text} from '../components';
 import {images} from '../assets';
 import ResponsiveImage from 'react-native-responsive-image';
 import styled from 'styled-components';
+import {useDispatch, useSelector} from 'react-redux';
+import {strictValidObjectWithKeys} from '../utils/commonUtils';
+import {getCartDetailsRequest, guestCartRequest} from '../redux/action';
 
 const styles = StyleSheet.create({
   ButtonContainer: {
@@ -54,6 +57,18 @@ const renderWidth = (type) => {
 };
 
 const BottomTab = ({state, descriptors, navigation}) => {
+  const cart_list = useSelector((v) => v.cart.list.data);
+  const dispatch = useDispatch();
+  const userData = useSelector((v) => v.user.profile.user);
+  const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
+
+  useEffect(() => {
+    if (strictValidObjectWithKeys(userData)) {
+      dispatch(getCartDetailsRequest());
+    } else {
+      dispatch(guestCartRequest(guestCartToken));
+    }
+  }, [userData]);
   return (
     <View style={styles.ButtonContainer}>
       {state.routes.map((route, index) => {
@@ -109,11 +124,32 @@ const BottomTab = ({state, descriptors, navigation}) => {
                   />
                 </CenterIcon>
               ) : (
-                <Icons
-                  source={images[tabImages[label]]}
-                  initHeight={renderHeight(tabImages[label])}
-                  initWidth={renderWidth(tabImages[label])}
-                />
+                <>
+                  <Icons
+                    source={images[tabImages[label]]}
+                    initHeight={renderHeight(tabImages[label])}
+                    initWidth={renderWidth(tabImages[label])}
+                  />
+                  {cart_list.length > 0 &&
+                  tabImages[label] === 'your_order_icon' ? (
+                    <View
+                      style={{
+                        backgroundColor: 'red',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 20,
+                        position: 'absolute',
+                        width: 15,
+                        height: 15,
+                        left: wp(4),
+                        // top: 20,
+                      }}>
+                      <Text center color={'white'} size={10}>
+                        {cart_list.length}
+                      </Text>
+                    </View>
+                  ) : null}
+                </>
               )}
             </>
           </MainView>

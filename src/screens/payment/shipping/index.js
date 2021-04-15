@@ -1,22 +1,22 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import Footer from '../../../common/footer';
 import Header from '../../../common/header';
-import { Block, Button, Input, Text } from '../../../components';
+import {Block, Button, Input, Text} from '../../../components';
 import Checkbox from '../../../components/checkbox';
-import { t1, t2, t4, w3, w5 } from '../../../components/theme/fontsize';
+import {t1, t2, t4, w3, w5} from '../../../components/theme/fontsize';
 import RNPickerSelect from 'react-native-picker-select';
-import { useDispatch, useSelector } from 'react-redux';
-import { generateOtpRequest, updateProfileRequest } from '../../../redux/action';
+import {useDispatch, useSelector} from 'react-redux';
+import {generateOtpRequest, updateProfileRequest} from '../../../redux/action';
 
 import * as yup from 'yup';
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import {
   searchDistrictRequest,
   searchAreaRequest,
@@ -28,10 +28,10 @@ import {
   strictValidNumber,
   strictValidObjectWithKeys,
 } from '../../../utils/commonUtils';
-import { config } from '../../../utils/config';
+import {config} from '../../../utils/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import { color, onChange } from 'react-native-reanimated';
+import {color, onChange} from 'react-native-reanimated';
 
 global.shippingAddress = '';
 const stylesPicker = StyleSheet.create({
@@ -84,7 +84,7 @@ const stylesPicker = StyleSheet.create({
 
 const Shipping = ({
   route: {
-    params: { price },
+    params: {price},
   },
 }) => {
   const dispatch = useDispatch();
@@ -108,8 +108,6 @@ const Shipping = ({
   const [carrier, setCarrier] = useState('');
   const [method, setMethod] = useState('');
 
-
-
   useEffect(() => {
     strictValidArray(district.items) && selectDistrict(1);
     if (strictValidObjectWithKeys(userData)) {
@@ -122,7 +120,6 @@ const Shipping = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   const getShippingAddress = async () => {
     const token = await AsyncStorage.getItem('token');
     const headers = {
@@ -134,11 +131,9 @@ const Shipping = ({
       url: `${config.Api_Url}/V1/customers/me`,
       headers,
     }).then((res) => {
-      setShippingAddress(res.data.addresses)
+      setShippingAddress(res.data.addresses);
     });
   };
-
-
 
   const getShippingCharge = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -216,55 +211,45 @@ const Shipping = ({
     //updateAddress (data);
     // const savedata = {
     const savedata = {
-      "customer": {
-        "group_id": 1,
-        "default_billing": "2",
-        "default_shipping": "2",
-        "created_at": new Date(),
-        "updated_at": new Date(),
-        "created_in": "Default Store View",
-        "email": `${values.mobile}${config.domain_name}`,
-        "firstname": values.firstname,
-        "lastname": values.lastname,
-        "store_id": 1,
-        "website_id": 1,
-        "addresses": [
+      customer: {
+        group_id: 1,
+        default_billing: '2',
+        default_shipping: '2',
+        created_at: new Date(),
+        updated_at: new Date(),
+        created_in: 'Default Store View',
+        email: `${values.mobile}${config.domain_name}`,
+        firstname: values.firstname,
+        lastname: values.lastname,
+        store_id: 1,
+        website_id: 1,
+        addresses: [
           {
-
-            "customer_id": userData.id,
-            "region": {
-              "region_code": region,
+            customer_id: userData.id,
+            region: {
+              region_code: region,
               // "region": `${values.region} - ${State}`,
               region: State ? State : 'Dhaka',
-              "region_id": region
+              region_id: region,
             },
-            "region_id": region,
-            "country_id": "BD",
-            "street": [values.streetAddress, values.streetAddress2],
-            "telephone": values.mobile,
-            "postcode": values.postalCode,
-            "city": values.city,
-            "firstname": values.firstname,
-            "lastname": values.lastname,
-            "default_shipping": true,
-            "default_billing": true
-          }
-        ]
-      }
-    }
+            region_id: region,
+            country_id: 'BD',
+            street: [values.streetAddress, values.streetAddress2],
+            telephone: values.mobile,
+            postcode: values.postalCode,
+            city: values.city,
+            firstname: values.firstname,
+            lastname: values.lastname,
+            default_shipping: true,
+            default_billing: true,
+          },
+        ],
+      },
+    };
 
     dispatch(updateProfileRequest(savedata));
     dispatch(addShippingRequest(data));
-
-    console.log("=======>>>>", JSON.stringify(data))
-
-    console.log('savedata=========>>>>',JSON.stringify(savedata))
-
-
-  }
-
-
-
+  };
 
   const updateAddress = async (data) => {
     // alert(JSON.stringify(data))
@@ -296,17 +281,12 @@ const Shipping = ({
           firstname: data.firstname,
           lastname: data.lastname,
           default_shipping: true,
-          default_billing: true
-        }
-      ]
+          default_billing: true,
+        },
+      ],
     };
     dispatch(updateProfileRequest(savedata));
   };
-
-
-
-
-
 
   const selectDistrict = (value) => {
     dispatch(searchAreaRequest(value));
@@ -322,27 +302,23 @@ const Shipping = ({
   };
 
   const listClick = () => {
-    getShippingAddress()
+    getShippingAddress();
     setSelectTab('List');
     setListMainColor('#78A942');
     setListTextColor('#ffffff');
     setShippingMainColor('#ffffff');
     setShippingTextColor('#7D7F86');
-  }
+  };
 
   const shippingClick = () => {
-    setSelectTab('Shipping')
-    setListMainColor('#ffffff')
-    setListTextColor('#7D7F86')
-    setShippingMainColor('#78A942')
-    setShippingTextColor('#ffffff')
-  }
-
+    setSelectTab('Shipping');
+    setListMainColor('#ffffff');
+    setListTextColor('#7D7F86');
+    setShippingMainColor('#78A942');
+    setShippingTextColor('#ffffff');
+  };
 
   const listPress = (item) => {
-
-    console.log(item)
-
     const data = {
       addressInformation: {
         shipping_address: {
@@ -374,19 +350,12 @@ const Shipping = ({
         },
         shipping_carrier_code: carrier ? carrier : 'freeshipping',
         shipping_method_code: method ? method : 'freeshipping',
-      }
-
-    }
-
-
-    console.log("===>>", data)
-
+      },
+    };
     // global.shippingAddress || global.shippingAddress != '' ?
-    dispatch(addShippingRequest(data))
+    dispatch(addShippingRequest(data));
     //   null
-
-  }
-
+  };
 
   return (
     <Block>
@@ -440,281 +409,382 @@ const Shipping = ({
           dirty,
         }) => {
           return (
-            <View style={{ flex: 1 }}>
-              <View style={{ marginTop: 20, marginLeft: 5, marginRight: 5, flexDirection: 'row', height: 45, borderRadius: 100, backgroundColor: '#ffffff', borderWidth: 0, borderColor: 'red' }}>
-                <TouchableOpacity style={[stylesPicker.inputBox, { flex: 1, borderWidth: 0, borderColor: 'transparent', backgroundColor: shippingMainColor, justifyContent: 'center', borderTopRightRadius: 0, borderBottomRightRadius: 0 }]} onPress={() => shippingClick()}>
-                  <Text style={{ textAlign: 'center', color: shippingTextColor, fontSize: 14, }}>Shipping Address</Text>
+            <View style={{flex: 1}}>
+              <View
+                style={{
+                  marginTop: 20,
+                  marginLeft: 5,
+                  marginRight: 5,
+                  flexDirection: 'row',
+                  height: 45,
+                  borderRadius: 100,
+                  backgroundColor: '#ffffff',
+                  borderWidth: 0,
+                  borderColor: 'red',
+                }}>
+                <TouchableOpacity
+                  style={[
+                    stylesPicker.inputBox,
+                    {
+                      flex: 1,
+                      borderWidth: 0,
+                      borderColor: 'transparent',
+                      backgroundColor: shippingMainColor,
+                      justifyContent: 'center',
+                      borderTopRightRadius: 0,
+                      borderBottomRightRadius: 0,
+                    },
+                  ]}
+                  onPress={() => shippingClick()}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: shippingTextColor,
+                      fontSize: 14,
+                    }}>
+                    Shipping Address
+                  </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={[stylesPicker.inputBox, { borderColor: 'transparent', flex: 1, borderWidth: 0, backgroundColor: listMainColor, justifyContent: 'center', }]} onPress={() => listClick()}>
-                  <Text style={{ textAlign: 'center', color: listTextColor, fontSize: 14, }}>Billing  Address</Text>
+                <TouchableOpacity
+                  style={[
+                    stylesPicker.inputBox,
+                    {
+                      borderColor: 'transparent',
+                      flex: 1,
+                      borderWidth: 0,
+                      backgroundColor: listMainColor,
+                      justifyContent: 'center',
+                    },
+                  ]}
+                  onPress={() => listClick()}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: listTextColor,
+                      fontSize: 14,
+                    }}>
+                    Billing Address
+                  </Text>
                 </TouchableOpacity>
               </View>
 
-              {selectTab == 'Shipping' ? <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
-                <Block margin={[t2, w5]}>
-                  <Text size={24} height={40} bold>
-                    Estimated Total
-                </Text>
-                  <Text bold>
-                    {currency} {price}
-                  </Text>
-                </Block>
+              {selectTab == 'Shipping' ? (
+                <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+                  <Block margin={[t2, w5]}>
+                    <Text size={24} height={40} bold>
+                      Estimated Total
+                    </Text>
+                    <Text bold>
+                      {currency} {price}
+                    </Text>
+                  </Block>
 
-                <Block white padding={[t2]} margin={[t1, w3]}>
-                  <Text margin={[t2, 0]} bold transform="uppercase">
-                    Shipping Address
-                </Text>
-                  {strictValidNumber(values.district) ?
-                    <Text margin={[t1, 0, 0]} body color="#636363">
-                      {'Select District'}
-                    </Text> : null}
-                  {strictValidNumber(values.district) ? <RNPickerSelect
-                    placeholder={
-                      {
-                        // label: '',
-                      }
-                    }
-                    useNativeAndroidPickerStyle={false}
-                    value={values.district}
-                    mode="dropdown"
-                    style={stylesPicker}
-                    onValueChange={(value) => {
-                      setFieldValue('district', value);
-                      selectDistrict(value);
-                    }}
-                    items={
-                      strictValidArray(district.items) &&
-                      district.items.map((v) => ({
-                        label: v.name,
-                        value: v.id,
-                      }))
-                    }
-                  /> : null}
-                  {strictValidNumber(values.district) ? <Text margin={[t1, 0, 0]} body color="#636363">
-                    {'Select Delievery Area'}
-                  </Text> : null}
-                  {strictValidNumber(values.district) &&
-                    strictValidArrayWithLength(city.items) ? (
-                    <>
+                  <Block white padding={[t2]} margin={[t1, w3]}>
+                    <Text margin={[t2, 0]} bold transform="uppercase">
+                      Shipping Address
+                    </Text>
+                    {strictValidNumber(values.district) ? (
+                      <Text margin={[t1, 0, 0]} body color="#636363">
+                        {'Select District'}
+                      </Text>
+                    ) : null}
+                    {strictValidNumber(values.district) ? (
                       <RNPickerSelect
                         placeholder={
                           {
-                            // label: 'Select City',
+                            // label: '',
                           }
                         }
                         useNativeAndroidPickerStyle={false}
+                        value={values.district}
+                        mode="dropdown"
                         style={stylesPicker}
-                        value={values.region}
                         onValueChange={(value) => {
-                          setFieldValue('region', value);
-                          selectCity(value);
+                          setFieldValue('district', value);
+                          selectDistrict(value);
                         }}
                         items={
-                          strictValidArray(city.items) &&
-                          city.items.map((a) => ({
-                            label: `${a.name} - ${State}`,
-                            value: `${a.name}`,
+                          strictValidArray(district.items) &&
+                          district.items.map((v) => ({
+                            label: v.name,
+                            value: v.id,
                           }))
                         }
                       />
-                    </>
-                  ) : (
-                    strictValidNumber(values.district) ? <Text size={12} errorColor>
-                      Please choose another District
-                    </Text> : null
-                  )}
-                  <Input
-                    label="First Name"
-                    value={values.firstname}
-                    onChangeText={handleChange('firstname')}
-                    onBlur={() => setFieldTouched('firstname')}
-                    error={touched.firstname && errors.firstname}
-                    errorText={touched.firstname && errors.firstname}
-                  />
-                  <Input
-                    label="Last Name"
-                    value={values.lastname}
-                    onChangeText={handleChange('lastname')}
-                    onBlur={() => setFieldTouched('lastname')}
-                    error={touched.lastname && errors.lastname}
-                    errorText={touched.lastname && errors.lastname}
-                  />
-                  <Input
-                    label="Company"
-                    value={values.company}
-                    onChangeText={handleChange('company')}
-                    onBlur={() => setFieldTouched('company')}
-                    error={touched.company && errors.company}
-                    errorText={touched.company && errors.company}
-                  />
-                  <Input
-                    label="Street Address"
-                    value={values.streetAddress}
-                    onChangeText={handleChange('streetAddress')}
-                    onBlur={() => setFieldTouched('streetAddress')}
-                    error={touched.streetAddress && errors.streetAddress}
-                    errorText={touched.streetAddress && errors.streetAddress}
-                  />
-                  <Input
-                    value={values.streetAddress2}
-                    onChangeText={handleChange('streetAddress2')}
-                    onBlur={() => setFieldTouched('streetAddress2')}
-                    error={touched.streetAddress2 && errors.streetAddress2}
-                    errorText={touched.streetAddress2 && errors.streetAddress2}
-                  />
-                  <Input
-                    label="City"
-                    value={values.city}
-                    onChangeText={handleChange('city')}
-                    onBlur={() => setFieldTouched('city')}
-                    error={touched.city && errors.city}
-                    errorText={touched.city && errors.city}
-                  />
-                  <Input
-                    label="Zip / Postal Code"
-                    value={values.postalCode}
-                    onChangeText={handleChange('postalCode')}
-                    onBlur={() => setFieldTouched('postalCode')}
-                    error={touched.postalCode && errors.postalCode}
-                    errorText={touched.postalCode && errors.postalCode}
-                    keyboardType="number-pad"
-                  />
-                  <Input
-                    label="Country"
-                    value={values.country}
-                    onChangeText={handleChange('country')}
-                    onBlur={() => setFieldTouched('country')}
-                    error={touched.country && errors.country}
-                    errorText={touched.country && errors.country}
-                    editable={false}
-                  />
-                  <Input
-                    label="Phone Number"
-                    value={values.mobile}
-                    onChangeText={handleChange('mobile')}
-                    onBlur={() => setFieldTouched('mobile')}
-                    error={touched.mobile && errors.mobile}
-                    errorText={touched.mobile && errors.mobile}
-                    keyboardType="number-pad"
-                  />
-                  <Text size={12}>Please add number without country code</Text>
-                  <Block margin={[t4, 0, 0, 0]}>
-                    <Text transform="uppercase" bold>
-                      Shipping Charge
-                  </Text>
-                    {shipping.map((a) => {
-                      return (
-                        <Block
-                          margin={[t2, 0, 0, 0]}
-                          row
-                          space={'between'}
-                          center>
-                          <Checkbox
-                            checkboxStyle={checkboxStyle}
-                            labelStyle={labelStyle}
-                            label={`BDT ${a.amount.toFixed(2)}`}
-                            checked={a.carrier_code === values.shipping}
-                            onChange={(b) => {
-                              setFieldValue('shipping', a.carrier_code);
-                              setFieldValue('method_code', a.method_code);
-                            }}
-                          />
-                          <Text size={12}>{a.method_title}</Text>
-                          <Text
-                            style={{ width: widthPercentageToDP(27) }}
-                            size={12}>
-                            {a.carrier_title}
-                          </Text>
-                        </Block>
-                      );
-                    })}
-                    {touched.firstname && errors.firstname && (
-                      <Text size={12} errorColor>
-                        {touched.firstname && errors.firstname}
+                    ) : null}
+                    {strictValidNumber(values.district) ? (
+                      <Text margin={[t1, 0, 0]} body color="#636363">
+                        {'Select Delievery Area'}
                       </Text>
-                    )}
-                    <Button
-                      isLoading={isLoad}
-                      // disabled={!isValid || !dirty}
-                      onPress={handleSubmit}
-                      style={buttonStyle}
-                      color="secondary">
-                      Next
-                  </Button>
-                  </Block>
-                </Block>
-                <Footer images={false} />
-              </KeyboardAwareScrollView>
-
-
-                :
-                <View style={{ flex: 1, marginTop: 10 }}>
-                  {shippingAddress ? <FlatList
-                    data={shippingAddress}
-                    renderItem={({ item, index }) =>
-                      <View style={{ backgroundColor: 'white', margin: 20, marginTop: 10, marginBottom: 10, padding: 15, borderRadius: 20 }}>
-                        <Text style={stylesPicker.itemStyle}>{item.firstname + ' ' + item.lastname}</Text>
-                        <Text style={stylesPicker.itemStyle}>Mobile No: {item.telephone}</Text>
-                        <Text style={stylesPicker.itemStyle}>City: {item.city}</Text>
-                        <Text style={stylesPicker.itemStyle}>Street Address: {item.street}</Text>
-                        <Text style={stylesPicker.itemStyle}>Postcode: {item.postcode}</Text>
-
-
-                        <Block margin={[t4, 0, 0, 0]}>
-                          <Text transform="uppercase" bold>
-                            Shipping Charge
-                  </Text>
-                          {shipping.map((a) => {
-                            return (
-                              <Block
-                                margin={[t2, 0, 0, 0]}
-                                row
-                                space={'between'}
-                                center>
-                                <Checkbox
-                                  checkboxStyle={checkboxStyle}
-                                  labelStyle={labelStyle}
-                                  label={`BDT ${a.amount.toFixed(2)}`}
-                                  checked={a.carrier_code === values.shipping}
-                                  onChange={(b) => {
-                                    setFieldValue('shipping', a.carrier_code);
-                                    setFieldValue('method_code', a.method_code);
-                                    setCarrier(a.carrier_code)
-                                    setMethod(a.method_code)
-                                  }}
-                                />
-                                <Text size={12}>{a.method_title}</Text>
-                                <Text
-                                  style={{ width: widthPercentageToDP(27) }}
-                                  size={12}>
-                                  {a.carrier_title}
-                                </Text>
-                              </Block>
-                            );
-                          })}
-                          {touched.firstname && errors.firstname && (
-                            <Text size={12} errorColor>
-                              {touched.firstname && errors.firstname}
+                    ) : null}
+                    {strictValidNumber(values.district) &&
+                    strictValidArrayWithLength(city.items) ? (
+                      <>
+                        <RNPickerSelect
+                          placeholder={
+                            {
+                              // label: 'Select City',
+                            }
+                          }
+                          useNativeAndroidPickerStyle={false}
+                          style={stylesPicker}
+                          value={values.region}
+                          onValueChange={(value) => {
+                            setFieldValue('region', value);
+                            selectCity(value);
+                          }}
+                          items={
+                            strictValidArray(city.items) &&
+                            city.items.map((a) => ({
+                              label: `${a.name} - ${State}`,
+                              value: `${a.name}`,
+                            }))
+                          }
+                        />
+                      </>
+                    ) : strictValidNumber(values.district) ? (
+                      <Text size={12} errorColor>
+                        Please choose another District
+                      </Text>
+                    ) : null}
+                    <Input
+                      label="First Name"
+                      value={values.firstname}
+                      onChangeText={handleChange('firstname')}
+                      onBlur={() => setFieldTouched('firstname')}
+                      error={touched.firstname && errors.firstname}
+                      errorText={touched.firstname && errors.firstname}
+                    />
+                    <Input
+                      label="Last Name"
+                      value={values.lastname}
+                      onChangeText={handleChange('lastname')}
+                      onBlur={() => setFieldTouched('lastname')}
+                      error={touched.lastname && errors.lastname}
+                      errorText={touched.lastname && errors.lastname}
+                    />
+                    <Input
+                      label="Company"
+                      value={values.company}
+                      onChangeText={handleChange('company')}
+                      onBlur={() => setFieldTouched('company')}
+                      error={touched.company && errors.company}
+                      errorText={touched.company && errors.company}
+                    />
+                    <Input
+                      label="Street Address"
+                      value={values.streetAddress}
+                      onChangeText={handleChange('streetAddress')}
+                      onBlur={() => setFieldTouched('streetAddress')}
+                      error={touched.streetAddress && errors.streetAddress}
+                      errorText={touched.streetAddress && errors.streetAddress}
+                    />
+                    <Input
+                      value={values.streetAddress2}
+                      onChangeText={handleChange('streetAddress2')}
+                      onBlur={() => setFieldTouched('streetAddress2')}
+                      error={touched.streetAddress2 && errors.streetAddress2}
+                      errorText={
+                        touched.streetAddress2 && errors.streetAddress2
+                      }
+                    />
+                    <Input
+                      label="City"
+                      value={values.city}
+                      onChangeText={handleChange('city')}
+                      onBlur={() => setFieldTouched('city')}
+                      error={touched.city && errors.city}
+                      errorText={touched.city && errors.city}
+                    />
+                    <Input
+                      label="Zip / Postal Code"
+                      value={values.postalCode}
+                      onChangeText={handleChange('postalCode')}
+                      onBlur={() => setFieldTouched('postalCode')}
+                      error={touched.postalCode && errors.postalCode}
+                      errorText={touched.postalCode && errors.postalCode}
+                      keyboardType="number-pad"
+                    />
+                    <Input
+                      label="Country"
+                      value={values.country}
+                      onChangeText={handleChange('country')}
+                      onBlur={() => setFieldTouched('country')}
+                      error={touched.country && errors.country}
+                      errorText={touched.country && errors.country}
+                      editable={false}
+                    />
+                    <Input
+                      label="Phone Number"
+                      value={values.mobile}
+                      onChangeText={handleChange('mobile')}
+                      onBlur={() => setFieldTouched('mobile')}
+                      error={touched.mobile && errors.mobile}
+                      errorText={touched.mobile && errors.mobile}
+                      keyboardType="number-pad"
+                    />
+                    <Text size={12}>
+                      Please add number without country code
+                    </Text>
+                    <Block margin={[t4, 0, 0, 0]}>
+                      <Text transform="uppercase" bold>
+                        Shipping Charge
+                      </Text>
+                      {shipping.map((a) => {
+                        return (
+                          <Block
+                            margin={[t2, 0, 0, 0]}
+                            row
+                            space={'between'}
+                            center>
+                            <Checkbox
+                              checkboxStyle={checkboxStyle}
+                              labelStyle={labelStyle}
+                              label={`BDT ${a.amount.toFixed(2)}`}
+                              checked={a.carrier_code === values.shipping}
+                              onChange={(b) => {
+                                setFieldValue('shipping', a.carrier_code);
+                                setFieldValue('method_code', a.method_code);
+                              }}
+                            />
+                            <Text size={12}>{a.method_title}</Text>
+                            <Text
+                              style={{width: widthPercentageToDP(27)}}
+                              size={12}>
+                              {a.carrier_title}
                             </Text>
-                          )}
-                          <TouchableOpacity onPress={listPress.bind(this, item)} style={[stylesPicker.inputBox, { margin: 15, borderColor: 'transparent', flex: 1, borderWidth: 0, backgroundColor: '#78A942', justifyContent: 'center', }]}>
-                            <Text style={{ textAlign: 'center', color: 'white', fontSize: 14, }}>Next</Text>
-                          </TouchableOpacity>
-                        </Block>
+                          </Block>
+                        );
+                      })}
+                      {touched.firstname && errors.firstname && (
+                        <Text size={12} errorColor>
+                          {touched.firstname && errors.firstname}
+                        </Text>
+                      )}
+                      <Button
+                        isLoading={isLoad}
+                        // disabled={!isValid || !dirty}
+                        onPress={handleSubmit}
+                        style={buttonStyle}
+                        color="secondary">
+                        Next
+                      </Button>
+                    </Block>
+                  </Block>
+                  <Footer images={false} />
+                </KeyboardAwareScrollView>
+              ) : (
+                <View style={{flex: 1, marginTop: 10}}>
+                  {shippingAddress ? (
+                    <FlatList
+                      data={shippingAddress}
+                      renderItem={({item, index}) => (
+                        <View
+                          style={{
+                            backgroundColor: 'white',
+                            margin: 20,
+                            marginTop: 10,
+                            marginBottom: 10,
+                            padding: 15,
+                            borderRadius: 20,
+                          }}>
+                          <Text style={stylesPicker.itemStyle}>
+                            {item.firstname + ' ' + item.lastname}
+                          </Text>
+                          <Text style={stylesPicker.itemStyle}>
+                            Mobile No: {item.telephone}
+                          </Text>
+                          <Text style={stylesPicker.itemStyle}>
+                            City: {item.city}
+                          </Text>
+                          <Text style={stylesPicker.itemStyle}>
+                            Street Address: {item.street}
+                          </Text>
+                          <Text style={stylesPicker.itemStyle}>
+                            Postcode: {item.postcode}
+                          </Text>
 
-                      </View>}
-                  // ItemSeparatorComponent={this.renderSeparator}
-                  />
-                    :
-                    <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}>
+                          <Block margin={[t4, 0, 0, 0]}>
+                            <Text transform="uppercase" bold>
+                              Shipping Charge
+                            </Text>
+                            {shipping.map((a) => {
+                              return (
+                                <Block
+                                  margin={[t2, 0, 0, 0]}
+                                  row
+                                  space={'between'}
+                                  center>
+                                  <Checkbox
+                                    checkboxStyle={checkboxStyle}
+                                    labelStyle={labelStyle}
+                                    label={`BDT ${a.amount.toFixed(2)}`}
+                                    checked={a.carrier_code === values.shipping}
+                                    onChange={(b) => {
+                                      setFieldValue('shipping', a.carrier_code);
+                                      setFieldValue(
+                                        'method_code',
+                                        a.method_code,
+                                      );
+                                      setCarrier(a.carrier_code);
+                                      setMethod(a.method_code);
+                                    }}
+                                  />
+                                  <Text size={12}>{a.method_title}</Text>
+                                  <Text
+                                    style={{width: widthPercentageToDP(27)}}
+                                    size={12}>
+                                    {a.carrier_title}
+                                  </Text>
+                                </Block>
+                              );
+                            })}
+                            {touched.firstname && errors.firstname && (
+                              <Text size={12} errorColor>
+                                {touched.firstname && errors.firstname}
+                              </Text>
+                            )}
+                            <TouchableOpacity
+                              onPress={listPress.bind(this, item)}
+                              style={[
+                                stylesPicker.inputBox,
+                                {
+                                  margin: 15,
+                                  borderColor: 'transparent',
+                                  flex: 1,
+                                  borderWidth: 0,
+                                  backgroundColor: '#78A942',
+                                  justifyContent: 'center',
+                                },
+                              ]}>
+                              <Text
+                                style={{
+                                  textAlign: 'center',
+                                  color: 'white',
+                                  fontSize: 14,
+                                }}>
+                                Next
+                              </Text>
+                            </TouchableOpacity>
+                          </Block>
+                        </View>
+                      )}
+                      // ItemSeparatorComponent={this.renderSeparator}
+                    />
+                  ) : (
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        flex: 1,
+                        alignItems: 'center',
+                      }}>
                       <Text>No address found</Text>
-                    </View>}
-
-                </View>}
-
+                    </View>
+                  )}
+                </View>
+              )}
             </View>
-
           );
         }}
       </Formik>
@@ -725,6 +795,6 @@ const buttonStyle = {
   width: widthPercentageToDP(50),
   alignSelf: 'center',
 };
-const checkboxStyle = { height: 20, width: 20 };
-const labelStyle = { marginLeft: w3, fontSize: 12 };
+const checkboxStyle = {height: 20, width: 20};
+const labelStyle = {marginLeft: w3, fontSize: 12};
 export default Shipping;

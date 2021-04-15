@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -22,9 +22,9 @@ import {
   Text,
 } from '../../components';
 import Search from '../../components/search';
-import { t1, t2, w2, w3 } from '../../components/theme/fontsize';
+import {t1, t2, w2, w3} from '../../components/theme/fontsize';
 import HeaderCatgoryMenu from '../../common/HeaderCatgoryMenu';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   addToCartRequest,
   addToGuestCartRequest,
@@ -34,11 +34,12 @@ import {
   strictValidArray,
   strictValidObjectWithKeys,
 } from '../../utils/commonUtils';
-import { light } from '../../components/theme/colors';
-import { useNavigation } from '@react-navigation/core';
+import {light} from '../../components/theme/colors';
+import {useNavigation} from '@react-navigation/core';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { config } from '../../utils/config';
+import {config} from '../../utils/config';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import OverlayLoader from '../../components/overlayLoader';
 
 const initialState = {
   data: [],
@@ -53,7 +54,7 @@ const Category = (props) => {
   const [loader, setloader] = useState(false);
   const [showPrice, setShowPrice] = useState(false);
   const [endReached, setEndReached] = useState(false);
-  const { data } = state;
+  const {data} = state;
   const [scrollHeight, setScrollHeight] = useState(0);
   // Reducers Values
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
@@ -69,18 +70,17 @@ const Category = (props) => {
     (v) => v.category.categoryList.data.children_data,
   );
   const quote_id = useSelector((v) => v.cart.cartId.id);
-
+  const overlayLoader = useSelector((v) => v.cart.save.loading);
+  const overlayGuestLoader = useSelector((v) => v.cart.guestsave.loading);
   // Render Menu
 
   const scrollRef = useRef();
   const [menu, setmenu] = useState(saveFiltered.id);
   const [name, setname] = useState(saveFiltered.name);
-
-
+  const [pageSize, setPageSize] = useState(0);
   const cart_list = useSelector((state) => state.cart.list.data);
   const [cartlist, setList] = useState([]);
   const userData = useSelector((state) => state.user.profile.user);
-
 
   const sortingMenu = (val) => {
     //   scrollRef.scrollToEnd()
@@ -89,10 +89,10 @@ const Category = (props) => {
     //   y: scrollHeight,
     //   animated: true
     // });
-    scrollRef.current.scrollToEnd()
+    scrollRef.current.scrollToEnd();
 
     //scrollRef.current && scrollRef.current.scrollIntoView({ behavior: 'smooth' })
-    setstate({ data: [] })
+    setstate({data: []});
     setmenu(val.id);
     setname(val.name);
   };
@@ -152,14 +152,13 @@ const Category = (props) => {
           sku: a.sku,
         });
       });
-    setstate({ ...state, data: data.concat(newData) });
+    setstate({...state, data: data.concat(newData)});
   }, [filteredData]);
-  console.log(filteredData, 'filteredData');
 
   const LoadMoreRandomData = async () => {
     if (data.length <= totalCount && !endReached) {
       await setCurrentPage(currentPage + 1);
-      setEndReached(true)
+      setEndReached(true);
       LoadRandomData();
     }
   };
@@ -167,10 +166,10 @@ const Category = (props) => {
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = data[index];
-      const updated = { ...old, isLoad: true };
+      const updated = {...old, isLoad: true};
       const clone = [...data];
       clone[index] = updated;
-      setstate({ data: clone });
+      setstate({data: clone});
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -179,30 +178,29 @@ const Category = (props) => {
       await dispatch(addToCartRequest(newData));
     } else {
       const old = data[index];
-      const updated = { ...old, isLoad: true };
+      const updated = {...old, isLoad: true};
       const clone = [...data];
       clone[index] = updated;
-      setstate({ data: clone });
+      setstate({data: clone});
       const newData = {
         sku: val.sku,
         qty: val.qty,
         quote_id: guestCartToken,
       };
       await dispatch(
-        addToGuestCartRequest({ token: guestCartToken, items: newData }),
+        addToGuestCartRequest({token: guestCartToken, items: newData}),
       );
     }
-    setShowPrice(true)
+    setShowPrice(true);
   };
 
   const updateQty = (qty, index) => {
     const old = data[index];
-    const updated = { ...old, qty: qty };
+    const updated = {...old, qty: qty};
     const clone = [...data];
     clone[index] = updated;
-    setstate({ data: clone });
-    setShowPrice(true)
-
+    setstate({data: clone});
+    setShowPrice(true);
   };
 
   const renderFooter = () => {
@@ -221,16 +219,14 @@ const Category = (props) => {
     }
   };
 
-
-
   const navigateToShipping = () => {
     if (strictValidObjectWithKeys(userData)) {
       nav.navigate('Shipping', {
         price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
       });
     } else {
-      global.isLoggedIn = true
-      nav.navigate('Login', { isLoggedIn: true });
+      global.isLoggedIn = true;
+      nav.navigate('Login', {isLoggedIn: true});
     }
   };
   useEffect(() => {
@@ -256,11 +252,10 @@ const Category = (props) => {
     setList(newData);
   }, [cart_list]);
 
-
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({item, index}) => {
     return (
       <Block
-        style={{ width: widthPercentageToDP(45), minHeight: hp(35) }}
+        style={{width: widthPercentageToDP(45), minHeight: hp(35)}}
         padding={[hp(2)]}
         margin={[hp(0.5), widthPercentageToDP(1.8)]}
         primary
@@ -306,7 +301,7 @@ const Category = (props) => {
           space={'between'}
           flex={false}>
           <Block
-            style={{ width: widthPercentageToDP(18) }}
+            style={{width: widthPercentageToDP(18)}}
             center
             row
             space={'between'}
@@ -342,7 +337,6 @@ const Category = (props) => {
               <MaterialIcon name="shopping-bag" size={20} color="#fff" />
             )} */}
             <MaterialIcon name="shopping-bag" size={20} color="#fff" />
-
           </CustomButton>
         </Block>
       </Block>
@@ -355,6 +349,7 @@ const Category = (props) => {
         setScrollView(true);
       }}>
       <Header />
+      {(overlayLoader || overlayGuestLoader) && <OverlayLoader />}
       <Block flex={false} padding={[0, w3, 0, w3]}>
         <Search />
       </Block>
@@ -380,7 +375,7 @@ const Category = (props) => {
         ref={scrollRef}
         scrollEnabled={scrollView}
         onScroll={(e) => {
-          setScrollHeight(e.nativeEvent.contentOffset.y)
+          setScrollHeight(e.nativeEvent.contentOffset.y);
         }}
         showsVerticalScrollIndicator={false}>
         <HeaderCatgoryMenu onPress={sortingMenu} color={menu} />
@@ -394,7 +389,9 @@ const Category = (props) => {
           <Text semibold size={15}>
             {name || ''}
           </Text>
-          <ShopByButton style={{ marginTop: 5 }} color="secondary">Shop by</ShopByButton>
+          <ShopByButton style={{marginTop: 5}} color="secondary">
+            Shop by
+          </ShopByButton>
         </Block>
         <Block
           margin={[t2, w2, 0, w2]}
@@ -405,36 +402,16 @@ const Category = (props) => {
           space={'between'}
           flex={false}
           padding={[t1, w3]}>
-          {data && (
-            <Text size={12}>{data && data.length} items</Text>
-          )}
-          <Block center flex={false} row>
-            {/* <Text size={12}>sort by </Text>
-            <RNPickerSelect
-              placeholder={{
-                label: 'position',
-                value: '',
-              }}
-              useNativeAndroidPickerStyle={false}
-              style={dropdownStyle}
-              // value={values.type}
-              // onValueChange={(value) => console.log(value)}
-              mode="dropdown"
-              items={[
-                {label: 'test', value: 'low'},
-                {label: 'test', value: 'medium'},
-                {label: 'test', value: 'higher'},
-              ]}
-            /> */}
-          </Block>
+          {data && <Text size={12}>{data && data.length} items</Text>}
+          <Block center flex={false} row />
         </Block>
         {loading ? (
-          <Block color="transparent" style={{ height: hp(30) }} center middle>
+          <Block color="transparent" style={{height: hp(30)}} center middle>
             <ActivityIndicator color={light.secondary} size="large" />
           </Block>
         ) : (
           <View
-            style={{ flex: 1, }}
+            style={{flex: 1}}
             onStartShouldSetResponderCapture={() => {
               setScrollView(false);
               if (
@@ -454,7 +431,9 @@ const Category = (props) => {
               bounces={false}
               ListFooterComponent={renderFooter}
               maxHeight={500}
-              onMomentumScrollBegin={() => { setEndReached(false) }}
+              onMomentumScrollBegin={() => {
+                setEndReached(false);
+              }}
             />
           </View>
         )}
@@ -463,46 +442,62 @@ const Category = (props) => {
       </ScrollView>
 
       {/* <TouchableOpacity style={{flex:1,borderRadius: 20, height: 80,marginTop:10, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.8, shadowRadius: 2, elevation: 5,flex:1,bottom:0,position:'absolute'}}>
-                
+
                 </TouchableOpacity> */}
-      { cartlist.length > 0 && showPrice ? <Block
-        borderWidth={[0.5, 0, 0, 0]}
-        borderColorDeafult
-        flex={false}
-        primary>
-        <Block center flex={false} row space={'between'} margin={[t2, w3]}>
-          <Text transform="uppercase" bold size={24}>
-            Cart Subtotal :
+      {cartlist.length > 0 && showPrice ? (
+        <Block
+          borderWidth={[0.5, 0, 0, 0]}
+          borderColorDeafult
+          flex={false}
+          primary>
+          <Block center flex={false} row space={'between'} margin={[t2, w3]}>
+            <Text transform="uppercase" bold size={24}>
+              Cart Subtotal :
             </Text>
 
-          <Text bold secondary>
-            BDT{' '}
-            {cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2)}
-          </Text>
-        </Block>
+            <Text bold secondary>
+              BDT{' '}
+              {cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2)}
+            </Text>
+          </Block>
 
-        <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
-          <CartButton
-            onPress={() => nav.navigate('DashboardLogo', setShowPrice(false))}
-            textStyle={{ textTransform: 'uppercase' }}
-            color="primary">
-            Continue Shopping
+          <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
+            <CartButton
+              onPress={() => nav.navigate('DashboardLogo', setShowPrice(false))}
+              textStyle={{textTransform: 'uppercase'}}
+              color="primary">
+              Continue Shopping
             </CartButton>
 
-
-          <CartButton
-            onPress={() => {
-              navigateToShipping();
-            }}
-            textStyle={{ textTransform: 'uppercase' }}
-            color="secondary">
-            Buy Now
+            <CartButton
+              onPress={() => {
+                navigateToShipping();
+              }}
+              textStyle={{textTransform: 'uppercase'}}
+              color="secondary">
+              Buy Now
             </CartButton>
-          {cartlist.length > 0 ? <View style={{ backgroundColor: 'red', justifyContent: 'center', padding: 5, borderRadius: 10, position: 'absolute', width: 16, height: 16, right: 30, top: 20, }}>
-            <Text center color={'white'} size={10}>{cartlist.length}</Text>
-          </View> : null}
+            {cartlist.length > 0 ? (
+              <View
+                style={{
+                  backgroundColor: 'red',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 20,
+                  position: 'absolute',
+                  width: 20,
+                  height: 20,
+                  right: 30,
+                  top: 20,
+                }}>
+                <Text center color={'white'} size={10}>
+                  {cartlist.length}
+                </Text>
+              </View>
+            ) : null}
+          </Block>
         </Block>
-      </Block> : null}
+      ) : null}
     </Block>
   );
 };

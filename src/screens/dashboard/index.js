@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, Dimensions, ScrollView, View } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {ActivityIndicator, Dimensions, ScrollView, View} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -10,14 +10,12 @@ import {
 } from 'react-native-responsive-screen';
 import Banner from '../../common/banner';
 import Header from '../../common/header';
-import {
-  Block, ImageComponent, Text, Button,
-} from '../../components';
+import {Block, ImageComponent, Text, Button} from '../../components';
 import Search from '../../components/search';
 import Footer from '../../common/footer';
 import Cards from '../../common/cards';
 import HeaderMenu from '../../common/headerMenu';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   bannerRequest,
   bestOfferRequest,
@@ -29,15 +27,19 @@ import {
   guestCartRequest,
   topOfferRequest,
 } from '../../redux/action';
-import { strictValidArrayWithLength, strictValidObjectWithKeys, } from '../../utils/commonUtils';
-import { w3, t2 } from '../../components/theme/fontsize';
-import { useNavigation } from '@react-navigation/native';
-import { light } from '../../components/theme/colors';
+import {
+  strictValidArrayWithLength,
+  strictValidObjectWithKeys,
+} from '../../utils/commonUtils';
+import {w3, t2} from '../../components/theme/fontsize';
+import {useNavigation} from '@react-navigation/native';
+import {light} from '../../components/theme/colors';
 import AsyncStorage from '@react-native-community/async-storage';
 import HorizontalCards from '../../common/horizontal-cards';
 import ImageSlider from '../../components/ImageSlider';
 import styled from 'styled-components';
-import { config } from '../../utils/config';
+import {config} from '../../utils/config';
+import OverlayLoader from '../../components/overlayLoader';
 const Dashboard = () => {
   const navigation = useNavigation();
   const [menu, setmenu] = useState('');
@@ -45,6 +47,8 @@ const Dashboard = () => {
   const userData = useSelector((state) => state.user.profile.user);
   const productsData = useSelector((v) => v.category.productList.data);
   const isLoad = useSelector((v) => v.category.productList.loading);
+  const overlayLoader = useSelector((v) => v.cart.save.loading);
+  const overlayGuestLoader = useSelector((v) => v.cart.guestsave.loading);
   const isLoadBanner = useSelector((v) => v.banner.list.loading);
   const bannerData = useSelector((v) => v.banner.list.data);
   const topOffers = useSelector((v) => v.category.top.data.items);
@@ -66,14 +70,13 @@ const Dashboard = () => {
 
   const sortingMenu = (val) => {
     dispatch(filterIdRequest(val));
-    global.dashboard = 'dashboard'
-    navigation.navigate('SubCategory')
+    global.dashboard = 'dashboard';
+    navigation.navigate('SubCategory');
     // navigation.jumpTo('SubCategory');
   };
 
   const checkApi = async () => {
-    const guest_token = await AsyncStorage.getItem('guest-token');
-    if (!guest_token) {
+    if (strictValidObjectWithKeys(userData)) {
       dispatch(GuestCartIDRequest());
     }
   };
@@ -116,8 +119,8 @@ const Dashboard = () => {
         price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
       });
     } else {
-      global.isLoggedIn = true
-      navigation.navigate('Login', { isLoggedIn: true });
+      global.isLoggedIn = true;
+      navigation.navigate('Login', {isLoggedIn: true});
     }
   };
   useEffect(() => {
@@ -139,24 +142,24 @@ const Dashboard = () => {
           image: a.extension_attributes.image_url,
         });
       });
-    setShowPrice(true)
+    setShowPrice(true);
     setList(newData);
   }, [cart_list]);
   return (
     <Block>
       <Header />
-
+      {(overlayLoader || overlayGuestLoader) && <OverlayLoader />}
       <Block flex={false} padding={[0, wp(2), 0, wp(2)]}>
         <Search />
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>
         <HeaderMenu onPress={sortingMenu} color={menu} />
         {isLoadBanner ? (
-          <Block color="transparent" style={{ height: hp(23) }} center middle>
+          <Block color="transparent" style={{height: hp(23)}} center middle>
             <ActivityIndicator color={light.secondary} size="large" />
           </Block>
         ) : (
-          <View style={{ height: 200, width: '100%' }}>
+          <View style={{height: 200, width: '100%'}}>
             <Banner data={bannerData} />
           </View>
         )}
@@ -168,7 +171,7 @@ const Dashboard = () => {
           </Block>
 
           {topOfferLoad ? (
-            <Block color="transparent" style={{ height: hp(30) }} center middle>
+            <Block color="transparent" style={{height: hp(30)}} center middle>
               <ActivityIndicator color={light.secondary} size="large" />
             </Block>
           ) : (
@@ -183,9 +186,9 @@ const Dashboard = () => {
               Best Offers
             </Text>
           </Block>
-
+          {console.log(overlayLoader, 'overlayLoader')}
           {bestOfferLoad ? (
-            <Block color="transparent" style={{ height: hp(30) }} center middle>
+            <Block color="transparent" style={{height: hp(30)}} center middle>
               <ActivityIndicator color={light.secondary} size="large" />
             </Block>
           ) : (
@@ -203,7 +206,7 @@ const Dashboard = () => {
           </Block>
 
           {newOfferLoad ? (
-            <Block color="transparent" style={{ height: hp(30) }} center middle>
+            <Block color="transparent" style={{height: hp(30)}} center middle>
               <ActivityIndicator color={light.secondary} size="large" />
             </Block>
           ) : (
@@ -228,7 +231,7 @@ const Dashboard = () => {
           </Block>
 
           {isLoad ? (
-            <Block color="transparent" style={{ height: hp(30) }} center middle>
+            <Block color="transparent" style={{height: hp(30)}} center middle>
               <ActivityIndicator color={light.secondary} size="large" />
             </Block>
           ) : (
@@ -238,48 +241,63 @@ const Dashboard = () => {
           )}
         </Block>
         <Footer />
-
       </ScrollView>
       {/* <View></View> */}
       {/* {strictValidArrayWithLength(cartlist) && ( */}
-      { cartlist.length > 0 && showPrice ? <Block
-        borderWidth={[0.5, 0, 0, 0]}
-        borderColorDeafult
-        flex={false}
-        primary>
-        <Block center flex={false} row space={'between'} margin={[t2, w3]}>
-          <Text transform="uppercase" bold size={24}>
-            Cart Subtotal :
+      {cartlist.length > 0 && showPrice ? (
+        <Block
+          borderWidth={[0.5, 0, 0, 0]}
+          borderColorDeafult
+          flex={false}
+          primary>
+          <Block center flex={false} row space={'between'} margin={[t2, w3]}>
+            <Text transform="uppercase" bold size={24}>
+              Cart Subtotal :
             </Text>
 
-          <Text bold secondary>
-            BDT{' '}
-            {cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2)}
-          </Text>
-        </Block>
+            <Text bold secondary>
+              BDT{' '}
+              {cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2)}
+            </Text>
+          </Block>
 
-        <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
-          <CartButton
-            onPress={() => setShowPrice(false)}
-            textStyle={{ textTransform: 'uppercase' }}
-            color="primary">
-            Continue Shopping
+          <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
+            <CartButton
+              onPress={() => setShowPrice(false)}
+              textStyle={{textTransform: 'uppercase'}}
+              color="primary">
+              Continue Shopping
             </CartButton>
 
-
-          <CartButton
-            onPress={() => {
-              navigateToShipping();
-            }}
-            textStyle={{ textTransform: 'uppercase' }}
-            color="secondary">
-            Buy Now
+            <CartButton
+              onPress={() => {
+                navigateToShipping();
+              }}
+              textStyle={{textTransform: 'uppercase'}}
+              color="secondary">
+              Buy Now
             </CartButton>
-          {cartlist.length > 0 ? <View style={{ backgroundColor: 'red', justifyContent: 'center', padding: 5, borderRadius: 10, position: 'absolute', width: 16, height: 16, right: 30, top: 20, }}>
-            <Text center color={'white'} size={10}>{cartlist.length}</Text>
-          </View> : null}
+            {cartlist.length > 0 ? (
+              <View
+                style={{
+                  backgroundColor: 'red',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 20,
+                  position: 'absolute',
+                  width: 20,
+                  height: 20,
+                  right: 30,
+                  top: 20,
+                }}>
+                <Text center color={'white'} size={10}>
+                  {cartlist.length}
+                </Text>
+              </View>
+            ) : null}
+          </Block>
         </Block>
-      </Block> : null}
+      ) : null}
       {/* )} */}
     </Block>
   );

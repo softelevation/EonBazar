@@ -146,7 +146,7 @@ const Profile = () => {
                     }}
                   />
                   <Button
-                    onPress={() => nav.navigate('Dashboard')}
+                    onPress={() => nav.navigate('DashboardLogo')}
                     color="secondary">
                     Start Shopping
                   </Button>

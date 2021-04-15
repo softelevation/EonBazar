@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, ScrollView , View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, FlatList, ScrollView, View} from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -18,19 +18,25 @@ import {
   ImageComponent,
   Text,
 } from '../../../components';
-import { t1, t2, w2, w3, w4 } from '../../../components/theme/fontsize';
+import {t1, t2, w2, w3, w4} from '../../../components/theme/fontsize';
 import StarRating from 'react-native-star-rating';
 import Footer from '../../../common/footer';
-import { useDispatch, useSelector } from 'react-redux';
-import { removeWishlistRequest, addToCartRequest, addToGuestCartRequest, wishlistRequest } from '../../../redux/action';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  removeWishlistRequest,
+  addToCartRequest,
+  addToGuestCartRequest,
+  wishlistRequest,
+} from '../../../redux/action';
 import ActivityLoader from '../../../components/activityLoader';
-import { config } from '../../../utils/config';
-import { light } from '../../../components/theme/colors';
+import {config} from '../../../utils/config';
+import {light} from '../../../components/theme/colors';
 import ResponsiveImage from 'react-native-responsive-image';
-import { images } from '../../../assets';
-import { useNavigation } from '@react-navigation/native';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import { strictValidObjectWithKeys } from '../../../utils/commonUtils';
+import {images} from '../../../assets';
+import {useNavigation} from '@react-navigation/native';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import {strictValidObjectWithKeys} from '../../../utils/commonUtils';
+import OverlayLoader from '../../../components/overlayLoader';
 
 const Wishlist = () => {
   const nav = useNavigation();
@@ -48,7 +54,8 @@ const Wishlist = () => {
 
   const cart_list = useSelector((state) => state.cart.list.data);
   const [cartlist, setList] = useState([]);
-
+  const overlayLoader = useSelector((v) => v.cart.save.loading);
+  const overlayGuestLoader = useSelector((v) => v.cart.guestsave.loading);
   useEffect(() => {
     dispatch(wishlistRequest());
   }, []);
@@ -57,8 +64,7 @@ const Wishlist = () => {
     const newData = [];
     wishlist &&
       wishlist.map((a) => {
-        console.log(a, 'A');
-        const { name, special_price, price, thumbnail } = a && a.product;
+        const {name, special_price, price, thumbnail} = a && a.product;
         newData.push({
           qty: 1,
           name: name,
@@ -78,7 +84,7 @@ const Wishlist = () => {
 
   const removeItem = (id, index) => {
     const old = wishlistData[index];
-    const updated = { ...old, isLoad: true };
+    const updated = {...old, isLoad: true};
     const clone = [...wishlistData];
     clone[index] = updated;
     setData(clone);
@@ -87,7 +93,7 @@ const Wishlist = () => {
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = wishlistData[index];
-      const updated = { ...old, isAddtoCart: true };
+      const updated = {...old, isAddtoCart: true};
       const clone = [...wishlistData];
       clone[index] = updated;
       setData(clone);
@@ -99,7 +105,7 @@ const Wishlist = () => {
       await dispatch(addToCartRequest(newData));
     } else {
       const old = wishlistData[index];
-      const updated = { ...old, isAddtoCart: true };
+      const updated = {...old, isAddtoCart: true};
       const clone = [...wishlistData];
       clone[index] = updated;
       setData(clone);
@@ -110,7 +116,7 @@ const Wishlist = () => {
       };
 
       await dispatch(
-        addToGuestCartRequest({ token: guestCartToken, items: newData }),
+        addToGuestCartRequest({token: guestCartToken, items: newData}),
       );
     }
   };
@@ -121,8 +127,8 @@ const Wishlist = () => {
         price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
       });
     } else {
-      global.isLoggedIn = true
-      nav.navigate('Login', { isLoggedIn: true });
+      global.isLoggedIn = true;
+      nav.navigate('Login', {isLoggedIn: true});
     }
   };
   useEffect(() => {
@@ -148,8 +154,8 @@ const Wishlist = () => {
     setList(newData);
   }, [cart_list]);
 
-  const _renderItem = ({ item, index }) => {
-    const { name, special_price, price, image, currency_code } = item;
+  const _renderItem = ({item, index}) => {
+    const {name, special_price, price, image, currency_code} = item;
     return (
       <CustomButton
         onPress={() =>
@@ -184,37 +190,22 @@ const Wishlist = () => {
                 maxStars={5}
                 fullStarColor={'#78A942'}
                 rating={item.rating || 0}
-                containerStyle={{ width: wp(20) }}
+                containerStyle={{width: wp(20)}}
               />
-
             </Block>
-            {/* <CustomButton
-              onPress={() => addToCart(item, index)}
-              secondary
-              padding={[hp(1)]}
-              borderRadius={20}
-              center
-              middle
-              flex={false}>
-              {item.isAddtoCart ? (
-                <ActivityIndicator size="small" color="#fff" />
-              ) : (
-                <MaterialIcon name="shopping-bag" size={20} color="#fff" />
-              )}
-            </CustomButton> */}
           </Block>
           <Block flex={false}>
             {item.isLoad ? (
               <ActivityIndicator
                 size="small"
                 color={light.secondary}
-                style={{ alignSelf: 'flex-end' }}
+                style={{alignSelf: 'flex-end'}}
               />
             ) : (
               <CustomButton
                 onPress={() => removeItem(item.id, index)}
                 flex={false}
-                style={{ height: 20, width: 20 }}
+                style={{height: 20, width: 20}}
                 center
                 middle
                 secondary>
@@ -222,24 +213,20 @@ const Wishlist = () => {
                   source={images.close_icon}
                   initHeight="15"
                   initWidth="15"
-                  style={{ tintColor: '#fff' }}
+                  style={{tintColor: '#fff'}}
                 />
               </CustomButton>
             )}
             <CustomButton
               onPress={() => addToCart(item, index)}
               secondary
-              style={{ marginTop: 40, marginRight: 30 }}
+              style={{marginTop: 40, marginRight: 30}}
               padding={[hp(1)]}
               borderRadius={20}
               center
               right
               flex={false}>
-              {item.isAddtoCart ? (
-                <ActivityIndicator size="small" color="#fff" />
-              ) : (
-                <MaterialIcon name="shopping-bag" size={20} color="#fff" />
-              )}
+              <MaterialIcon name="shopping-bag" size={20} color="#fff" />
             </CustomButton>
             <Block alignSelf="center" middle margin={[-hp(2), 0, 0, 0]}>
               <ImageComponent
@@ -255,20 +242,20 @@ const Wishlist = () => {
     );
   };
   const _renderEmpty = () => {
-    return (
-      strictValidObjectWithKeys(userProfile) ?
-        <Block style={{ height: hp(20) }} center middle>
-          <Text size={14}>You have no items in your wish list.</Text>
-        </Block>
-        :
-        <Block style={{ height: hp(20) }} center middle>
-          <Text size={14}>Click here login to access wishlist.</Text>
-        </Block>
-
+    return strictValidObjectWithKeys(userProfile) ? (
+      <Block style={{height: hp(20)}} center middle>
+        <Text size={14}>You have no items in your wish list.</Text>
+      </Block>
+    ) : (
+      <Block style={{height: hp(20)}} center middle>
+        <Text size={14}>Click here login to access wishlist.</Text>
+      </Block>
     );
   };
   return (
     <Block>
+      {(overlayLoader || overlayGuestLoader) && <OverlayLoader />}
+
       <Header />
       {isLoad && <ActivityLoader />}
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -300,51 +287,73 @@ const Wishlist = () => {
             renderItem={_renderItem}
           />
           <Button
-            onPress={() => strictValidObjectWithKeys(userProfile) ? nav.navigate('DashboardLogo') : nav.navigate('Login')}
-            style={{ marginTop: t2 }}
-            color="secondary">{strictValidObjectWithKeys(userProfile) ? ' Continue Shopping' : 'Login' }
-            
+            onPress={() =>
+              strictValidObjectWithKeys(userProfile)
+                ? nav.navigate('DashboardLogo')
+                : nav.navigate('Login')
+            }
+            style={{marginTop: t2}}
+            color="secondary">
+            {strictValidObjectWithKeys(userProfile)
+              ? ' Continue Shopping'
+              : 'Login'}
           </Button>
         </Block>
         <Footer images={false} />
       </ScrollView>
-      { cartlist.length > 0 ? <Block
-        borderWidth={[0.5, 0, 0, 0]}
-        borderColorDeafult
-        flex={false}
-        primary>
-        <Block center flex={false} row space={'between'} margin={[t2, w3]}>
-          <Text transform="uppercase" bold size={24}>
-            Cart Subtotal :
+      {cartlist.length > 0 ? (
+        <Block
+          borderWidth={[0.5, 0, 0, 0]}
+          borderColorDeafult
+          flex={false}
+          primary>
+          <Block center flex={false} row space={'between'} margin={[t2, w3]}>
+            <Text transform="uppercase" bold size={24}>
+              Cart Subtotal :
             </Text>
 
-          <Text bold secondary>
-            BDT{' '}
-            {cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2)}
-          </Text>
-        </Block>
+            <Text bold secondary>
+              BDT{' '}
+              {cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2)}
+            </Text>
+          </Block>
 
-        <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
-          <CartButton
-            onPress={() => nav.navigate('DashboardLogo')}
-            textStyle={{ textTransform: 'uppercase' }}
-            color="primary">
-            Continue Shopping
+          <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
+            <CartButton
+              onPress={() => nav.navigate('DashboardLogo')}
+              textStyle={{textTransform: 'uppercase'}}
+              color="primary">
+              Continue Shopping
             </CartButton>
-          <CartButton
-            onPress={() => {
-              navigateToShipping();
-            }}
-            textStyle={{ textTransform: 'uppercase' }}
-            color="secondary">
-            Buy Now
+            <CartButton
+              onPress={() => {
+                navigateToShipping();
+              }}
+              textStyle={{textTransform: 'uppercase'}}
+              color="secondary">
+              Buy Now
             </CartButton>
-            {cartlist.length > 0 ? <View style={{ backgroundColor: 'red', justifyContent: 'center', padding: 5, borderRadius: 10, position: 'absolute', width: 16, height: 16, right: 30, top: 20, }}>
-            <Text center color={'white'} size={10}>{cartlist.length}</Text>
-          </View> : null}
+            {cartlist.length > 0 ? (
+              <View
+                style={{
+                  backgroundColor: 'red',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 20,
+                  position: 'absolute',
+                  width: 20,
+                  height: 20,
+                  right: 30,
+                  top: 20,
+                }}>
+                <Text center color={'white'} size={10}>
+                  {cartlist.length}
+                </Text>
+              </View>
+            ) : null}
+          </Block>
         </Block>
-      </Block> : null}
-
+      ) : null}
     </Block>
   );
 };

@@ -20,7 +20,6 @@ const Payment = () => {
 
   const handleNavigation = (v) => {
     setloader(v.loading);
-    console.log(v, 'pay');
 
     if (
       !v.title &&

@@ -38,7 +38,6 @@ export const addToCartSuccess = (data) => {
     type: ActionConstants.ADD_TO_CART_SUCCESS,
     data,
     loading: false,
-
   };
 };
 export const addToCartError = (error) => {
@@ -55,7 +54,6 @@ export const createCartRequest = (payload) => {
     type: ActionConstants.CREATE_CART_REQUEST,
     payload,
     loading: false,
-
   };
 };
 export const createCartSuccess = (data) => {
@@ -63,7 +61,6 @@ export const createCartSuccess = (data) => {
     type: ActionConstants.CREATE_CART_SUCCESS,
     data,
     loading: false,
-
   };
 };
 export const createCartError = (error) => {
@@ -71,7 +68,6 @@ export const createCartError = (error) => {
     type: ActionConstants.CREATE_CART_ERROR,
     error,
     loading: false,
-
   };
 };
 
@@ -89,7 +85,6 @@ export const updateCartSuccess = (data) => {
     type: ActionConstants.UPDATE_CART_SUCCESS,
     data,
     loading: false,
-
   };
 };
 export const updateCartError = (error) => {
@@ -97,7 +92,6 @@ export const updateCartError = (error) => {
     type: ActionConstants.UPDATE_CART_ERROR,
     error,
     loading: false,
-
   };
 };
 
@@ -106,7 +100,6 @@ export const deleteItemRequest = (payload) => {
     type: ActionConstants.DELETE_ITEM_REQUEST,
     payload,
     loading: false,
-
   };
 };
 export const deleteItemSuccess = (data) => {
@@ -114,7 +107,6 @@ export const deleteItemSuccess = (data) => {
     type: ActionConstants.DELETE_ITEM_SUCCESS,
     data,
     loading: false,
-
   };
 };
 export const deleteItemError = (error) => {
@@ -122,7 +114,6 @@ export const deleteItemError = (error) => {
     type: ActionConstants.DELETE_ITEM_SUCCESS,
     error,
     loading: false,
-
   };
 };
 
@@ -132,7 +123,6 @@ export const guestCartRequest = (payload) => {
     type: ActionConstants.GET_GUEST_CART_REQUEST,
     payload,
     loading: false,
-
   };
 };
 export const guestCartSuccess = (data) => {
@@ -140,7 +130,6 @@ export const guestCartSuccess = (data) => {
     type: ActionConstants.GET_GUEST_CART_SUCCESS,
     data,
     loading: false,
-
   };
 };
 export const guestCartError = (error) => {
@@ -148,7 +137,6 @@ export const guestCartError = (error) => {
     type: ActionConstants.GET_GUEST_CART_ERROR,
     error,
     loading: false,
-
   };
 };
 
@@ -158,7 +146,6 @@ export const addToGuestCartRequest = (payload) => {
     type: ActionConstants.ADD_TO_GUEST_CART_REQUEST,
     payload,
     loading: false,
-
   };
 };
 export const addToGuestCartSuccess = (data) => {
@@ -166,7 +153,6 @@ export const addToGuestCartSuccess = (data) => {
     type: ActionConstants.ADD_TO_GUEST_CART_SUCCESS,
     data,
     loading: false,
-
   };
 };
 export const addToGuestCartError = (error) => {
@@ -174,7 +160,6 @@ export const addToGuestCartError = (error) => {
     type: ActionConstants.ADD_TO_GUEST_CART_ERROR,
     error,
     loading: false,
-
   };
 };
 
@@ -183,7 +168,6 @@ export const updateGuestCartRequest = (payload) => {
     type: ActionConstants.UPDATE_GUEST_CART_REQUEST,
     payload,
     loading: false,
-
   };
 };
 export const updateGuestCartSuccess = (data) => {
@@ -191,7 +175,6 @@ export const updateGuestCartSuccess = (data) => {
     type: ActionConstants.UPDATE_GUEST_CART_SUCCESS,
     data,
     loading: false,
-
   };
 };
 export const updateGuestCartError = (error) => {
@@ -199,7 +182,6 @@ export const updateGuestCartError = (error) => {
     type: ActionConstants.UPDATE_GUEST_CART_SUCCESS,
     error,
     loading: false,
-
   };
 };
 
@@ -208,7 +190,6 @@ export const deleteGuestCartRequest = (payload) => {
     type: ActionConstants.DELETE_GUEST_CART_REQUEST,
     payload,
     loading: false,
-
   };
 };
 export const deleteGuestCartSuccess = (data) => {
@@ -216,7 +197,6 @@ export const deleteGuestCartSuccess = (data) => {
     type: ActionConstants.DELETE_GUEST_CART_SUCCESS,
     data,
     loading: false,
-
   };
 };
 export const deleteGuestCartError = (error) => {
@@ -224,7 +204,6 @@ export const deleteGuestCartError = (error) => {
     type: ActionConstants.DELETE_GUEST_CART_ERROR,
     error,
     loading: false,
-
   };
 };
 
@@ -233,7 +212,6 @@ export const GuestCartIDRequest = (payload) => {
     type: ActionConstants.GUEST_CART_REQUEST,
     payload,
     loading: false,
-
   };
 };
 export const GuestCartIDSuccess = (data) => {
@@ -241,7 +219,6 @@ export const GuestCartIDSuccess = (data) => {
     type: ActionConstants.GUEST_CART_SUCCESS,
     data,
     loading: false,
-
   };
 };
 export const GuestCartIDError = (error) => {
@@ -249,7 +226,6 @@ export const GuestCartIDError = (error) => {
     type: ActionConstants.GUEST_CART_SUCCESS,
     error,
     loading: false,
-
   };
 };
 export const GuestMergeRequest = (payload) => {
@@ -257,7 +233,6 @@ export const GuestMergeRequest = (payload) => {
     type: ActionConstants.MERGE_GUEST_CART_REQUEST,
     payload,
     loading: false,
-
   };
 };
 export const GuestMergeSuccess = (data) => {
@@ -265,7 +240,6 @@ export const GuestMergeSuccess = (data) => {
     type: ActionConstants.MERGE_GUEST_CART_SUCCESS,
     data,
     loading: false,
-
   };
 };
 export const GuestMergeError = (error) => {
@@ -273,6 +247,5 @@ export const GuestMergeError = (error) => {
     type: ActionConstants.MERGE_GUEST_CART_ERROR,
     error,
     loading: false,
-
   };
 };

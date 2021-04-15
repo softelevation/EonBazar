@@ -12,8 +12,6 @@ import {SliderBox} from 'react-native-image-slider-box';
 import {light} from '../components/theme/colors';
 
 const Banner = ({data}) => {
-  console.log(data);
-
   const [indexValue, setIndex] = useState(0);
   const [slider, setSlider] = useState([]);
   const flatListref = useRef();
@@ -35,12 +33,9 @@ const Banner = ({data}) => {
     var i;
     var imgArray = [];
     for (i = 0; i < data.length; i++) {
-      console.log(data[i]);
       imgArray.push(config.banner_image_url + data[i].image);
     }
     setSlider(imgArray);
-
-    console.log(slider);
     // setInterval(() => {
     //   const maxSlider = 2;
     //   let nextIndex = 0;
@@ -53,8 +48,6 @@ const Banner = ({data}) => {
     //   setSlider(nextIndex);
     // }, 3000);
   }, []);
-
-  // console.log(slider);
 
   return (
     <Block

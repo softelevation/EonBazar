@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -6,15 +6,15 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import styled from 'styled-components/native';
-import { Block, Text, ImageComponent, CustomButton } from '../components';
+import {Block, Text, ImageComponent, CustomButton} from '../components';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   strictValidArrayWithLength,
   strictValidObjectWithKeys,
@@ -24,9 +24,9 @@ import {
   addToGuestCartRequest,
   updateWishlistRequest,
 } from '../redux/action';
-import { config } from '../utils/config';
-import { light } from '../components/theme/colors';
-const HorizontalCards = ({ data }) => {
+import {config} from '../utils/config';
+import {light} from '../components/theme/colors';
+const HorizontalCards = ({data, isLoad, setIsLoad}) => {
   const nav = useNavigation();
   const [products, setData] = useState([]);
   const quote_id = useSelector((state) => state.cart.cartId.id);
@@ -74,58 +74,53 @@ const HorizontalCards = ({ data }) => {
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = products[index];
-      const updated = { ...old, isLoad: true };
+      const updated = {...old, isLoad: true};
       const clone = [...products];
       clone[index] = updated;
       setData(clone);
 
       setTimeout(() => {
         const old = products[index];
-        const updated = { ...old, isLoad: false };
+        const updated = {...old, isLoad: false};
         const clone = [...products];
         clone[index] = updated;
         setData(clone);
       }, 5000);
-
-
-
 
       const newData = {
         sku: val.sku,
         qty: val.qty,
         quote_id: quote_id,
       };
+
       await dispatch(addToCartRequest(newData));
     } else {
       const old = products[index];
-      const updated = { ...old, isLoad: true };
+      const updated = {...old, isLoad: true};
       const clone = [...products];
       clone[index] = updated;
       setData(clone);
 
       setTimeout(() => {
         const old = products[index];
-        const updated = { ...old, isLoad: false };
+        const updated = {...old, isLoad: false};
         const clone = [...products];
         clone[index] = updated;
         setData(clone);
       }, 5000);
-
 
       const newData = {
         sku: val.sku,
         qty: val.qty,
         quote_id: guestCartToken,
       };
-      await dispatch(
-        addToGuestCartRequest({ token: guestCartToken, items: newData }),
-      );
+      dispatch(addToGuestCartRequest({token: guestCartToken, items: newData}));
     }
   };
   const addToWishlist = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = products[index];
-      const updated = { ...old, isWishlist: true };
+      const updated = {...old, isWishlist: true};
       const clone = [...products];
       clone[index] = updated;
       setData(clone);
@@ -133,15 +128,15 @@ const HorizontalCards = ({ data }) => {
       await dispatch(updateWishlistRequest(id));
     } else {
       nav.reset({
-        routes: [{ name: 'Login' }],
+        routes: [{name: 'Login'}],
       });
-   //   Alert.alert('Error', 'Please login First');
+      //   Alert.alert('Error', 'Please login First');
     }
   };
 
   const updateQty = (qty, index) => {
     const old = products[index];
-    const updated = { ...old, qty: qty };
+    const updated = {...old, qty: qty};
     const clone = [...products];
     clone[index] = updated;
     setData(clone);
@@ -149,16 +144,16 @@ const HorizontalCards = ({ data }) => {
 
   const _renderEmpty = () => {
     return (
-      <Block style={{ height: hp(40) }} center middle>
+      <Block style={{height: hp(40)}} center middle>
         <Text size={16}>Products Not Found</Text>
       </Block>
     );
   };
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({item, index}) => {
     return (
       <CustomButton
         activeOpacity={1}
-        style={{ width: wp(45) }}
+        style={{width: wp(45)}}
         padding={[hp(2)]}
         margin={[hp(0.5), wp(1.8)]}
         primary
@@ -167,7 +162,7 @@ const HorizontalCards = ({ data }) => {
           <ActivityIndicator
             size="small"
             color={light.secondary}
-            style={{ alignSelf: 'flex-start' }}
+            style={{alignSelf: 'flex-start'}}
           />
         ) : (
           <TouchableOpacity onPress={() => addToWishlist(item, index)}>
@@ -186,7 +181,12 @@ const HorizontalCards = ({ data }) => {
           center
           flex={false}>
           <ImageComponent name={`${config.Image_Url}${item.image}`} isURL />
-          <Text numberOfLines={1} size={12} center margin={[hp(2), 0, 0, 0]} body>
+          <Text
+            numberOfLines={1}
+            size={12}
+            center
+            margin={[hp(2), 0, 0, 0]}
+            body>
             {item.name}
           </Text>
           <Text size={12} body margin={[hp(1), 0, 0, 0]} semibold>
@@ -209,7 +209,7 @@ const HorizontalCards = ({ data }) => {
           space={'between'}
           flex={false}>
           <Block
-            style={{ width: wp(18) }}
+            style={{width: wp(18)}}
             center
             row
             space={'between'}
@@ -239,27 +239,25 @@ const HorizontalCards = ({ data }) => {
             center
             middle
             flex={false}>
-            {item.isLoad ? (
-              <ActivityIndicator size="small" color="#fff" />
-            ) : (
-              <MaterialIcon name="shopping-bag" size={20} color="#fff" />
-             )}
+            <MaterialIcon name="shopping-bag" size={20} color="#fff" />
           </CustomButton>
         </Block>
       </CustomButton>
     );
   };
   return (
-    <FlatList
-      scrollEnabled={false}
-      contentContainerStyle={flatlistContentStyle}
-      data={products && products}
-      renderItem={renderItem}
-      onEndReachedThreshold={0}
-      ListEmptyComponent={_renderEmpty}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-    />
+    <React.Fragment>
+      <FlatList
+        scrollEnabled={true}
+        contentContainerStyle={flatlistContentStyle}
+        data={products && products}
+        renderItem={renderItem}
+        onEndReachedThreshold={0}
+        ListEmptyComponent={_renderEmpty}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      />
+    </React.Fragment>
   );
 };
 const LineAboveText = styled(Text)({

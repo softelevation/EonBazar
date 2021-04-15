@@ -3,15 +3,15 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { Block, CustomButton, ImageComponent, Text } from '../components';
+import {Block, CustomButton, ImageComponent, Text} from '../components';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { Alert, FlatList } from 'react-native';
-import { DrawerData, DrawerGusetUserData } from '../utils/static-data';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
+import {Alert, FlatList} from 'react-native';
+import {DrawerData, DrawerGusetUserData} from '../utils/static-data';
+import {DrawerActions, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginSuccess, profileFlush } from '../redux/action';
-import { strictValidObjectWithKeys } from '../utils/commonUtils';
+import {useDispatch, useSelector} from 'react-redux';
+import {loginSuccess, profileFlush} from '../redux/action';
+import {strictValidObjectWithKeys} from '../utils/commonUtils';
 const DrawerScreen = () => {
   const nav = useNavigation();
   const dispatch = useDispatch();
@@ -38,25 +38,23 @@ const DrawerScreen = () => {
     }
   };
 
-
-  const showAlert =async () => {
+  const showAlert = async () => {
     Alert.alert(
-      "",
-      "Are you sure you want to logout?",
+      '',
+      'Are you sure you want to logout?',
       [
         {
-          text: "No",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
+          text: 'No',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
         },
-        { text: "Yes", onPress: () => logoutFun() }
+        {text: 'Yes', onPress: () => logoutFun()},
       ],
-      { cancelable: false }
+      {cancelable: false},
     );
-  }
+  };
 
-
-  const logoutFun = async() => {
+  const logoutFun = async () => {
     try {
       const keys = await AsyncStorage.getAllKeys();
       await AsyncStorage.multiRemove(keys);
@@ -65,16 +63,14 @@ const DrawerScreen = () => {
       dispatch(profileFlush());
       // setTimeout(() => { alert('Logout Successfully...') }, 2000)
       nav.reset({
-        routes: [{ name: 'Login' }],
+        routes: [{name: 'Login'}],
       });
-    } catch (error) { }
-  }
-
+    } catch (error) {}
+  };
 
   const navigateHelpers = async (val) => {
     if (val === 'Logout') {
-
-       showAlert();
+      showAlert();
 
       // try {
       //   const keys = await AsyncStorage.getAllKeys();
@@ -93,7 +89,7 @@ const DrawerScreen = () => {
       } else {
         nav.dispatch(DrawerActions.closeDrawer());
         nav.reset({
-          routes: [{ name: 'Login' }],
+          routes: [{name: 'Login'}],
         });
       }
     } else {
@@ -121,7 +117,7 @@ const DrawerScreen = () => {
     );
   };
 
-  const _renderItem = ({ item }) => {
+  const _renderItem = ({item}) => {
     return (
       <CustomButton
         onPress={() => navigateHelpers(item.nav)}
@@ -156,7 +152,11 @@ const DrawerScreen = () => {
             : 'Guest User'}
         </Text>
       </Block>
-      {  strictValidObjectWithKeys(user) ? <FlatList data={DrawerData} renderItem={_renderItem} /> : <FlatList data={DrawerGusetUserData} renderItem={_renderItem} />}
+      {strictValidObjectWithKeys(user) ? (
+        <FlatList data={DrawerData} renderItem={_renderItem} />
+      ) : (
+        <FlatList data={DrawerGusetUserData} renderItem={_renderItem} />
+      )}
     </Block>
   );
 };

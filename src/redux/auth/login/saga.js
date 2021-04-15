@@ -27,26 +27,22 @@ const clearAuthToken = async () => {
 export function* loginRequest(action) {
   try {
     const response = yield call(Api, action.payload);
-    console.log(response, 'Auth');
     if (response) {
       yield call(clearAuthToken);
       yield call(SaveToken, response.data);
       yield put(createCartRequest());
       yield put(profileRequest());
       yield put(loginSuccess());
-     if(global.isLoggedIn==true){
-      Navigation.navigate('Cart');
-      global.isLoggedIn=false
-
-      }
-      else{
-    //     Navigation.reset({
-    //       index: 0,
-    //       routes: [{ name: 'Dashboard' }]
-    //  })
+      if (global.isLoggedIn === true) {
+        Navigation.navigate('Cart');
+        global.isLoggedIn = false;
+      } else {
+        //     Navigation.reset({
+        //       index: 0,
+        //       routes: [{ name: 'Dashboard' }]
+        //  })
         Navigation.navigate('DashboardLogo');
-        global.isLoggedIn=false
-
+        global.isLoggedIn = false;
       }
     } else {
       yield put(loginError(response));
@@ -61,7 +57,6 @@ export function* authRequest(action) {
   try {
     const response = yield call(authCheckApi, action.payload);
     if (response) {
-      console.log('verified user token');
       yield put(profileSuccess(response.data));
       yield put(createCartRequest());
       yield put(authCheckSuccess(response));
@@ -71,7 +66,6 @@ export function* authRequest(action) {
   } catch (err) {
     yield call(clearAuthToken);
     yield put(profileSuccess({}));
-    console.log('clear user token');
     yield put(authCheckError());
   }
 }
@@ -79,13 +73,11 @@ export function* gusetRequest() {
   try {
     const response = yield call(guestCheckApi);
     if (response) {
-      console.log('verified guest token');
       yield put(guestCheckSuccess(response));
     } else {
       yield put(guestCheckError(response));
     }
   } catch (err) {
-    console.log('clear guest token');
     // yield call(clearGuestToken);
     yield put(guestCheckError());
   }

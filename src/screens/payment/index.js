@@ -45,7 +45,6 @@ const PaymentMethod = ({
   const dispatch = useDispatch();
 
   const {cards, cash} = toggleCheckBox;
-  console.log(item, 'item');
   const {addressInformation} = item;
   const {shipping_address} = addressInformation;
   const paymentMethod = useSelector(
@@ -78,7 +77,6 @@ const PaymentMethod = ({
 
     dispatch(paymentRequest(data));
   };
-  console.log(terms, 'terms');
   return (
     <Block>
       <Header leftIcon={false} />

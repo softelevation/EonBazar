@@ -6,16 +6,19 @@ import {
   updateProfileError,
   updateProfileSuccess,
 } from '../../action';
-import {put, call, all, takeLatest} from 'redux-saga/effects';
+import {put, call, all, takeLatest, select} from 'redux-saga/effects';
 import {Api, updateApi} from './api';
 import AsyncStorage from '@react-native-community/async-storage';
+import {strictValidArrayWithLength} from '../../../utils/commonUtils';
+import {guestCartRequest} from '../../cart/action';
+import * as Navigation from '../../../routes/NavigationService';
 import {Alert} from 'react-native';
 
 const getToken = async () => {
   const guest_token = await AsyncStorage.getItem('guest-token');
   return guest_token;
 };
-
+export const cartItems = (state) => state.cart.list.data;
 const clearGuestToken = async () => {
   return await AsyncStorage.removeItem('guest-token');
 };
@@ -26,7 +29,9 @@ export function* request(action) {
     if (response) {
       yield put(profileSuccess(response.data));
       const token = yield call(getToken);
-      if (token) {
+      let project = yield select(cartItems);
+      console.log(project);
+      if (token && strictValidArrayWithLength(project)) {
         yield put(
           GuestMergeRequest({
             token: token,
@@ -35,6 +40,7 @@ export function* request(action) {
               storeId: 1,
             },
           }),
+          yield put(guestCartRequest()),
         );
         yield call(clearGuestToken);
       }
@@ -50,7 +56,8 @@ export function* updateRequest(action) {
     const response = yield call(updateApi, action.payload);
     if (response) {
       yield put(profileSuccess(response.data));
-      // Alert.alert('Your Profile has been sucessfully updated');
+      Navigation.goBack();
+      Alert.alert('Your Profile has been sucessfully updated');
     } else {
       yield put(profileError(response));
     }

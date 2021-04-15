@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -12,22 +12,23 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import Header from '../../../common/header';
-import { Block, CustomButton, ImageComponent, Text } from '../../../components';
+import {Block, CustomButton, ImageComponent, Text} from '../../../components';
 import {
   addToCartRequest,
   addToGuestCartRequest,
   getAllProductsRequest,
 } from '../../../redux/action';
 import ActivityLoader from '../../../components/activityLoader';
-import { light } from '../../../components/theme/colors';
+import {light} from '../../../components/theme/colors';
 import {
   strictValidArray,
   strictValidObjectWithKeys,
 } from '../../../utils/commonUtils';
-import { config } from '../../../utils/config';
+import {config} from '../../../utils/config';
+import OverlayLoader from '../../../components/overlayLoader';
 
 const initialState = {
   data: [],
@@ -45,9 +46,11 @@ const SeeAllDetails = () => {
   const currency = useSelector(
     (v) => v.currency.currencyDetail.data.base_currency_code,
   );
+  const overlayLoader = useSelector((v) => v.cart.save.loading);
+  const overlayGuestLoader = useSelector((v) => v.cart.guestsave.loading);
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
   const guestCartError = useSelector((v) => v.cart.guestsave.error);
-  const { data } = state;
+  const {data} = state;
 
   const LoadRandomData = async () => {
     if (!isLoad) {
@@ -85,7 +88,7 @@ const SeeAllDetails = () => {
           sku: a.sku,
         });
       });
-    setstate({ ...state, data: data.concat(newData) });
+    setstate({...state, data: data.concat(newData)});
   }, [productsData]);
   const LoadMoreRandomData = async () => {
     if (data.length <= 59) {
@@ -102,59 +105,55 @@ const SeeAllDetails = () => {
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = data[index];
-      const updated = { ...old, isLoad: true };
+      const updated = {...old, isLoad: true};
       const clone = [...data];
       clone[index] = updated;
-      setstate({ data: clone });
+      setstate({data: clone});
 
       setTimeout(() => {
         const old = data[index];
-        const updated = { ...old, isLoad: false };
+        const updated = {...old, isLoad: false};
         const clone = [...data];
         clone[index] = updated;
-        setstate({ data: clone });
+        setstate({data: clone});
       }, 5000);
-
 
       const newData = {
         sku: val.sku,
         qty: val.qty,
         quote_id: quote_id,
       };
-      await dispatch(addToCartRequest(newData));
+      dispatch(addToCartRequest(newData));
     } else {
       const old = data[index];
-      const updated = { ...old, isLoad: true };
+      const updated = {...old, isLoad: true};
       const clone = [...data];
       clone[index] = updated;
-      setstate({ data: clone });
+      setstate({data: clone});
 
       setTimeout(() => {
         const old = data[index];
-        const updated = { ...old, isLoad: false };
+        const updated = {...old, isLoad: false};
         const clone = [...data];
         clone[index] = updated;
-        setstate({ data: clone });
+        setstate({data: clone});
       }, 5000);
-
 
       const newData = {
         sku: val.sku,
         qty: val.qty,
         quote_id: guestCartToken,
       };
-      await dispatch(
-        addToGuestCartRequest({ token: guestCartToken, items: newData }),
-      );
+      dispatch(addToGuestCartRequest({token: guestCartToken, items: newData}));
     }
   };
 
   const updateQty = (qty, index) => {
     const old = data[index];
-    const updated = { ...old, qty: qty };
+    const updated = {...old, qty: qty};
     const clone = [...data];
     clone[index] = updated;
-    setstate({ data: clone });
+    setstate({data: clone});
   };
 
   const renderFooter = () => {
@@ -173,10 +172,10 @@ const SeeAllDetails = () => {
     }
   };
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({item, index}) => {
     return (
       <Block
-        style={{ width: wp(45), minHeight: hp(35) }}
+        style={{width: wp(45), minHeight: hp(35)}}
         padding={[hp(2)]}
         margin={[hp(0.5), wp(1.8)]}
         primary
@@ -203,17 +202,8 @@ const SeeAllDetails = () => {
             {item.name}
           </Text>
           <Text size={12} body margin={[hp(1), 0, 0, 0]} semibold>
-            {item.currency_code} {item.specialPrice}
+            {item.currency_code} {item.price_info}
           </Text>
-          {item.price_info !== item.specialPrice && (
-            <LineAboveText
-              body
-              size={12}
-              color="grey"
-              margin={[hp(0.2), 0, 0, 0]}>
-              {item.currency_code} {item.price_info}
-            </LineAboveText>
-          )}
         </CustomButton>
         <Block
           margin={[hp(1), 0, 0, 0]}
@@ -222,7 +212,7 @@ const SeeAllDetails = () => {
           space={'between'}
           flex={false}>
           <Block
-            style={{ width: wp(18) }}
+            style={{width: wp(18)}}
             center
             row
             space={'between'}
@@ -252,11 +242,7 @@ const SeeAllDetails = () => {
             center
             middle
             flex={false}>
-            {item.isLoad ? (
-              <ActivityIndicator size="small" color="#fff" />
-            ) : (
-              <MaterialIcon name="shopping-bag" size={20} color="#fff" />
-            )}
+            <MaterialIcon name="shopping-bag" size={20} color="#fff" />
           </CustomButton>
         </Block>
       </Block>
@@ -265,6 +251,7 @@ const SeeAllDetails = () => {
   return (
     <Block>
       {!loader && isLoad && <ActivityLoader />}
+      {(overlayLoader || overlayGuestLoader) && <OverlayLoader />}
       <Header leftIcon={false} />
       <FlatList
         contentContainerStyle={flatlistContentStyle}

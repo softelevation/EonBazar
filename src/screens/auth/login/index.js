@@ -1,24 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, ScrollView, Modal, View, TextInput, TouchableOpacity } from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useState} from 'react';
+import {
+  Alert,
+  ScrollView,
+  Modal,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Header from '../../../common/header';
-import { Block, Button, CustomButton, Input, Text } from '../../../components';
+import {Block, Button, CustomButton, Input, Text} from '../../../components';
 import Search from '../../../components/search';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Footer from '../../../common/footer';
-import { CommonActions, useNavigation } from '@react-navigation/native';
-import { Formik } from 'formik';
+import {CommonActions, useNavigation} from '@react-navigation/native';
+import {Formik} from 'formik';
 import * as yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginRequest } from '../../../redux/action';
+import {useDispatch, useSelector} from 'react-redux';
+import {loginRequest} from '../../../redux/action';
 import {
   strictValidObjectWithKeys,
   strictValidString,
 } from '../../../utils/commonUtils';
-const Login = ({ route }) => {
+const Login = ({route}) => {
   const nav = useNavigation();
   const dispatch = useDispatch();
   const isLoad = useSelector((state) => state.user.login.loading);
@@ -28,31 +37,27 @@ const Login = ({ route }) => {
   const [phoneNumber, setPhoneNumber] = useState(null);
 
   useEffect(() => {
-    // console.log(route.param.is)
-    global.isLo
+    global.isLo;
     if (strictValidObjectWithKeys(userProfile)) {
       nav.dispatch(
         CommonActions.reset({
           index: 1,
-          routes: [{ name: 'Profile' }],
+          routes: [{name: 'Profile'}],
         }),
       );
     }
   }, [userProfile]);
 
-
-  handleForgot = () => {
-    if (phoneNumber == null || phoneNumber == '') {
-      alert('Please enter mobile number')
-    } else if (phoneNumber.length < 10 || phoneNumber.length > 15 ) {
-      alert('Please enter valid mobile number')
-    }
-    else {
+  const handleForgot = () => {
+    if (phoneNumber == null || phoneNumber === '') {
+      Alert.alert('Please enter mobile number');
+    } else if (phoneNumber.length < 10 || phoneNumber.length > 15) {
+      Alert.alert('Please enter valid mobile number');
+    } else {
       // alert(phoneNumber)
-      setModalVisible(false)
+      setModalVisible(false);
     }
-
-  }
+  };
 
   const renderNavigations = () => {
     return (
@@ -105,7 +110,7 @@ const Login = ({ route }) => {
   return (
     <Block>
       <Formik
-        initialValues={{ mobile: '', password: '' }}
+        initialValues={{mobile: '', password: ''}}
         onSubmit={submitValues}
         validationSchema={yup.object().shape({
           mobile: yup
@@ -129,7 +134,9 @@ const Login = ({ route }) => {
             <Block flex={false} padding={[0, wp(3), hp(2), wp(3)]}>
               <Search />
             </Block>
-            <ScrollView keyboardShouldPersistTaps='handled' showsVerticalScrollIndicator={false}>
+            <ScrollView
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}>
               <Text semibold transform="uppercase" center>
                 Customer Login
               </Text>
@@ -179,7 +186,13 @@ const Login = ({ route }) => {
                   color="secondary">
                   SIGN IN
                 </Button>
-                {/* <Text right size={16} color="#4267B2" onPress={() => setModalVisible(true)}>Forgot Password?</Text> */}
+                <Text
+                  right
+                  size={16}
+                  secondary
+                  onPress={() => nav.navigate('ForgotPassword')}>
+                  Forgot Password?
+                </Text>
               </Block>
               <Block
                 margin={[hp(2), 0, 0, 0]}
@@ -212,26 +225,29 @@ const Login = ({ route }) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
+          Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={{
-          flex: 1,
-          justifyContent: "center",
-          marginTop: 22,
-          backgroundColor: "white",
         }}>
-          <View style={{
-            margin: 20,
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            marginTop: 22,
+            backgroundColor: 'white',
           }}>
-            <Text size={16} secondary>Mobile Number</Text>
+          <View
+            style={{
+              margin: 20,
+            }}>
+            <Text size={16} secondary>
+              Mobile Number
+            </Text>
             <TextInput
               style={{
                 height: 50,
                 borderWidth: 1,
                 marginTop: 10,
-                marginBottom: 50
+                marginBottom: 50,
               }}
               onChangeText={setPhoneNumber}
               value={phoneNumber}
@@ -245,7 +261,7 @@ const Login = ({ route }) => {
               onPress={handleForgot}
               color="secondary">
               Submit
-                </Button>
+            </Button>
           </View>
         </View>
       </Modal>

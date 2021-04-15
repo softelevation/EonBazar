@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { SafeAreaView, StatusBar } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import {SafeAreaView, StatusBar} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
 import {
   CardStyleInterpolators,
   createStackNavigator,
@@ -9,10 +9,10 @@ import Dashboard from '../screens/dashboard';
 import NewCustomer from '../screens/auth/new-customer';
 import Login from '../screens/auth/login';
 import Splash from '../screens/splash';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import BottomTab from '../common/bottom-tab';
-import { widthPercentageToDP } from 'react-native-responsive-screen';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {widthPercentageToDP} from 'react-native-responsive-screen';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import DrawerScreen from '../common/drawer';
 import Cart from '../screens/cart';
 import Category from '../screens/category';
@@ -30,15 +30,14 @@ import Shipping from '../screens/payment/shipping';
 import PlaceAnOrder from '../screens/payment/place-an-order';
 import Details from '../screens/category/details';
 import SeeAllDetails from '../screens/dashboard/all-details';
-import { useSelector } from 'react-redux';
-import { strictValidObjectWithKeys } from '../utils/commonUtils';
-import { navigationRef } from './NavigationService';
+import {useSelector} from 'react-redux';
+import {strictValidObjectWithKeys} from '../utils/commonUtils';
+import {navigationRef} from './NavigationService';
 import EditProfile from '../screens/auth/edit-profile';
 import SearchList from '../screens/dashboard/advance-search/list';
 import Payment from '../screens/payment/payment';
-
-import SubCategory from '../screens/category/subcategory'
-
+import ForgotPassword from '../screens/auth/forgot/index';
+import SubCategory from '../screens/category/subcategory';
 
 const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -53,7 +52,7 @@ function Routes() {
         <RootStack.Screen
           name="Payment"
           component={Payment}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
       </RootStack.Navigator>
     );
@@ -84,6 +83,7 @@ function Routes() {
         <RootStack.Screen name="SubCategory" component={SubCategory} />
         <RootStack.Screen name="SearchList" component={SearchList} />
         <RootStack.Screen name="PaymentMethod" component={PaymentMethod} />
+        <RootStack.Screen name="ForgotPassword" component={ForgotPassword} />
 
         <RootStack.Screen name="Payment" component={PaymentModal} />
       </RootStack.Navigator>
@@ -115,6 +115,7 @@ function Routes() {
         <RootStack.Screen name="EditProfile" component={EditProfile} />
         <RootStack.Screen name="SearchList" component={SearchList} />
         <RootStack.Screen name="Payment" component={PaymentModal} />
+        <RootStack.Screen name="DashboardLogo" component={DashboardStack} />
       </RootStack.Navigator>
     );
   };
@@ -144,7 +145,6 @@ function Routes() {
         <RootStack.Screen name="SearchList" component={SearchList} />
         <RootStack.Screen name="Payment" component={PaymentModal} />
         <RootStack.Screen name="PaymentMethod" component={PaymentMethod} />
-
       </RootStack.Navigator>
     );
   };
@@ -205,7 +205,6 @@ function Routes() {
         <RootStack.Screen name="SearchList" component={SearchList} />
         <RootStack.Screen name="Payment" component={PaymentModal} />
         <RootStack.Screen name="PaymentMethod" component={PaymentMethod} />
-
       </RootStack.Navigator>
     );
   };
@@ -215,39 +214,26 @@ function Routes() {
         initialRouteName="DashboardLogo"
         tabBar={(props) => <BottomTab {...props} />}>
         <Tab.Screen
-          options={{ unmountOnBlur: true }}
+          options={{unmountOnBlur: true}}
           name="Dashboard"
           component={Wishlist}
         />
         <Tab.Screen
-          options={{ unmountOnBlur: true }}
+          options={{unmountOnBlur: true}}
           name="Category"
           component={CategoryStack}
         />
         <Tab.Screen name="DashboardLogo" component={DashboardStack} />
         <Tab.Screen
-          options={{ unmountOnBlur: true }}
+          options={{unmountOnBlur: true}}
           name="Cart"
           component={CartStack}
         />
         <Tab.Screen
-          options={{ unmountOnBlur: true }}
+          options={{unmountOnBlur: true}}
           name="Login"
           component={LoginStack}
         />
-        {/* {strictValidObjectWithKeys(user) ? (
-<Tab.Screen
-options={{unmountOnBlur: true}}
-name="Profile"
-component={ProfileStack}
-/>
-) : (
-<Tab.Screen
-options={{unmountOnBlur: true}}
-name="Login"
-component={LoginStack}
-/>
-)} */}
       </Tab.Navigator>
     );
   };
@@ -255,7 +241,7 @@ component={LoginStack}
     return (
       <Drawer.Navigator
         drawerType="front"
-        drawerStyle={{ width: widthPercentageToDP(70) }}
+        drawerStyle={{width: widthPercentageToDP(70)}}
         drawerContent={(props) => <DrawerScreen {...props} />}>
         <Drawer.Screen name="Controls" component={TabNav} />
         <Drawer.Screen name="Faq" component={Faq} />
@@ -269,7 +255,7 @@ component={LoginStack}
   }
   return (
     <NavigationContainer ref={navigationRef}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#78A942' }}>
+      <SafeAreaView style={{flex: 1, backgroundColor: '#78A942'}}>
         <StatusBar barStyle="light-content" />
         <RootStack.Navigator
           screenOptions={{
@@ -287,41 +273,6 @@ component={LoginStack}
 }
 
 export default Routes;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import * as React from 'react';
 // import {SafeAreaView, StatusBar} from 'react-native';
@@ -363,7 +314,6 @@ export default Routes;
 // import Payment from '../screens/payment/payment';
 
 // import SubCategory from '../screens/category/subcategory'
-
 
 // const RootStack = createStackNavigator();
 // const Tab = createBottomTabNavigator();
@@ -511,7 +461,7 @@ export default Routes;
 //         }}
 //         initialRouteName="Category"
 //         headerMode="none">
-//         <RootStack.Screen name="Category" component={Category} />       
+//         <RootStack.Screen name="Category" component={Category} />
 //         <RootStack.Screen name="NewCustomer" component={NewCustomer} />
 //         <RootStack.Screen name="Faq" component={Faq} />
 //         <RootStack.Screen name="Terms" component={Terms} />

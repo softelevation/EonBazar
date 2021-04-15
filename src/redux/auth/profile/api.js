@@ -15,18 +15,16 @@ export const Api = async (data) => {
   });
 };
 
-export const updateApi = async ({data,type}) => {
-//alert(type)
+export const updateApi = async ({data, type}) => {
+  //alert(type)
   const token = await AsyncStorage.getItem('token');
-  console.log(token)
-  console.log(JSON.stringify(data))
   const headers = {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + token,
   };
   return axios({
-    method: 'put',
-    url: `${config.Api_Url}/V1/${type}`,
+    method: 'post',
+    url: `${config.Api_Url_all}/V1/${type}`,
     headers,
     data: data,
   });

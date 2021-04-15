@@ -10,7 +10,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import {
   Text,
@@ -122,7 +122,6 @@ const Cart = () => {
     //else {
     // setrefreshing(true);
 
-    console.log(item);
     const id = item.item_id;
     const old = cartlist[index];
     const updated = {...old, qty: qty, price_copy: item.price * qty};
@@ -203,8 +202,8 @@ const Cart = () => {
         price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
       });
     } else {
-      global.isLoggedIn=true
-      navigation.navigate('Login', { isLoggedIn:true });
+      global.isLoggedIn = true;
+      navigation.navigate('Login', {isLoggedIn: true});
     }
   };
 
@@ -381,7 +380,7 @@ const Cart = () => {
               onPress={() => nav.navigate('DashboardLogo')}
               textStyle={{textTransform: 'uppercase'}}
               color="primary">
-           Continue Shopping
+              Continue Shopping
             </CartButton>
             <CartButton
               onPress={() => {
@@ -391,9 +390,24 @@ const Cart = () => {
               color="secondary">
               Buy Now
             </CartButton>
-            {cartlist.length > 0 ? <View style={{ backgroundColor: 'red', justifyContent: 'center', padding: 5, borderRadius: 10, position: 'absolute', width: 16, height: 16, right: 30, top: 20, }}>
-            <Text center color={'white'} size={10}>{cartlist.length}</Text>
-          </View> : null}
+            {cartlist.length > 0 ? (
+              <View
+                style={{
+                  backgroundColor: 'red',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 20,
+                  position: 'absolute',
+                  width: 20,
+                  height: 20,
+                  right: 30,
+                  top: 20,
+                }}>
+                <Text center color={'white'} size={10}>
+                  {cartlist.length}
+                </Text>
+              </View>
+            ) : null}
           </Block>
         </Block>
       )}
