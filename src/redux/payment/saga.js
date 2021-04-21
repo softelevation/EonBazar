@@ -5,6 +5,7 @@ import {Api} from './api';
 import {Alert} from 'react-native';
 import * as RootNavigation from '../../routes/NavigationService';
 import AsyncStorage from '@react-native-community/async-storage';
+import Toast from '../../common/toast';
 
 export function* paymentRequest(action) {
   try {
@@ -21,7 +22,11 @@ export function* paymentRequest(action) {
       yield put(paymentError(response));
     }
   } catch (err) {
-    Alert.alert(err.response.data.message);
+    // Alert.alert(err.response.data.message);
+    
+    setTimeout(() => {
+      Toast.show(response.data.message);
+    }, 1000);
     yield put(paymentError(err));
   }
 }

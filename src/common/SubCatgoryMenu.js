@@ -50,6 +50,7 @@ const SubCatgoryMenu = ({ color, onPress }) => {
             left
             margin={[hp(0.5), 0, 0, 0]}
             style={{ color: 'black', fontSize: 15,}}
+            onPress={() => onPress(item)}
             height={16}
             transform="uppercase"
             size={10}>

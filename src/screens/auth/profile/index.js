@@ -138,7 +138,7 @@ const Profile = () => {
                             numberOfLines={1}>
                             {item.street[0]}, {item.city}, {item.postcode}
                           </Text>
-                          <Text secondary size={14}>
+                          <Text secondary size={14} onPress={() => console.log("=====")}>
                             Edit
                           </Text>
                         </Block>

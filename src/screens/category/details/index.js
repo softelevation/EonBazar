@@ -43,6 +43,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
+import Toast from '../../../common/toast';
 
 const initialState = {
   reviews: true,
@@ -108,7 +109,10 @@ const Details = ({
     if (strictValidObjectWithKeys(userProfile)) {
       await dispatch(updateWishlistRequest(id));
     } else {
-      Alert.alert('Error', 'Please login First');
+      // Alert.alert('Error', 'Please login First');
+      setTimeout(() => {
+        Toast.show('Please login First');
+      }, 1000);
     }
   };
   const onBuyNow = () => {

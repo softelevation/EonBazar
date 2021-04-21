@@ -13,6 +13,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {profileSuccess} from '../profile/action';
 import {authCheckSuccess, guestCheckSuccess} from './action';
 import {Alert} from 'react-native';
+import Toast from '../../../common/toast';
+
 import * as Navigation from '../../../routes/NavigationService';
 const SaveToken = async (token) => {
   return await AsyncStorage.setItem('token', token);
@@ -48,7 +50,10 @@ export function* loginRequest(action) {
       yield put(loginError(response));
     }
   } catch (err) {
-    Alert.alert(err.response.data.message);
+    // Alert.alert(err.response.data.message);
+    setTimeout(() => {
+      Toast.show(err.response.data.message);
+    }, 1000);
     yield put(loginError(''));
   }
 }

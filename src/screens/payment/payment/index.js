@@ -6,6 +6,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import Header from '../../../common/header';
 import ActivityLoader from '../../../components/activityLoader';
 import {createCartRequest} from '../../../redux/action';
+import Toast from '../../../common/toast'
+
 const Payment = () => {
   const id = useSelector((state) => state.payment.data);
   const navigation = useNavigation();
@@ -25,7 +27,10 @@ const Payment = () => {
       !v.title &&
       v.url === 'http://stage.eonbazar.com/order/payment/success'
     ) {
-      Alert.alert('Payment Success');
+      // Alert.alert('Payment Success');
+      setTimeout(() => {
+        Toast.show('Payment Success');
+      }, 1000);
       navigation.navigate('YourOrder');
       dispatch(createCartRequest());
     }
@@ -33,7 +38,10 @@ const Payment = () => {
       v.title === 'SSLCOMMERZ' &&
       v.url === 'http://stage.eonbazar.com/order/payment/fail'
     ) {
-      Alert.alert('Payment Failed');
+      // Alert.alert('Payment Failed');
+      setTimeout(() => {
+        Toast.show('Payment Failed');
+      }, 1000);
       navigation.navigate('YourOrder');
       dispatch(createCartRequest());
     }

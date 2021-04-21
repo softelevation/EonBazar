@@ -21,9 +21,9 @@ const HeaderCatgoryMenu = ({ color, onPress }) => {
       <Block
         //    center
         margin={[hp(1), wp(1)]}
-        style={{ margin: 10 , }}
+        style={{ margin: 10, }}
       >
-        <View style={{ flexDirection: 'row' , alignItems :'center', }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', }}>
           <CustomButton
             color={color === item.id ? light.warning : light.secondary}
             flex={false}
@@ -46,9 +46,10 @@ const HeaderCatgoryMenu = ({ color, onPress }) => {
           </CustomButton>
 
           <Text
+            onPress={() => onPress(item)}
             left
             margin={[hp(0.5), 0, 0, 0]}
-            style={{ color: 'black', fontSize: 15,}}
+            style={{ color: 'black', fontSize: 15, }}
             height={16}
             transform="uppercase"
             size={10}>
@@ -57,12 +58,12 @@ const HeaderCatgoryMenu = ({ color, onPress }) => {
         </View>
         {
           item.children_data.map((element, index) => {
-            return <TouchableOpacity onPress={() => onPress(element)} style={{ flex: 1, with: '100%', margin: 1, padding: 3,}}>
+            return <TouchableOpacity onPress={() => onPress(element)} style={{ flex: 1, with: '100%', margin: 1, padding: 3, }}>
               <Text style={{ color: 'black', fontSize: 12, textAlign: 'left', left: 60 }}> {element.name} </Text>
             </TouchableOpacity>
           })
         }
-        <View style={{ borderWidth: 1, borderColor: '#d3d3d3' , marginTop : 2 }}></View>
+        <View style={{ borderWidth: 1, borderColor: '#d3d3d3', marginTop: 2 }}></View>
 
 
       </Block>

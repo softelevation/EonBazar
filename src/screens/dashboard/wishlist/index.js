@@ -289,7 +289,9 @@ const Wishlist = () => {
           <Button
             onPress={() =>
               strictValidObjectWithKeys(userProfile)
-                ? nav.navigate('DashboardLogo')
+                ?
+                // nav.navigate('DashboardLogo')
+                nav.navigate('Category')
                 : nav.navigate('Login')
             }
             style={{marginTop: t2}}
