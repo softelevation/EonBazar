@@ -6,7 +6,11 @@ import {t2, t3} from '../../../components/theme/fontsize';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
-import {strictValidObjectWithKeys} from '../../../utils/commonUtils';
+import {
+  strictValidNumber,
+  strictValidObjectWithKeys,
+  strictValidString,
+} from '../../../utils/commonUtils';
 import Checkbox from '../../../components/checkbox';
 import {images} from '../../../assets';
 import {
@@ -53,7 +57,7 @@ const EditProfile = () => {
       mobile: values.mobile,
       websiteId: 1,
     };
-    if (values.passwordCheck === true) {
+    if (strictValidString(values.otp)) {
       dispatch(updateProfileRequest({data: data, type: 'customereditwithotp'}));
     } else {
       dispatch(updateProfileRequest({data: data, type: 'customers/me'}));
@@ -102,8 +106,6 @@ const EditProfile = () => {
               currentpass: '',
               password: '',
               cofirmpassword: '',
-              emailCheck: false,
-              passwordCheck: false,
               otp: '',
             }}
             onSubmit={submitValues}
@@ -151,62 +153,7 @@ const EditProfile = () => {
                   error={touched.lastname && errors.lastname}
                   errorText={touched.lastname && errors.lastname}
                 />
-                {/* <Checkbox
-                  checked={values.emailCheck}
-                  checkboxStyle={{height: 20, width: 20}}
-                  checkedImage={images.checkbox_icon}
-                  uncheckedImage={images.uncheckbox_icon}
-                  label={'Change Email'}
-                  onChange={(newValue) =>
-                    setFieldValue('emailCheck', !values.emailCheck)
-                  }
-                  containerStyle={{marginTop: heightPercentageToDP(1)}}
-                /> */}
-                <Checkbox
-                  checked={values.passwordCheck}
-                  checkboxStyle={{height: 20, width: 20}}
-                  checkedImage={images.checkbox_icon}
-                  uncheckedImage={images.uncheckbox_icon}
-                  label={'Change Password'}
-                  onChange={(newValue) =>
-                    setFieldValue('passwordCheck', !values.passwordCheck)
-                  }
-                  containerStyle={{marginVertical: heightPercentageToDP(1)}}
-                />
-                {/* {values.emailCheck && (
-                  <Input
-                    label="Email"
-                    value={values.email}
-                    onChangeText={handleChange('email')}
-                    onBlur={() => setFieldTouched('email')}
-                    error={touched.email && errors.email}
-                    errorText={touched.email && errors.email}
-                  />
-                )} */}
-                {values.passwordCheck && (
-                  <>
-                    <Input
-                      label="New Password"
-                      value={values.password}
-                      onChangeText={handleChange('password')}
-                      onBlur={() => setFieldTouched('password')}
-                      error={touched.password && errors.password}
-                      errorText={touched.password && errors.password}
-                      secure={true}
-                    />
-                    <Input
-                      label="Confirm New Password"
-                      value={values.cofirmpassword}
-                      onChangeText={handleChange('cofirmpassword')}
-                      onBlur={() => setFieldTouched('cofirmpassword')}
-                      error={touched.cofirmpassword && errors.cofirmpassword}
-                      secure={true}
-                      errorText={
-                        touched.cofirmpassword && errors.cofirmpassword
-                      }
-                    />
-                  </>
-                )}
+
                 <Text margin={[t2, 0]} size={20} bold>
                   ADDITIONAL INFORMATION
                 </Text>
