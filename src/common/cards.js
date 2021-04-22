@@ -27,6 +27,7 @@ import {
 } from '../redux/action';
 import {config} from '../utils/config';
 import {light} from '../components/theme/colors';
+import Toast from './toast';
 const Cards = ({data, maxHeight}) => {
   const nav = useNavigation();
   const [products, setData] = useState([]);
@@ -80,13 +81,17 @@ const Cards = ({data, maxHeight}) => {
       clone[index] = updated;
       setData(clone);
 
+      // setTimeout(() => {
+      //   const old = products[index];
+      //   const updated = {...old, isLoad: false};
+      //   const clone = [...products];
+      //   clone[index] = updated;
+      //   setData(clone);
+      // }, 5000);
+
       setTimeout(() => {
-        const old = products[index];
-        const updated = {...old, isLoad: false};
-        const clone = [...products];
-        clone[index] = updated;
-        setData(clone);
-      }, 5000);
+        Toast.show('Product added to cart successfully...');
+      }, 4000);
 
 
       const newData = {
@@ -102,13 +107,17 @@ const Cards = ({data, maxHeight}) => {
       clone[index] = updated;
       setData(clone);
 
+      // setTimeout(() => {
+      //   const old = products[index];
+      //   const updated = {...old, isLoad: false};
+      //   const clone = [...products];
+      //   clone[index] = updated;
+      //   setData(clone);
+      // }, 5000);
+
       setTimeout(() => {
-        const old = products[index];
-        const updated = {...old, isLoad: false};
-        const clone = [...products];
-        clone[index] = updated;
-        setData(clone);
-      }, 5000);
+        Toast.show('Product added to cart successfully...');
+      }, 4000);
 
 
       const newData = {

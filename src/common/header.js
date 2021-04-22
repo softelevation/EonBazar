@@ -26,7 +26,7 @@ const Header = ({ leftIcon, Logo, rightIcon }) => {
         </TouchableOpacity>
       )}
 
-      <TouchableOpacity activeOpacity={1} onPress={() => nav.navigate('DashboardLogo')}>
+      <TouchableOpacity  activeOpacity={1} onPress={() => nav.navigate('DashboardLogo')}>
         <ImageComponent name="logo_white_icon" height={30} width={120} />
       </TouchableOpacity>
 

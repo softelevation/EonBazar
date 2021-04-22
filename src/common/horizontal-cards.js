@@ -26,6 +26,8 @@ import {
 } from '../redux/action';
 import {config} from '../utils/config';
 import {light} from '../components/theme/colors';
+import Toast from '../common/toast';
+
 const HorizontalCards = ({data, isLoad, setIsLoad}) => {
   const nav = useNavigation();
   const [products, setData] = useState([]);
@@ -79,13 +81,18 @@ const HorizontalCards = ({data, isLoad, setIsLoad}) => {
       clone[index] = updated;
       setData(clone);
 
+      // setTimeout(() => {
+      //   const old = products[index];
+      //   const updated = {...old, isLoad: false};
+      //   const clone = [...products];
+      //   clone[index] = updated;
+      //   setData(clone);
+      // }, 5000);
+
       setTimeout(() => {
-        const old = products[index];
-        const updated = {...old, isLoad: false};
-        const clone = [...products];
-        clone[index] = updated;
-        setData(clone);
-      }, 5000);
+        Toast.show('Product added to cart successfully...');
+      }, 4000);
+
 
       const newData = {
         sku: val.sku,
@@ -101,13 +108,18 @@ const HorizontalCards = ({data, isLoad, setIsLoad}) => {
       clone[index] = updated;
       setData(clone);
 
+      // setTimeout(() => {
+      //   const old = products[index];
+      //   const updated = {...old, isLoad: false};
+      //   const clone = [...products];
+      //   clone[index] = updated;
+      //   setData(clone);
+      // }, 5000);
+
       setTimeout(() => {
-        const old = products[index];
-        const updated = {...old, isLoad: false};
-        const clone = [...products];
-        clone[index] = updated;
-        setData(clone);
-      }, 5000);
+        Toast.show('Product added to cart successfully...');
+      }, 4000);
+
 
       const newData = {
         sku: val.sku,

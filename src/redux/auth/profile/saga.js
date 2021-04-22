@@ -13,6 +13,7 @@ import {strictValidArrayWithLength} from '../../../utils/commonUtils';
 import {guestCartRequest} from '../../cart/action';
 import * as Navigation from '../../../routes/NavigationService';
 import {Alert} from 'react-native';
+import Toast from '../../../common/toast';
 
 const getToken = async () => {
   const guest_token = await AsyncStorage.getItem('guest-token');
@@ -57,7 +58,10 @@ export function* updateRequest(action) {
     if (response) {
       yield put(profileSuccess(response.data));
       Navigation.goBack();
-      Alert.alert('Your Profile has been sucessfully updated');
+      // Alert.alert('Your Profile has been sucessfully updated');
+      setTimeout(() => {
+        Toast.show('Your Profile has been sucessfully updated');
+      }, 1000);
     } else {
       yield put(profileError(response));
     }

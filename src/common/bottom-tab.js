@@ -1,18 +1,18 @@
-import React, {useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import React, { useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import PropTypes from 'prop-types';
-import {Block, ImageComponent, Text} from '../components';
-import {images} from '../assets';
+import { Block, ImageComponent, Text } from '../components';
+import { images } from '../assets';
 import ResponsiveImage from 'react-native-responsive-image';
 import styled from 'styled-components';
-import {useDispatch, useSelector} from 'react-redux';
-import {strictValidObjectWithKeys} from '../utils/commonUtils';
-import {getCartDetailsRequest, guestCartRequest} from '../redux/action';
+import { useDispatch, useSelector } from 'react-redux';
+import { strictValidObjectWithKeys } from '../utils/commonUtils';
+import { getCartDetailsRequest, guestCartRequest } from '../redux/action';
 
 const styles = StyleSheet.create({
   ButtonContainer: {
@@ -56,7 +56,7 @@ const renderWidth = (type) => {
   }
 };
 
-const BottomTab = ({state, descriptors, navigation}) => {
+const BottomTab = ({ state, descriptors, navigation }) => {
   const cart_list = useSelector((v) => v.cart.list.data);
   const dispatch = useDispatch();
   const userData = useSelector((v) => v.user.profile.user);
@@ -72,7 +72,7 @@ const BottomTab = ({state, descriptors, navigation}) => {
   return (
     <View style={styles.ButtonContainer}>
       {state.routes.map((route, index) => {
-        const {options} = descriptors[route.key];
+        const { options } = descriptors[route.key];
         const label = route.name;
         const isFocused = state.index === index;
 
@@ -83,7 +83,14 @@ const BottomTab = ({state, descriptors, navigation}) => {
           });
 
           if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
+
+            if (route.name == 'DashboardLogo') {
+              navigation.reset({
+                routes: [{ name: route.name }],
+              });
+            } else {
+              navigation.navigate(route.name);
+            }
           }
         };
 
@@ -99,9 +106,9 @@ const BottomTab = ({state, descriptors, navigation}) => {
             style={
               tabImages[label] === undefined
                 ? {
-                    marginTop: -hp(4),
-                  }
-                : {marginTop: 0}
+                  marginTop: -hp(4),
+                }
+                : { marginTop: 0 }
             }
             accessibilityRole="button"
             testID={options.tabBarTestID}
@@ -131,7 +138,7 @@ const BottomTab = ({state, descriptors, navigation}) => {
                     initWidth={renderWidth(tabImages[label])}
                   />
                   {cart_list.length > 0 &&
-                  tabImages[label] === 'your_order_icon' ? (
+                    tabImages[label] === 'your_order_icon' ? (
                     <View
                       style={{
                         backgroundColor: 'red',

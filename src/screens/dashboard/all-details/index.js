@@ -29,6 +29,7 @@ import {
 } from '../../../utils/commonUtils';
 import {config} from '../../../utils/config';
 import OverlayLoader from '../../../components/overlayLoader';
+import Toast from '../../../common/toast';
 
 const initialState = {
   data: [],
@@ -110,13 +111,17 @@ const SeeAllDetails = () => {
       clone[index] = updated;
       setstate({data: clone});
 
+      // setTimeout(() => {
+      //   const old = data[index];
+      //   const updated = {...old, isLoad: false};
+      //   const clone = [...data];
+      //   clone[index] = updated;
+      //   setstate({data: clone});
+      // }, 5000);
+
       setTimeout(() => {
-        const old = data[index];
-        const updated = {...old, isLoad: false};
-        const clone = [...data];
-        clone[index] = updated;
-        setstate({data: clone});
-      }, 5000);
+        Toast.show('Product added to cart successfully...');
+      }, 4000);
 
       const newData = {
         sku: val.sku,
@@ -131,13 +136,17 @@ const SeeAllDetails = () => {
       clone[index] = updated;
       setstate({data: clone});
 
+      // setTimeout(() => {
+      //   const old = data[index];
+      //   const updated = {...old, isLoad: false};
+      //   const clone = [...data];
+      //   clone[index] = updated;
+      //   setstate({data: clone});
+      // }, 5000);
+
       setTimeout(() => {
-        const old = data[index];
-        const updated = {...old, isLoad: false};
-        const clone = [...data];
-        clone[index] = updated;
-        setstate({data: clone});
-      }, 5000);
+        Toast.show('Product added to cart successfully...');
+      }, 4000);
 
       const newData = {
         sku: val.sku,

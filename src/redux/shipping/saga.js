@@ -4,6 +4,7 @@ import {put, call, all, takeLatest} from 'redux-saga/effects';
 import {Api} from './api';
 import {Alert} from 'react-native';
 import * as RootNavigation from '../../routes/NavigationService';
+import Toast from '../../common/toast';
 
 export function* request(action) {
   try {
@@ -17,7 +18,10 @@ export function* request(action) {
       yield put(addShippingError(response));
     }
   } catch (err) {
-    Alert.alert(err.response.data.message);
+    // Alert.alert(err.response.data.message);
+    setTimeout(() => {
+      Toast.show(err.response.data.message);
+    }, 1000);
     yield put(addShippingError(err));
   }
 }

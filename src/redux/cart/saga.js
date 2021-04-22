@@ -46,6 +46,7 @@ import {
 } from './action';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Alert} from 'react-native';
+import Toast from '../../common/toast';
 
 export function* requestList(action) {
   try {
@@ -71,7 +72,10 @@ export function* requestSaveList(action) {
       yield put(addToCartError(response));
     }
   } catch (err) {
-    alert(err.response.data.message);
+    // alert(err.response.data.message);
+    setTimeout(() => {
+      Toast.show(err.response.data.message);
+    }, 1000);
     yield put(addToCartError(err.response.data.message));
   }
 }
@@ -99,7 +103,10 @@ export function* updateCart(action) {
       yield put(updateCartError(response));
     }
   } catch (err) {
-    alert(err.response.data.message);
+    // alert(err.response.data.message);
+    setTimeout(() => {
+      Toast.show(err.response.data.message);
+    }, 1000);
     yield put(updateCartError(err.response.data.message));
   }
 }
@@ -170,7 +177,10 @@ export function* guestSaveList(action) {
       yield put(addToGuestCartError(response));
     }
   } catch (err) {
-    alert(err.response.data.message);
+    // alert(err.response.data.message);
+    setTimeout(() => {
+      Toast.show(err.response.data.message);
+    }, 1000);
     yield put(addToGuestCartError(err.response.data.message));
   }
 }
@@ -188,7 +198,10 @@ export function* guestupdateCart(action) {
       yield put(updateGuestCartError(response));
     }
   } catch (err) {
-    alert(err.response.data.message);
+    // alert(err.response.data.message);
+    setTimeout(() => {
+      Toast.show(err.response.data.message);
+    }, 1000);
     yield put(updateGuestCartError(err.response.data.message));
   }
 }

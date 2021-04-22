@@ -226,6 +226,7 @@ function Routes() {
           component={CategoryStack}
         />
         <Tab.Screen name="DashboardLogo" component={DashboardStack} />
+        
         <Tab.Screen
           options={{unmountOnBlur: true}}
           name="Cart"
