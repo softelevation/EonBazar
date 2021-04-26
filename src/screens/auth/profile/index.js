@@ -6,7 +6,7 @@ import {
 } from 'react-native-responsive-screen';
 import Header from '../../../common/header';
 import {Block, Button, CustomButton, Input, Text} from '../../../components';
-import {t3, w1} from '../../../components/theme/fontsize';
+import {t3, w1, w3} from '../../../components/theme/fontsize';
 import Footer from '../../../common/footer';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
@@ -115,6 +115,13 @@ const Profile = () => {
                       secondary
                       size={16}>
                       Edit Profile
+                    </Text>
+                    <Text
+                      margin={[0, w3]}
+                      onPress={() => nav.navigate('ChangePassword')}
+                      secondary
+                      size={16}>
+                      Change Password
                     </Text>
                   </Block>
                 </Block>

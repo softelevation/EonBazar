@@ -5,8 +5,12 @@ import { Block, Button, Input, Text } from '../../../components';
 import { t2, t3 } from '../../../components/theme/fontsize';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
-import { strictValidObjectWithKeys } from '../../../utils/commonUtils';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  strictValidNumber,
+  strictValidObjectWithKeys,
+  strictValidString,
+} from '../../../utils/commonUtils';
 import Checkbox from '../../../components/checkbox';
 import { images } from '../../../assets';
 import {
@@ -55,6 +59,8 @@ const EditProfile = () => {
     };
     if (values.passwordCheck === true) {
       dispatch(updateProfileRequest({ data: data, type: 'customereditwithotp' }));
+    if (strictValidString(values.otp)) {
+      dispatch(updateProfileRequest({data: data, type: 'customereditwithotp'}));
     } else {
       dispatch(updateProfileRequest({ data: data, type: 'customers/me' }));
     }
@@ -208,6 +214,7 @@ const EditProfile = () => {
                     />
                   </>
                 )}
+
                 <Text margin={[t2, 0]} size={20} bold>
                   ADDITIONAL INFORMATION
                 </Text>
