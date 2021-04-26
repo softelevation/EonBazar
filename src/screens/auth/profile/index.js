@@ -91,7 +91,7 @@ const Profile = () => {
                     error={touched.name && errors.name}
                     errorText={touched.name && errors.name}
                   />
-                  <Input
+                  {/* <Input
                     label="Email Address"
                     value={values.email}
                     editable={editable}
@@ -99,7 +99,7 @@ const Profile = () => {
                     onBlur={() => setFieldTouched('email')}
                     error={touched.email && errors.email}
                     errorText={touched.email && errors.email}
-                  />
+                  /> */}
                   <Input
                     label="Phone Number"
                     value={values.mobile}
@@ -138,7 +138,7 @@ const Profile = () => {
                             numberOfLines={1}>
                             {item.street[0]}, {item.city}, {item.postcode}
                           </Text>
-                          <Text secondary size={14} onPress={() => console.log("=====")}>
+                          <Text secondary size={14} onPress={() =>  nav.navigate('EditAddress')}>
                             Edit
                           </Text>
                         </Block>

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, ScrollView, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, ScrollView, View } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -18,10 +18,10 @@ import {
   ImageComponent,
   Text,
 } from '../../../components';
-import {t1, t2, w2, w3, w4} from '../../../components/theme/fontsize';
+import { t1, t2, w2, w3, w4 } from '../../../components/theme/fontsize';
 import StarRating from 'react-native-star-rating';
 import Footer from '../../../common/footer';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   removeWishlistRequest,
   addToCartRequest,
@@ -29,13 +29,13 @@ import {
   wishlistRequest,
 } from '../../../redux/action';
 import ActivityLoader from '../../../components/activityLoader';
-import {config} from '../../../utils/config';
-import {light} from '../../../components/theme/colors';
+import { config } from '../../../utils/config';
+import { light } from '../../../components/theme/colors';
 import ResponsiveImage from 'react-native-responsive-image';
-import {images} from '../../../assets';
-import {useNavigation} from '@react-navigation/native';
+import { images } from '../../../assets';
+import { useNavigation } from '@react-navigation/native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import {strictValidObjectWithKeys} from '../../../utils/commonUtils';
+import { strictValidObjectWithKeys } from '../../../utils/commonUtils';
 import OverlayLoader from '../../../components/overlayLoader';
 
 const Wishlist = () => {
@@ -64,7 +64,7 @@ const Wishlist = () => {
     const newData = [];
     wishlist &&
       wishlist.map((a) => {
-        const {name, special_price, price, thumbnail} = a && a.product;
+        const { name, special_price, price, thumbnail } = a && a.product;
         newData.push({
           qty: 1,
           name: name,
@@ -84,7 +84,7 @@ const Wishlist = () => {
 
   const removeItem = (id, index) => {
     const old = wishlistData[index];
-    const updated = {...old, isLoad: true};
+    const updated = { ...old, isLoad: true };
     const clone = [...wishlistData];
     clone[index] = updated;
     setData(clone);
@@ -93,7 +93,7 @@ const Wishlist = () => {
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = wishlistData[index];
-      const updated = {...old, isAddtoCart: true};
+      const updated = { ...old, isAddtoCart: true };
       const clone = [...wishlistData];
       clone[index] = updated;
       setData(clone);
@@ -105,7 +105,7 @@ const Wishlist = () => {
       await dispatch(addToCartRequest(newData));
     } else {
       const old = wishlistData[index];
-      const updated = {...old, isAddtoCart: true};
+      const updated = { ...old, isAddtoCart: true };
       const clone = [...wishlistData];
       clone[index] = updated;
       setData(clone);
@@ -116,7 +116,7 @@ const Wishlist = () => {
       };
 
       await dispatch(
-        addToGuestCartRequest({token: guestCartToken, items: newData}),
+        addToGuestCartRequest({ token: guestCartToken, items: newData }),
       );
     }
   };
@@ -128,7 +128,7 @@ const Wishlist = () => {
       });
     } else {
       global.isLoggedIn = true;
-      nav.navigate('Login', {isLoggedIn: true});
+      nav.navigate('Login', { isLoggedIn: true });
     }
   };
   useEffect(() => {
@@ -154,8 +154,8 @@ const Wishlist = () => {
     setList(newData);
   }, [cart_list]);
 
-  const _renderItem = ({item, index}) => {
-    const {name, special_price, price, image, currency_code} = item;
+  const _renderItem = ({ item, index }) => {
+    const { name, special_price, price, image, currency_code } = item;
     return (
       <CustomButton
         onPress={() =>
@@ -190,7 +190,7 @@ const Wishlist = () => {
                 maxStars={5}
                 fullStarColor={'#78A942'}
                 rating={item.rating || 0}
-                containerStyle={{width: wp(20)}}
+                containerStyle={{ width: wp(20) }}
               />
             </Block>
           </Block>
@@ -199,13 +199,13 @@ const Wishlist = () => {
               <ActivityIndicator
                 size="small"
                 color={light.secondary}
-                style={{alignSelf: 'flex-end'}}
+                style={{ alignSelf: 'flex-end' }}
               />
             ) : (
               <CustomButton
                 onPress={() => removeItem(item.id, index)}
                 flex={false}
-                style={{height: 20, width: 20}}
+                style={{ height: 20, width: 20 }}
                 center
                 middle
                 secondary>
@@ -213,14 +213,14 @@ const Wishlist = () => {
                   source={images.close_icon}
                   initHeight="15"
                   initWidth="15"
-                  style={{tintColor: '#fff'}}
+                  style={{ tintColor: '#fff' }}
                 />
               </CustomButton>
             )}
             <CustomButton
               onPress={() => addToCart(item, index)}
               secondary
-              style={{marginTop: 40, marginRight: 30}}
+              style={{ marginTop: 40, marginRight: 30 }}
               padding={[hp(1)]}
               borderRadius={20}
               center
@@ -243,11 +243,11 @@ const Wishlist = () => {
   };
   const _renderEmpty = () => {
     return strictValidObjectWithKeys(userProfile) ? (
-      <Block style={{height: hp(20)}} center middle>
+      <Block style={{ height: hp(20) }} center middle>
         <Text size={14}>You have no items in your wish list.</Text>
       </Block>
     ) : (
-      <Block style={{height: hp(20)}} center middle>
+      <Block style={{ height: hp(20) }} center middle>
         <Text size={14}>Click here login to access wishlist.</Text>
       </Block>
     );
@@ -290,11 +290,12 @@ const Wishlist = () => {
             onPress={() =>
               strictValidObjectWithKeys(userProfile)
                 ?
-                // nav.navigate('DashboardLogo')
-                nav.navigate('Category')
+                nav.reset({
+                  routes: [{ name: 'DashboardLogo' }],
+                })
                 : nav.navigate('Login')
             }
-            style={{marginTop: t2}}
+            style={{ marginTop: t2 }}
             color="secondary">
             {strictValidObjectWithKeys(userProfile)
               ? ' Continue Shopping'
@@ -323,7 +324,7 @@ const Wishlist = () => {
           <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
             <CartButton
               onPress={() => nav.navigate('DashboardLogo')}
-              textStyle={{textTransform: 'uppercase'}}
+              textStyle={{ textTransform: 'uppercase' }}
               color="primary">
               Continue Shopping
             </CartButton>
@@ -331,7 +332,7 @@ const Wishlist = () => {
               onPress={() => {
                 navigateToShipping();
               }}
-              textStyle={{textTransform: 'uppercase'}}
+              textStyle={{ textTransform: 'uppercase' }}
               color="secondary">
               Buy Now
             </CartButton>

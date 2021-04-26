@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {images} from '../../assets';
 import Footer from '../../common/footer';
 import Header from '../../common/header';
+import Toast from '../../common/toast';
 import {
   Block,
   Button,
@@ -74,6 +75,10 @@ const PaymentMethod = ({
       po_number: '',
       agreement_id: terms[0].agreement_id,
     };
+
+    setTimeout(() => {
+      Toast.show('Order place successfully...');
+    }, 3000);
 
     dispatch(paymentRequest(data));
   };

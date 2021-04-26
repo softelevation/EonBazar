@@ -1,21 +1,21 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import React, { useEffect, useRef, useState } from 'react';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Header from '../../../common/header';
-import {Block, Button, Input, Text} from '../../../components';
-import {t2, t3} from '../../../components/theme/fontsize';
-import {Formik} from 'formik';
+import { Block, Button, Input, Text } from '../../../components';
+import { t2, t3 } from '../../../components/theme/fontsize';
+import { Formik } from 'formik';
 import * as yup from 'yup';
-import {useDispatch, useSelector} from 'react-redux';
-import {strictValidObjectWithKeys} from '../../../utils/commonUtils';
+import { useDispatch, useSelector } from 'react-redux';
+import { strictValidObjectWithKeys } from '../../../utils/commonUtils';
 import Checkbox from '../../../components/checkbox';
-import {images} from '../../../assets';
+import { images } from '../../../assets';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import {generateOtpRequest, updateProfileRequest} from '../../../redux/action';
-import {eventType} from '../../../utils/static-data';
-import {config} from '../../../utils/config';
+import { generateOtpRequest, updateProfileRequest } from '../../../redux/action';
+import { eventType } from '../../../utils/static-data';
+import { config } from '../../../utils/config';
 const EditProfile = () => {
   const userData = useSelector((state) => state.user.profile.user);
   const isOtpLoad = useSelector((state) => state.user.otp.loading);
@@ -54,15 +54,15 @@ const EditProfile = () => {
       websiteId: 1,
     };
     if (values.passwordCheck === true) {
-      dispatch(updateProfileRequest({data: data, type: 'customereditwithotp'}));
+      dispatch(updateProfileRequest({ data: data, type: 'customereditwithotp' }));
     } else {
-      dispatch(updateProfileRequest({data: data, type: 'customers/me'}));
+      dispatch(updateProfileRequest({ data: data, type: 'customers/me' }));
     }
   };
 
   const generateOtp = () => {
     if (formikRef.current) {
-      const {mobile} = formikRef.current.values;
+      const { mobile } = formikRef.current.values;
       const data = {
         resend,
         mobile,
@@ -74,7 +74,7 @@ const EditProfile = () => {
   };
   const resendOtp = () => {
     if (formikRef.current) {
-      const {mobile} = formikRef.current.values;
+      const { mobile } = formikRef.current.values;
       const data = {
         resend: resend + 1,
         mobile,
@@ -104,6 +104,7 @@ const EditProfile = () => {
               cofirmpassword: '',
               emailCheck: false,
               passwordCheck: false,
+              phoneNumberCheck: false,
               otp: '',
             }}
             onSubmit={submitValues}
@@ -164,14 +165,14 @@ const EditProfile = () => {
                 /> */}
                 <Checkbox
                   checked={values.passwordCheck}
-                  checkboxStyle={{height: 20, width: 20}}
+                  checkboxStyle={{ height: 20, width: 20 }}
                   checkedImage={images.checkbox_icon}
                   uncheckedImage={images.uncheckbox_icon}
                   label={'Change Password'}
                   onChange={(newValue) =>
                     setFieldValue('passwordCheck', !values.passwordCheck)
                   }
-                  containerStyle={{marginVertical: heightPercentageToDP(1)}}
+                  containerStyle={{ marginVertical: heightPercentageToDP(1) }}
                 />
                 {/* {values.emailCheck && (
                   <Input
@@ -210,48 +211,70 @@ const EditProfile = () => {
                 <Text margin={[t2, 0]} size={20} bold>
                   ADDITIONAL INFORMATION
                 </Text>
-                <Input
-                  label="Phone Number"
-                  value={values.mobile}
-                  onChangeText={handleChange('mobile')}
-                  onBlur={() => setFieldTouched('mobile')}
-                  error={touched.mobile && errors.mobile}
-                  errorText={touched.mobile && errors.mobile}
+
+
+
+                <Checkbox
+                  checked={values.phoneNumberCheck}
+                  checkboxStyle={{ height: 20, width: 20 }}
+                  checkedImage={images.checkbox_icon}
+                  uncheckedImage={images.uncheckbox_icon}
+                  label={'Change Phone Number'}
+                  onChange={(newValue) =>
+                    setFieldValue('phoneNumberCheck', !values.phoneNumberCheck)
+                  }
+                  containerStyle={{ marginVertical: heightPercentageToDP(1) }}
                 />
-                <Text size={12}>Please add number without country code.</Text>
-                <Button
-                  isLoading={isOtpLoad}
-                  disabled={generate}
-                  onPress={() => generateOtp()}
-                  style={{width: widthPercentageToDP(30)}}
-                  color="secondary">
-                  GENERATE OTP
-                </Button>
-                {generate && (
+                {(values.phoneNumberCheck || values.passwordCheck) && (
                   <>
                     <Input
-                      label="Verify Otp"
-                      keyboardType="number-pad"
-                      value={values.otp}
-                      onChangeText={handleChange('otp')}
-                      onBlur={() => setFieldTouched('otp')}
-                      error={touched.otp && errors.otp}
-                      errorText={touched.otp && errors.otp}
-                      maxLength={4}
+                      label="Phone Number"
+                      value={values.mobile}
+                      editable={values.phoneNumberCheck ? true : false}
+                      onChangeText={handleChange('mobile')}
+                      onBlur={() => setFieldTouched('mobile')}
+                      error={touched.mobile && errors.mobile}
+                      errorText={touched.mobile && errors.mobile}
                     />
+
+                    <Text size={12}>Please add number without country code.</Text>
                     <Button
-                      onPress={() => resendOtp()}
-                      style={{width: widthPercentageToDP(30)}}
+                      isLoading={isOtpLoad}
+                      disabled={generate}
+                      onPress={() => generateOtp()}
+                      style={{ width: widthPercentageToDP(30) }}
                       color="secondary">
-                      RESEND OTP
+                      GENERATE OTP
+                </Button>
+                    {generate && (
+                      <>
+                        <Input
+                          label="Verify Otp"
+                          keyboardType="number-pad"
+                          value={values.otp}
+                          onChangeText={handleChange('otp')}
+                          onBlur={() => setFieldTouched('otp')}
+                          error={touched.otp && errors.otp}
+                          errorText={touched.otp && errors.otp}
+                          maxLength={4}
+                        />
+                        <Button
+                          onPress={() => resendOtp()}
+                          style={{ width: widthPercentageToDP(30) }}
+                          color="secondary">
+                          RESEND OTP
                     </Button>
+                      </>
+                    )}
+
                   </>
                 )}
+
                 <Button
                   isLoading={isLoad}
-                  disabled={!dirty}
+                  disabled={values.phoneNumberCheck || values.passwordCheck ? values.otp.length == 4 ? false : true : false}
                   onPress={handleSubmit}
-                  style={{marginTop: heightPercentageToDP(2)}}
+                  style={{ marginTop: heightPercentageToDP(2) }}
                   color="secondary">
                   Save
                 </Button>

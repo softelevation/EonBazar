@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,useRef} from 'react';
 import {ActivityIndicator, Dimensions, ScrollView, View} from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -61,7 +61,7 @@ const Dashboard = () => {
   const cart_list = useSelector((state) => state.cart.list.data);
   const [cartlist, setList] = useState([]);
   const [showPrice, setShowPrice] = useState(false);
-
+  const scrollRef = useRef();
   const bestOffer = 10;
   const topOffer = 11;
   const brandOffer = 12;
@@ -82,6 +82,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+  
     checkApi();
     dispatch(bannerRequest());
     dispatch(topOfferRequest(topOffer));
@@ -95,19 +96,26 @@ const Dashboard = () => {
       }),
     );
     dispatch(getCategoryListRequest());
-    // const unsubscribe = navigation.addListener('focus', () => {
-    //   checkApi();
-    //   dispatch(bannerRequest());
-    //   dispatch(topOfferRequest(topOffer));
-    //   dispatch(brandOfferRequest(brandOffer));
-    //   dispatch(bestOfferRequest(bestOffer));
-    //   dispatch(
-    //     getAllProductsRequest({
-    //       currentPage,
-    //       pageSize,
-    //     }),
-    //   );
-    // });
+    const unsubscribe = navigation.addListener('focus', () => {
+      // scrollRef.current.scrollTo()
+      // alert('aa')
+      scrollRef.current && scrollRef.current.scrollTo()
+      scrollRef.current?.scrollTo({
+        y: 0,
+        animated: true,
+      });
+      checkApi();
+      dispatch(bannerRequest());
+      dispatch(topOfferRequest(topOffer));
+      dispatch(brandOfferRequest(brandOffer));
+      dispatch(bestOfferRequest(bestOffer));
+      dispatch(
+        getAllProductsRequest({
+          currentPage,
+          pageSize,
+        }),
+      );
+    });
 
     // return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -152,7 +160,25 @@ const Dashboard = () => {
       <Block flex={false} padding={[0, wp(2), 0, wp(2)]}>
         <Search />
       </Block>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <BackButton
+          onPress={() => scrollRef.current && scrollRef.current.scrollTo()}
+          style={{
+            position: 'absolute',
+            right: 10,
+            top: 80,
+            zIndex: 2,
+          }}>
+          {/* <Text>Top</Text> */}
+          <ImageComponent
+            name="scroll_icon"
+            height="15"
+            width="15"
+            color="green"
+          />
+        </BackButton>
+      <ScrollView 
+       ref={scrollRef}
+      showsVerticalScrollIndicator={false}>
         <HeaderMenu onPress={sortingMenu} color={menu} />
         {isLoadBanner ? (
           <Block color="transparent" style={{height: hp(23)}} center middle>
@@ -305,6 +331,24 @@ const Dashboard = () => {
 const CartButton = styled(Button)({
   width: widthPercentageToDP(45),
   borderRadius: 30,
+});
+const BackButton = styled.TouchableOpacity({
+  height: 40,
+  width: 40,
+  borderRadius: 40 / 2,
+  backgroundColor: '#fff',
+  justifyContent: 'center',
+  alignItems: 'center',
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+
+  elevation: 5,
+  marginBottom: hp(1),
 });
 
 export default Dashboard;

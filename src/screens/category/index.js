@@ -101,7 +101,7 @@ const Category = (props) => {
     dispatch(
       filterCategoryListRequest({
         currentPage,
-        pageSize: 1,
+        pageSize: 500,
         menu,
       }),
     );
@@ -120,7 +120,7 @@ const Category = (props) => {
       const res = await dispatch(
         filterCategoryListRequest({
           currentPage,
-          pageSize: pageSize + 1,
+          pageSize,
           menu,
         }),
       );
@@ -426,7 +426,7 @@ const Category = (props) => {
               contentContainerStyle={flatlistContentStyle}
               data={strictValidArray(data) && data}
               renderItem={renderItem}
-              onEndReached={LoadMoreRandomData}
+             // onEndReached={LoadMoreRandomData}
               onEndReachedThreshold={0.1}
               bounces={false}
               ListFooterComponent={renderFooter}

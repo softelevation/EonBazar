@@ -24,7 +24,7 @@ const SubCatgoryMenu = ({ color, onPress }) => {
         margin={[hp(1), wp(1)]}
         style={{ margin: 10 , }}
       >
-        <View style={{ flexDirection: 'row' , alignItems :'center', }}>
+        <View style={{ flexDirection: 'column' , alignItems :'center', }}>
           <CustomButton
             color={color === item.id ? light.warning : light.secondary}
             flex={false}
@@ -47,13 +47,13 @@ const SubCatgoryMenu = ({ color, onPress }) => {
           </CustomButton>
 
           <Text
-            left
+            left            
             margin={[hp(0.5), 0, 0, 0]}
-            style={{ color: 'black', fontSize: 15,}}
+            style={{ color: 'black', width : 80 , textAlign :'center'}}
             onPress={() => onPress(item)}
-            height={16}
+            height={16}            
             transform="uppercase"
-            size={10}>
+            size={12}>
             {item.name}
           </Text>
         </View>
