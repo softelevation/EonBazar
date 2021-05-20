@@ -1,10 +1,10 @@
-import {Alert} from 'react-native';
-import {ActionConstants} from '../../constants';
-import {registerError, registerSuccess, loginSuccess} from '../../action';
-import {put, call, all, takeLatest} from 'redux-saga/effects';
-import {Api} from './api';
+import { Alert } from 'react-native';
+import { ActionConstants } from '../../constants';
+import { registerError, registerSuccess, loginSuccess } from '../../action';
+import { put, call, all, takeLatest } from 'redux-saga/effects';
+import { Api } from './api';
 import * as navigation from '../../../routes/NavigationService';
-import {loginRequest} from '../login/action';
+import { loginRequest } from '../login/action';
 import Toast from '../../../common/toast';
 export function* request(action) {
   try {

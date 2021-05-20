@@ -5,7 +5,7 @@ import { Block, Button, Input, Text } from '../../../components';
 import { t2, t3 } from '../../../components/theme/fontsize';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   strictValidNumber,
   strictValidObjectWithKeys,
@@ -20,6 +20,11 @@ import {
 import { generateOtpRequest, updateProfileRequest } from '../../../redux/action';
 import { eventType } from '../../../utils/static-data';
 import { config } from '../../../utils/config';
+import AsyncStorage from '@react-native-community/async-storage';
+import Toast from '../../../common/toast'
+import * as Navigation from '../../../routes/NavigationService';
+
+
 const EditProfile = () => {
   const userData = useSelector((state) => state.user.profile.user);
   const isOtpLoad = useSelector((state) => state.user.otp.loading);
@@ -57,40 +62,135 @@ const EditProfile = () => {
       mobile: values.mobile,
       websiteId: 1,
     };
-    if (values.passwordCheck === true) {
-      dispatch(updateProfileRequest({ data: data, type: 'customereditwithotp' }));
-    if (strictValidString(values.otp)) {
-      dispatch(updateProfileRequest({data: data, type: 'customereditwithotp'}));
-    } else {
-      dispatch(updateProfileRequest({ data: data, type: 'customers/me' }));
-    }
-  };
 
-  const generateOtp = () => {
-    if (formikRef.current) {
-      const { mobile } = formikRef.current.values;
-      const data = {
-        resend,
-        mobile,
-        eventType: eventType.customer_account_edit_otp,
-      };
-      dispatch(generateOtpRequest(data));
-      setGenerate(true);
+    if (values.passwordCheck === true) {
+
+      dispatch(updateProfileRequest({ data: data, type: 'customereditwithotp' }));
+
+      if (strictValidString(values.otp)) {
+        dispatch(updateProfileRequest({ data: data, type: 'customereditwithotp' }));
+      }
+      else {
+        dispatch(updateProfileRequest({ data: data, type: 'customers/me' }));
+      }
     }
-  };
-  const resendOtp = () => {
-    if (formikRef.current) {
-      const { mobile } = formikRef.current.values;
-      const data = {
-        resend: resend + 1,
-        mobile,
-        eventType: eventType.customer_signup_otp,
+    else {
+
+
+      const savedata = {
+        customer: {
+          group_id: 1,
+          default_billing: '2',
+          default_shipping: '2',
+          created_at: new Date(),
+          updated_at: new Date(),
+          created_in: 'Default Store View',
+          email: `${values.mobile}${config.domain_name}`,
+          firstname: values.firstname,
+          lastname: values.lastname,
+          store_id: 1,
+          website_id: 1,
+          addresses: [
+            {
+              id: userData ? userData.addresses[0].id : null,
+              customer_id: userData ? userData.addresses[0].customer_id : null,
+              region: {
+                region_code: userData ? userData.addresses[0].region.region_code : null,
+                region: userData ? userData.addresses[0].region.region : null,
+                region_id: userData ? userData.addresses[0].region.region_id : null,
+              },
+              region_id: userData ? userData.addresses[0].region.region_id : null,
+              country_id: userData ? userData.addresses[0].country_id : null,
+              street: userData ? userData.addresses[0].street : null,
+              telephone: userData ? userData.addresses[0].telephone : null,
+              postcode: userData ? userData.addresses[0].postalCode : null,
+              city: userData ? userData.addresses[0].city : null,
+              firstname: values.firstname ? values.firstname : null,
+              lastname: values.firstname ? values.lastname : null,
+              default_shipping: true,
+              default_billing: true,
+            },
+          ],
+        },
       };
-      setResend(resend + 1);
-      dispatch(generateOtpRequest(data));
-      setGenerate(true);
-    }
-  };
+
+
+
+      // console.log(data)
+
+      // // console.log(userData)
+
+      console.log(JSON.stringify(savedata))
+      editAddressFun(savedata)
+
+
+    };
+
+
+
+
+
+
+    const generateOtp = () => {
+      if (formikRef.current) {
+        const { mobile } = formikRef.current.values;
+        const data = {
+          resend,
+          mobile,
+          eventType: eventType.customer_account_edit_otp,
+        };
+        dispatch(generateOtpRequest(data));
+        setGenerate(true);
+      }
+    };
+    const resendOtp = () => {
+      if (formikRef.current) {
+        const { mobile } = formikRef.current.values;
+        const data = {
+          resend: resend + 1,
+          mobile,
+          eventType: eventType.customer_signup_otp,
+        };
+        setResend(resend + 1);
+        dispatch(generateOtpRequest(data));
+        setGenerate(true);
+      }
+    };
+  }
+
+
+
+  const editAddressFun = async (editData) => {
+    const token = await AsyncStorage.getItem('token');
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    };
+    return fetch(
+      `${config.Api_Url}/V1/customers/me/ `,
+      {
+        method: 'PUT',
+        headers: headers,
+        body: JSON.stringify(editData)
+      },
+    )
+      .then((r) => r.json())
+      .then((r) => {
+        console.log("edit====>>>>", r)
+
+        // yield put(profileSuccess(response.data));
+        setTimeout(() => {
+          Toast.show('Your Profile has been sucessfully updated');
+        }, 1000);
+        Navigation.goBack()
+      })
+      .catch((error) => {
+        console.error(error);
+        return [];
+      });
+
+  }
+
 
   return (
     <Block white>
@@ -169,7 +269,7 @@ const EditProfile = () => {
                   }
                   containerStyle={{marginTop: heightPercentageToDP(1)}}
                 /> */}
-                <Checkbox
+               {/*  <Checkbox
                   checked={values.passwordCheck}
                   checkboxStyle={{ height: 20, width: 20 }}
                   checkedImage={images.checkbox_icon}
@@ -179,7 +279,7 @@ const EditProfile = () => {
                     setFieldValue('passwordCheck', !values.passwordCheck)
                   }
                   containerStyle={{ marginVertical: heightPercentageToDP(1) }}
-                />
+                />*/}
                 {/* {values.emailCheck && (
                   <Input
                     label="Email"
@@ -190,7 +290,7 @@ const EditProfile = () => {
                     errorText={touched.email && errors.email}
                   />
                 )} */}
-                {values.passwordCheck && (
+               {/*  {values.passwordCheck && (
                   <>
                     <Input
                       label="New Password"
@@ -213,7 +313,7 @@ const EditProfile = () => {
                       }
                     />
                   </>
-                )}
+                )} */}
 
                 <Text margin={[t2, 0]} size={20} bold>
                   ADDITIONAL INFORMATION
@@ -277,6 +377,7 @@ const EditProfile = () => {
                   </>
                 )}
 
+
                 <Button
                   isLoading={isLoad}
                   disabled={values.phoneNumberCheck || values.passwordCheck ? values.otp.length == 4 ? false : true : false}
@@ -285,6 +386,7 @@ const EditProfile = () => {
                   color="secondary">
                   Save
                 </Button>
+
               </>
             )}
           </Formik>
@@ -292,6 +394,5 @@ const EditProfile = () => {
       </KeyboardAwareScrollView>
     </Block>
   );
-};
-
+}
 export default EditProfile;

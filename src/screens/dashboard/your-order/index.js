@@ -1,21 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import {Block, Button, ImageComponent, Text} from '../../../components';
+import React, { useEffect, useState } from 'react';
+import { Block, Button, ImageComponent, Text } from '../../../components';
 import Header from '../../../common/header';
-import {FlatList, ScrollView} from 'react-native';
-import {t1, t2, w3, w4, w5} from '../../../components/theme/fontsize';
+import { FlatList, ScrollView, View } from 'react-native';
+import { t1, t2, w3, w4, w5 } from '../../../components/theme/fontsize';
 import StarRating from 'react-native-star-rating';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import styled from 'styled-components/native';
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import {myOrderRequest} from '../../../redux/action';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { myOrderRequest } from '../../../redux/action';
 import ActivityLoader from '../../../components/activityLoader';
 import moment from 'moment';
 import EmptyFile from '../../../components/emptyFile';
 import * as Navigation from '../../../routes/NavigationService';
+import Icon from 'react-native-vector-icons/AntDesign';
+import { set } from 'react-native-reanimated';
 
 
 const YourOrder = () => {
@@ -27,6 +29,11 @@ const YourOrder = () => {
   const currency = useSelector(
     (v) => v.currency.currencyDetail.data.base_currency_code,
   );
+
+
+  const [upDownIcon, setIconUpDown] = useState(false);
+
+
   useEffect(() => {
     dispatch(myOrderRequest());
   }, []);
@@ -37,13 +44,19 @@ const YourOrder = () => {
   const formatTime = (date) => {
     return moment(date).format('hh:mm a');
   };
-  const _renderItem = ({item}) => {
+
+
+  const setIconUpDownFun =(value)=> {
+      setIconUpDown(value)
+  }
+
+  const _renderItem = ({ item }) => {
     return (
       <Block white padding={[t2]} margin={[t1, w4]} shadow>
         <Block row flex={false} space={'between'}>
           <Block flex={false}>
             <StatusButton
-              textStyle={{color: '#fff'}}
+              textStyle={{ color: '#fff' }}
               color={item.status === 'completed' ? 'secondary' : 'accent'}>
               {item.status}
             </StatusButton>
@@ -67,7 +80,7 @@ const YourOrder = () => {
               maxStars={5}
               fullStarColor={'#78A942'}
               rating={0}
-              containerStyle={{width: wp(20), marginBottom: hp(0.5)}}
+              containerStyle={{ width: wp(20), marginBottom: hp(0.5) }}
             />
             <Text height={22} body bold>
               {item.entity_id}
@@ -106,10 +119,10 @@ const YourOrder = () => {
             </Block>
             <FlatList
               data={item.items}
-              renderItem={({item}) => {
+              renderItem={({ item }) => {
                 return (
                   <Block center margin={[t1, 0]} row flex={false}>
-                    <ImageComponent name="product" height={60} width={60} />
+                    {/* <ImageComponent name="product" height={60} width={60} /> */}
                     <Block margin={[0, w3]}>
                       <Text size={12} semibold>
                         {item.sku}
@@ -118,7 +131,7 @@ const YourOrder = () => {
                         {item.weight ? (
                           <Text regular size={12}>{`(${item.weight}kg)`}</Text>
                         ) : (
-                          <Text regular style={{width: wp(8)}} size={12} />
+                          <Text regular style={{ width: wp(8) }} size={12} />
                         )}
                         <Text regular size={12}>
                           Qty. {item.qty_ordered}
@@ -152,20 +165,28 @@ const YourOrder = () => {
       <Header />
       {isload && <ActivityLoader />}
       <ScrollView
-        contentContainerStyle={{flexGrow: 1}}
+        contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}>
-        <Text margin={[t2, 0]} center bold transform="uppercase">
-          My Orders
+
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={{ flex: 1 }} margin={[t2, 0]} center bold transform="uppercase">
+            My Orders
         </Text>
+
+        {upDownIcon ? <Icon onPress={() => setIconUpDownFun(!upDownIcon)} name="arrowdown" style={{ marginRight: 10 }} size={30} />
+        : 
+        <Icon onPress={() => setIconUpDownFun(!upDownIcon)} name="arrowup" style={{ marginRight: 10 }} size={30} />}
+        </View>
 
         <FlatList
           data={orderData.items}
           ListEmptyComponent={<EmptyFile />}
           renderItem={_renderItem}
+          inverted={upDownIcon}
         />
       </ScrollView>
       <Block flex={false} margin={[t1, w4]}>
-      <Button onPress={() => Navigation.navigate('Category')} color="secondary">
+        <Button onPress={() => nav.navigate('Dashboard')} color="secondary">
           Start Shopping
         </Button>
       </Block>

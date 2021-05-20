@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView} from 'react-native';
 import {widthPercentageToDP} from 'react-native-responsive-screen';
 import Footer from '../../../common/footer';
@@ -10,9 +10,12 @@ import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {advanceSearchRequest} from '../../../redux/action';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-const AdvanceSearch = () => {
+  
+const AdvanceSearch = ({route}) => {
   const isLoad = useSelector((state) => state.advanceSearch.list.loading);
   const dispatch = useDispatch();
+  const [data, setData] = useState(route.params);
+
   const submitValues = (values) => {
     const data = {
       name: values.name,
@@ -23,6 +26,10 @@ const AdvanceSearch = () => {
     };
     dispatch(advanceSearchRequest(data));
   };
+  useEffect(() => {
+
+
+  }, []);
   return (
     <Block>
       <Header />
@@ -35,12 +42,12 @@ const AdvanceSearch = () => {
           </Text>
           <Formik
             initialValues={{
-              name: '',
-              sku: '',
-              description: '',
+              name: route.params?route.params.data.name:null,
+              sku:  route.params?route.params.data.sku:null,
+              description: route.params?route.params.data.description:null,
               short_description: '',
-              fromPrice: '',
-              toPrice: '',
+              fromPrice: route.params?route.params.data.fromPrice:null,
+              toPrice: route.params?route.params.data.toPrice:null,
             }}
             onSubmit={submitValues}>
             {({

@@ -15,7 +15,7 @@ export function* paymentRequest(action) {
       if (action.payload.method === 'sslcommerz') {
         RootNavigation.navigate('Payment');
       } else {
-        RootNavigation.navigate('YourOrder');
+         RootNavigation.navigate('YourOrder');
         yield put(createCartRequest());
       }
     } else {
@@ -25,7 +25,7 @@ export function* paymentRequest(action) {
     // Alert.alert(err.response.data.message);
     
     setTimeout(() => {
-      Toast.show(response.data.message);
+      Toast.show(err.response.data.message);
     }, 1000);
     yield put(paymentError(err));
   }

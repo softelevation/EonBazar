@@ -1,22 +1,22 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import Footer from '../../../common/footer';
 import Header from '../../../common/header';
-import {Block, Button, Input, Text} from '../../../components';
+import { Block, Button, Input, Text } from '../../../components';
 import Checkbox from '../../../components/checkbox';
-import {t1, t2, t4, w3, w5} from '../../../components/theme/fontsize';
+import { t1, t2, t4, w3, w5 } from '../../../components/theme/fontsize';
 import RNPickerSelect from 'react-native-picker-select';
-import {useDispatch, useSelector} from 'react-redux';
-import {generateOtpRequest, updateProfileRequest} from '../../../redux/action';
+import { useDispatch, useSelector } from 'react-redux';
+import { generateOtpRequest, updateProfileRequest } from '../../../redux/action';
 
 import * as yup from 'yup';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import {
   searchDistrictRequest,
   searchAreaRequest,
@@ -28,10 +28,13 @@ import {
   strictValidNumber,
   strictValidObjectWithKeys,
 } from '../../../utils/commonUtils';
-import {config} from '../../../utils/config';
+import { config } from '../../../utils/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import {color, onChange} from 'react-native-reanimated';
+import { color, onChange } from 'react-native-reanimated';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Toast from '../../../common/toast';
+
 
 global.shippingAddress = '';
 const stylesPicker = StyleSheet.create({
@@ -84,7 +87,7 @@ const stylesPicker = StyleSheet.create({
 
 const Shipping = ({
   route: {
-    params: {price},
+    params: { price },
   },
 }) => {
   const dispatch = useDispatch();
@@ -131,6 +134,8 @@ const Shipping = ({
       url: `${config.Api_Url}/V1/customers/me`,
       headers,
     }).then((res) => {
+
+      console.log("======>>>", res.data.addresses)
       setShippingAddress(res.data.addresses);
     });
   };
@@ -319,43 +324,76 @@ const Shipping = ({
   };
 
   const listPress = (item) => {
-    const data = {
-      addressInformation: {
-        shipping_address: {
-          region: item.region.region,
-          region_id: item.region.region_id,
-          country_id: item.country_id,
-          street: [item.street[0]],
-          postcode: item.postcode,
-          city: item.city,
-          firstname: item.firstname,
-          lastname: item.lastname,
-          customer_id: item.id,
-          email: '',
-          telephone: item.telephone,
+
+    if (carrier == null || carrier == '') {
+      Toast.show('Please select payment method');
+    }
+    else {
+
+      const data = {
+        addressInformation: {
+          shipping_address: {
+            region: item.region.region,
+            region_id: item.region.region_id,
+            country_id: item.country_id,
+            street: [item.street[0]],
+            postcode: item.postcode,
+            city: item.city,
+            firstname: item.firstname,
+            lastname: item.lastname,
+            customer_id: item.id,
+            email: '',
+            telephone: item.telephone,
+          },
+          billing_address: {
+            region: item.region.region,
+            region_id: item.region.region_id,
+            country_id: item.country_id,
+            street: [item.street[0]],
+            postcode: item.postcode,
+            city: item.city,
+            firstname: item.firstname,
+            lastname: item.lastname,
+            customer_id: item.id,
+            email: '',
+            telephone: item.telephone,
+            same_as_billing: 1,
+          },
+          shipping_carrier_code: carrier ? carrier : 'freeshipping',
+          shipping_method_code: method ? method : 'freeshipping',
         },
-        billing_address: {
-          region: item.region.region,
-          region_id: item.region.region_id,
-          country_id: item.country_id,
-          street: [item.street[0]],
-          postcode: item.postcode,
-          city: item.city,
-          firstname: item.firstname,
-          lastname: item.lastname,
-          customer_id: item.id,
-          email: '',
-          telephone: item.telephone,
-          same_as_billing: 1,
-        },
-        shipping_carrier_code: carrier ? carrier : 'freeshipping',
-        shipping_method_code: method ? method : 'freeshipping',
-      },
-    };
-    // global.shippingAddress || global.shippingAddress != '' ?
-    dispatch(addShippingRequest(data));
-    //   null
+      };
+      dispatch(addShippingRequest(data));
+
+    }
   };
+
+
+  const deleteAddress = async (item) => {
+    const token = await AsyncStorage.getItem('token');
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    };
+    return fetch(
+      `${config.Api_Url}/V1/addresses/${item.customer_id}`,
+      {
+        method: 'DELETE',
+        headers: headers,
+        body: JSON.stringify(editData)
+      },
+    )
+      .then((r) => r.json())
+      .then((r) => {
+        console.log("edit====", r)
+      })
+      .catch((error) => {
+        console.error(error);
+        return [];
+      });
+
+  }
+
 
   return (
     <Block>
@@ -366,7 +404,7 @@ const Shipping = ({
           firstname: userData.firstname,
           lastname: userData.lastname,
           mobile: '',
-          company: '',
+          // company: '',
           streetAddress: '',
           streetAddress2: '',
           city: '',
@@ -409,7 +447,8 @@ const Shipping = ({
           dirty,
         }) => {
           return (
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
+
               <View
                 style={{
                   marginTop: 20,
@@ -519,7 +558,7 @@ const Shipping = ({
                       </Text>
                     ) : null}
                     {strictValidNumber(values.district) &&
-                    strictValidArrayWithLength(city.items) ? (
+                      strictValidArrayWithLength(city.items) ? (
                       <>
                         <RNPickerSelect
                           placeholder={
@@ -564,14 +603,14 @@ const Shipping = ({
                       error={touched.lastname && errors.lastname}
                       errorText={touched.lastname && errors.lastname}
                     />
-                    <Input
+                    {/* <Input
                       label="Company"
                       value={values.company}
                       onChangeText={handleChange('company')}
                       onBlur={() => setFieldTouched('company')}
                       error={touched.company && errors.company}
                       errorText={touched.company && errors.company}
-                    />
+                    /> */}
                     <Input
                       label="Street Address"
                       value={values.streetAddress}
@@ -650,7 +689,7 @@ const Shipping = ({
                             />
                             <Text size={12}>{a.method_title}</Text>
                             <Text
-                              style={{width: widthPercentageToDP(27)}}
+                              style={{ width: widthPercentageToDP(27) }}
                               size={12}>
                               {a.carrier_title}
                             </Text>
@@ -675,11 +714,11 @@ const Shipping = ({
                   <Footer images={false} />
                 </KeyboardAwareScrollView>
               ) : (
-                <View style={{flex: 1, marginTop: 10}}>
+                <View style={{ flex: 1, marginTop: 10 }}>
                   {shippingAddress ? (
                     <FlatList
                       data={shippingAddress}
-                      renderItem={({item, index}) => (
+                      renderItem={({ item, index }) => (
                         <View
                           style={{
                             backgroundColor: 'white',
@@ -689,9 +728,14 @@ const Shipping = ({
                             padding: 15,
                             borderRadius: 20,
                           }}>
-                          <Text style={stylesPicker.itemStyle}>
-                            {item.firstname + ' ' + item.lastname}
-                          </Text>
+
+                          <View style={{ flexDirection: 'row' }}>
+                            <Text style={[stylesPicker.itemStyle, { flex: 1 }]}>
+                              {item.firstname + ' ' + item.lastname}
+                            </Text>
+
+                            {/* <MaterialIcon onPress={deleteAddress.bind(this, item)} name="delete" zin size={20} marginTop={2} padding={2} /> */}
+                          </View>
                           <Text style={stylesPicker.itemStyle}>
                             Mobile No: {item.telephone}
                           </Text>
@@ -733,7 +777,7 @@ const Shipping = ({
                                   />
                                   <Text size={12}>{a.method_title}</Text>
                                   <Text
-                                    style={{width: widthPercentageToDP(27)}}
+                                    style={{ width: widthPercentageToDP(27) }}
                                     size={12}>
                                     {a.carrier_title}
                                   </Text>
@@ -770,7 +814,7 @@ const Shipping = ({
                           </Block>
                         </View>
                       )}
-                      // ItemSeparatorComponent={this.renderSeparator}
+                    // ItemSeparatorComponent={this.renderSeparator}
                     />
                   ) : (
                     <View
@@ -795,6 +839,6 @@ const buttonStyle = {
   width: widthPercentageToDP(50),
   alignSelf: 'center',
 };
-const checkboxStyle = {height: 20, width: 20};
-const labelStyle = {marginLeft: w3, fontSize: 12};
+const checkboxStyle = { height: 20, width: 20 };
+const labelStyle = { marginLeft: w3, fontSize: 12 };
 export default Shipping;

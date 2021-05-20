@@ -3,15 +3,15 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {Block, CustomButton, ImageComponent, Text} from '../components';
+import { Block, CustomButton, ImageComponent, Text } from '../components';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {Alert, FlatList} from 'react-native';
-import {DrawerData, DrawerGusetUserData} from '../utils/static-data';
-import {DrawerActions, useNavigation} from '@react-navigation/native';
+import { Alert, FlatList } from 'react-native';
+import { DrawerData, DrawerGusetUserData } from '../utils/static-data';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
-import {useDispatch, useSelector} from 'react-redux';
-import {loginSuccess, profileFlush} from '../redux/action';
-import {strictValidObjectWithKeys} from '../utils/commonUtils';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginSuccess, profileFlush } from '../redux/action';
+import { strictValidObjectWithKeys } from '../utils/commonUtils';
 const DrawerScreen = () => {
   const nav = useNavigation();
   const dispatch = useDispatch();
@@ -48,9 +48,9 @@ const DrawerScreen = () => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: 'Yes', onPress: () => logoutFun()},
+        { text: 'Yes', onPress: () => logoutFun() },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   };
 
@@ -63,9 +63,9 @@ const DrawerScreen = () => {
       dispatch(profileFlush());
       // setTimeout(() => { alert('Logout Successfully...') }, 2000)
       nav.reset({
-        routes: [{name: 'Login'}],
+        routes: [{ name: 'Login' }],
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const navigateHelpers = async (val) => {
@@ -83,13 +83,32 @@ const DrawerScreen = () => {
       //     routes: [{ name: 'Login' }],
       //   });
       // } catch (error) { }
-    } else if (val === 'Profile' || val === 'YourOrder' || val === 'Wishlist') {
+    }
+    else if (val === 'Profile') {
+
+      if (strictValidObjectWithKeys(user)) {
+        nav.dispatch(DrawerActions.closeDrawer());
+        nav.reset({
+          routes: [{ name: 'Profile' }],
+        });
+
+      } else {
+        nav.dispatch(DrawerActions.closeDrawer());
+        nav.reset({
+          routes: [{ name: 'Login' }],
+        });
+      }
+    }
+
+
+    // else if (val === 'Profile' || val === 'YourOrder' || val === 'Wishlist') {
+    else if (val === 'YourOrder' || val === 'Wishlist') {
       if (strictValidObjectWithKeys(user)) {
         nav.navigate(val);
       } else {
         nav.dispatch(DrawerActions.closeDrawer());
         nav.reset({
-          routes: [{name: 'Login'}],
+          routes: [{ name: 'Login' }],
         });
       }
     } else {
@@ -117,7 +136,7 @@ const DrawerScreen = () => {
     );
   };
 
-  const _renderItem = ({item}) => {
+  const _renderItem = ({ item }) => {
     return (
       <CustomButton
         onPress={() => navigateHelpers(item.nav)}

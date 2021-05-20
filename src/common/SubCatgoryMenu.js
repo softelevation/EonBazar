@@ -11,7 +11,7 @@ import { light } from '../components/theme/colors';
 import { t1, w3 } from '../components/theme/fontsize';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styled from 'styled-components/native';
- 
+
 const SubCatgoryMenu = ({ color, onPress }) => {
   const category = useSelector(
     (state) => state.category.categoryList.data.children_data,
@@ -22,41 +22,45 @@ const SubCatgoryMenu = ({ color, onPress }) => {
       <Block
         //    center
         margin={[hp(1), wp(1)]}
-        style={{ margin: 10 , }}
+        style={{ margin: 10, }}
       >
-        <View style={{ flexDirection: 'column' , alignItems :'center', }}>
-          <CustomButton
-            color={color === item.id ? light.warning : light.secondary}
-            flex={false}
-            borderRadius={60}
-            onPress={() => onPress(item)}
-            center
-            middle
-            margin={[0, w3]}
-            style={{ height: 40, width: 40 }}>
-            {item.image ? (
-              <ImageComponent
-                isURL
-                name={`http://stage.eonbazar.com/${item.image}`}
-                height="30"
-                width="30"
-              />
-            ) : (
-              <Icon name="bookmark-outline" size={22} color="#fff" />
-            )}
-          </CustomButton>
+        {item.is_active ?
+          <View style={{ flexDirection: 'column', alignItems: 'center', }}>
+            <CustomButton
+              color={color === item.id ? light.warning : light.secondary}
+              flex={false}
+              borderRadius={60}
+              onPress={() => onPress(item)}
+              center
+              middle
+              margin={[0, w3]}
+              style={{ height: 40, width: 40 }}>
+              {item.image ? (
+                <ImageComponent
+                  isURL
+                  name={`http://stage.eonbazar.com/${item.image}`}
+                  height="30"
+                  width="30"
+                />
+              ) : (
+                <Icon name="bookmark-outline" size={22} color="#fff" />
+              )}
+            </CustomButton>
 
-          <Text
-            left            
-            margin={[hp(0.5), 0, 0, 0]}
-            style={{ color: 'black', width : 80 , textAlign :'center'}}
-            onPress={() => onPress(item)}
-            height={16}            
-            transform="uppercase"
-            size={12}>
-            {item.name}
-          </Text>
-        </View>
+            <Text
+              left
+              margin={[hp(0.5), 0, 0, 0]}
+              style={{ color: 'black', width: 80, textAlign: 'center' }}
+              onPress={() => onPress(item)}
+              height={16}
+              transform="uppercase"
+              size={12}>
+              {item.name}
+            </Text>
+          </View>
+
+          : null}
+
         {/* {
           item.children_data.map((element, index) => {
             return <TouchableOpacity onPress={() => onPress(element)} style={{ flex: 1, with: '100%', margin: 1, padding: 3,}}>

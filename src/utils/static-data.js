@@ -101,11 +101,11 @@ export const DrawerGusetUserData = [
     icon: 'your_profile_icon',
     nav: 'Login',
   },
-  {
-    name: 'Your Profile',
-    icon: 'your_profile_icon',
-    nav: 'Profile',
-  },
+  // {
+  //   name: 'Your Profile',
+  //   icon: 'your_profile_icon',
+  //   nav: 'Profile',
+  // },
   {
     name: 'Your Orders',
     icon: 'your_order_drawer_icon',

@@ -56,6 +56,9 @@ const Wishlist = () => {
   const [cartlist, setList] = useState([]);
   const overlayLoader = useSelector((v) => v.cart.save.loading);
   const overlayGuestLoader = useSelector((v) => v.cart.guestsave.loading);
+  const [qtySum, setSum] = useState([]);
+
+  
   useEffect(() => {
     dispatch(wishlistRequest());
   }, []);
@@ -152,6 +155,14 @@ const Wishlist = () => {
       });
 
     setList(newData);
+    var numbers = newData
+    var sum = 0;
+    for (var i = 0; i < numbers.length; i++) {
+
+      sum += numbers[i].qty
+
+    }
+    setSum(sum)
   }, [cart_list]);
 
   const _renderItem = ({ item, index }) => {
@@ -350,7 +361,7 @@ const Wishlist = () => {
                   top: 20,
                 }}>
                 <Text center color={'white'} size={10}>
-                  {cartlist.length}
+                {qtySum}
                 </Text>
               </View>
             ) : null}

@@ -60,6 +60,7 @@ const Dashboard = () => {
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
   const cart_list = useSelector((state) => state.cart.list.data);
   const [cartlist, setList] = useState([]);
+  const [qtySum, setSum] = useState([]);
   const [showPrice, setShowPrice] = useState(false);
   const scrollRef = useRef();
   const bestOffer = 10;
@@ -152,6 +153,15 @@ const Dashboard = () => {
       });
     setShowPrice(true);
     setList(newData);
+
+    var numbers = newData
+    var sum = 0;
+    for (var i = 0; i < numbers.length; i++) {
+
+      sum += numbers[i].qty
+
+    }
+    setSum(sum)
   }, [cart_list]);
   return (
     <Block>
@@ -317,7 +327,7 @@ const Dashboard = () => {
                   top: 20,
                 }}>
                 <Text center color={'white'} size={10}>
-                  {cartlist.length}
+                {qtySum}
                 </Text>
               </View>
             ) : null}

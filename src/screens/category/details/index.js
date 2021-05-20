@@ -75,6 +75,8 @@ const Details = ({
   const cart_list = useSelector((state) => state.cart.list.data);
   const [cartlist, setList] = useState([]);
   const userData = useSelector((state) => state.user.profile.user);
+  const [qtySum, setSum] = useState([]);
+
 
   // useEffect(() => {
   //   Object.keys(scrollHeight).forEach((a) => {
@@ -166,6 +168,16 @@ const Details = ({
       });
 
     setList(newData);
+
+    var numbers = newData
+    var sum = 0;
+    for (var i = 0; i < numbers.length; i++) {
+
+      sum += numbers[i].qty
+
+    }
+    setSum(sum)
+
   }, [cart_list]);
 
   const renderConditions = () => {
@@ -656,7 +668,7 @@ const Details = ({
                   top: 20,
                 }}>
                 <Text center color={'white'} size={10}>
-                  {cartlist.length}
+                {qtySum}
                 </Text>
               </View>
             ) : null}

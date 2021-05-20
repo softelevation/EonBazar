@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -11,8 +11,18 @@ import { images } from '../assets';
 import ResponsiveImage from 'react-native-responsive-image';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { strictValidObjectWithKeys } from '../utils/commonUtils';
-import { getCartDetailsRequest, guestCartRequest } from '../redux/action';
+import {
+  deleteGuestCartRequest,
+  deleteItemRequest,
+  getCartDetailsRequest,
+  guestCartRequest,
+  searchDistrictRequest,
+  updateCartRequest,
+  updateGuestCartRequest,
+} from '../redux/action';
+import {
+  strictValidObjectWithKeys,
+} from '../utils/commonUtils';
 
 const styles = StyleSheet.create({
   ButtonContainer: {
@@ -26,7 +36,8 @@ const styles = StyleSheet.create({
 });
 
 const tabImages = {
-  Dashboard: 'heart',
+  // Dashboard: 'heart',
+  Wishlist : 'heart',
   Category: 'category_icon',
   image: 'DashboardLogo',
   Cart: 'your_order_icon',
@@ -61,6 +72,9 @@ const BottomTab = ({ state, descriptors, navigation }) => {
   const dispatch = useDispatch();
   const userData = useSelector((v) => v.user.profile.user);
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
+  const [cartlist, setList] = useState([]);
+  const [qtySum, setSum] = useState([]);
+  const [refreshing, setrefreshing] = useState(false);
 
   useEffect(() => {
     if (strictValidObjectWithKeys(userData)) {
@@ -69,6 +83,60 @@ const BottomTab = ({ state, descriptors, navigation }) => {
       dispatch(guestCartRequest(guestCartToken));
     }
   }, [userData]);
+  useEffect(() => {
+    dispatch(searchDistrictRequest());
+
+    if (strictValidObjectWithKeys(userData)) {
+      dispatch(getCartDetailsRequest());
+    } else {
+      dispatch(guestCartRequest(guestCartToken));
+    }
+  }, [userData]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (strictValidObjectWithKeys(userData)) {
+        dispatch(getCartDetailsRequest());
+      } else {
+        dispatch(guestCartRequest(guestCartToken));
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    const newData = [];
+    cart_list &&
+      cart_list.map((a) => {
+        console.log(JSON.stringify(a))
+        newData.push({
+          qty: a.qty,
+          name: a.name,
+          price: a.price,
+          qtyText: a.qty,
+          sku: a.sku,
+          quote_id: a.quote_id,
+          item_id: a.item_id,
+          product_type: a.product_type,
+          isLoad: false,
+          isDelete: false,
+          price_copy: a.price * a.qty,
+          image: a.extension_attributes.image_url,
+        });
+      });
+
+    setList(newData);
+    var numbers = newData
+    var sum = 0;
+    for (var i = 0; i < numbers.length; i++) {
+
+      sum += numbers[i].qty
+
+    }
+    setSum(sum)
+  }, [cart_list]);
+
   return (
     <View style={styles.ButtonContainer}>
       {state.routes.map((route, index) => {
@@ -152,7 +220,7 @@ const BottomTab = ({ state, descriptors, navigation }) => {
                         // top: 20,
                       }}>
                       <Text center color={'white'} size={10}>
-                        {cart_list.length}
+                        {qtySum}
                       </Text>
                     </View>
                   ) : null}

@@ -38,6 +38,8 @@ import ForgotPassword from '../screens/auth/forgot/index';
 import SubCategory from '../screens/category/subcategory';
 import EditAddress from '../screens/auth/edit-address';
 import ChangePassword from '../screens/auth/change-password';
+import AddAddress from '../screens/auth/add-address';
+import ShowAddress from '../screens/auth/show-address';
 
 
 const RootStack = createStackNavigator();
@@ -115,6 +117,8 @@ function Routes() {
         <RootStack.Screen name="SubCategory" component={SubCategory} />
         <RootStack.Screen name="EditProfile" component={EditProfile} />
         <RootStack.Screen name="EditAddress" component={EditAddress} />
+        <RootStack.Screen name="AddAddress" component={AddAddress} />    
+        <RootStack.Screen name="ShowAddress" component={ShowAddress} />                
         <RootStack.Screen name="ChangePassword" component={ChangePassword} />
         <RootStack.Screen name="SearchList" component={SearchList} />
         <RootStack.Screen name="Payment" component={PaymentModal} />
@@ -220,7 +224,7 @@ function Routes() {
         tabBar={(props) => <BottomTab {...props} />}>
         <Tab.Screen
           options={{unmountOnBlur: true}}
-          name="Dashboard"
+          name="Wishlist"
           component={Wishlist}
         />
         <Tab.Screen
@@ -228,7 +232,7 @@ function Routes() {
           name="Category"
           component={CategoryStack}
         />
-        <Tab.Screen name="DashboardLogo" component={DashboardStack} />
+        <Tab.Screen name="DashboardLogo" options={{unmountOnBlur: true}}  component={DashboardStack} />
         
         <Tab.Screen
           options={{unmountOnBlur: true}}
@@ -255,7 +259,7 @@ function Routes() {
         <Drawer.Screen name="Privacy" component={Privacy} />
         <Drawer.Screen name="Help" component={Help} />
         <Drawer.Screen name="AdvanceSearch" component={AdvanceSearch} />
-        <Drawer.Screen name="YourOrder" component={YourOrder} />
+        {/* <Drawer.Screen name="YourOrder" component={YourOrder} /> */}
       </Drawer.Navigator>
     );
   }

@@ -1,14 +1,15 @@
-import {ActionConstants} from '../constants';
-import {advanceSearchError, advanceSearchSuccess} from '../action';
-import {put, call, all, takeLatest} from 'redux-saga/effects';
-import {Api} from './api';
+import { ActionConstants } from '../constants';
+import { advanceSearchError, advanceSearchSuccess } from '../action';
+import { put, call, all, takeLatest } from 'redux-saga/effects';
+import { Api } from './api';
 import * as RootNavigation from '../../routes/NavigationService';
 export function* requestList(action) {
   try {
     const response = yield call(Api, action.payload);
     if (response) {
       yield put(advanceSearchSuccess(response.data));
-      RootNavigation.navigate('SearchList');
+      RootNavigation.navigate('SearchList', { data: action.payload });
+
     } else {
       yield put(advanceSearchError(response));
     }

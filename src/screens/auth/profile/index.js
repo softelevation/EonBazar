@@ -1,22 +1,25 @@
-import React, {useEffect, useState} from 'react';
-import {FlatList, ScrollView} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, ScrollView } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import Header from '../../../common/header';
-import {Block, Button, CustomButton, Input, Text} from '../../../components';
-import {t3, w1, w3} from '../../../components/theme/fontsize';
+import { Block, Button, CustomButton, Input, Text } from '../../../components';
+import { t3, w1, w3 } from '../../../components/theme/fontsize';
 import Footer from '../../../common/footer';
-import {CommonActions, useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import ActivityLoader from '../../../components/activityLoader';
 import {
   strictValidObject,
   strictValidObjectWithKeys,
 } from '../../../utils/commonUtils';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import * as yup from 'yup';
+import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
+import { config } from '../../../utils/config';
 const Profile = () => {
   const nav = useNavigation();
   const userData = useSelector((state) => state.user.profile.user);
@@ -25,19 +28,49 @@ const Profile = () => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
+    console.log("u========>>>", userData)
     if (!strictValidObjectWithKeys(userData)) {
       nav.dispatch(
         CommonActions.reset({
           index: 1,
-          routes: [{name: 'Login'}],
+          routes: [{ name: 'Login' }],
         }),
       );
     }
   }, [userData]);
 
+ 
   useEffect(() => {
     setUser(userData);
+
+    /* unsubsribe value */
+    const unsubscribe = nav.addListener('focus', () => {
+      getUserDetail()
+    })
+
+    
   }, [userData]);
+
+
+  const getUserDetail = async () => {
+      const token = await AsyncStorage.getItem('token');
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      };
+      axios({
+        method: 'get',
+        url: `${config.Api_Url}/V1/customers/me`,
+        headers,
+      }).then((res) => {
+  
+        // console.log("======>>>", res.data)
+        setUser(res.data);
+        
+      });
+    
+  }
+
 
   if (isLoad) {
     return <ActivityLoader />;
@@ -111,7 +144,7 @@ const Profile = () => {
                   />
                   <Block row flex={false}>
                     <Text
-                      onPress={() => nav.navigate('EditProfile')}
+                      onPress={() => nav.navigate('EditProfile',)}
                       secondary
                       size={16}>
                       Edit Profile
@@ -127,10 +160,10 @@ const Profile = () => {
                 </Block>
                 <Block padding={[0, wp(8)]}>
                   {/* <Button color="secondary">Address Book</Button> */}
-                  {/* <Button color="primary">New Address</Button> */}
+                  <Button    margin={[hp(2), 0]} onPress={() => nav.navigate('ShowAddress')} color="primary">Your Addresses</Button>
                   <FlatList
                     data={user.addresses}
-                    renderItem={({item}) => {
+                    renderItem={({ item }) => {
                       return (
                         <Block
                           margin={[hp(2), 0]}
@@ -141,13 +174,13 @@ const Profile = () => {
                           <Text
                             grey
                             size={14}
-                            style={{width: wp(70)}}
+                            style={{ width: wp(70) }}
                             numberOfLines={1}>
                             {item.street[0]}, {item.city}, {item.postcode}
                           </Text>
-                          <Text secondary size={14} onPress={() =>  nav.navigate('EditAddress')}>
+                          {/* <Text secondary size={14} onPress={() => nav.navigate('EditAddress', { itemDetail: item })}>
                             Edit
-                          </Text>
+                          </Text> */}
                         </Block>
                       );
                     }}

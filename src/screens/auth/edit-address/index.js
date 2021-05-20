@@ -32,6 +32,9 @@ import { config } from '../../../utils/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import { color, onChange } from 'react-native-reanimated';
+import * as Navigation from '../../../routes/NavigationService';
+import Toast from '../../../common/toast'
+
 
 global.shippingAddress = '';
 const stylesPicker = StyleSheet.create({
@@ -83,9 +86,9 @@ const stylesPicker = StyleSheet.create({
 });
 
 const EditAddress = ({
-  // route: {
-  //   params: {price},
-  // },
+  route: {
+    params: { itemDetail },
+  },
 }) => {
   const dispatch = useDispatch();
   const [State, setState] = useState('');
@@ -110,6 +113,7 @@ const EditAddress = ({
 
   useEffect(() => {
     strictValidArray(district.items) && selectDistrict(1);
+
     if (strictValidObjectWithKeys(userData)) {
       getShippingCharge();
     } else {
@@ -173,43 +177,7 @@ const EditAddress = ({
   };
 
   const submitValues = (values) => {
-    const data = {
-      addressInformation: {
-        shipping_address: {
-          // region: `${values.region} - ${State}`,
-          region: State ? State : 'Dhaka',
-          region_id: region,
-          country_id: 'BD',
-          street: [values.streetAddress, values.streetAddress2],
-          postcode: values.postalCode,
-          city: values.city,
-          firstname: values.firstname,
-          lastname: values.lastname,
-          customer_id: 352,
-          email: `${values.mobile}${config.domain_name}`,
-          telephone: values.mobile,
-        },
-        billing_address: {
-          // region: `${values.region} - ${State}`,
-          region: State ? State : 'Dhaka',
-          region_id: region,
-          country_id: 'BD',
-          street: [values.streetAddress, values.streetAddress2],
-          postcode: values.postalCode,
-          city: values.city,
-          firstname: values.firstname,
-          lastname: values.lastname,
-          customer_id: 352,
-          email: `${values.mobile}${config.domain_name}`,
-          telephone: values.mobile,
-          same_as_billing: 1,
-        },
-        shipping_carrier_code: values.shipping,
-        shipping_method_code: values.method_code,
-      },
-    };
-    //updateAddress (data);
-    // const savedata = {
+
     const savedata = {
       customer: {
         group_id: 1,
@@ -219,13 +187,14 @@ const EditAddress = ({
         updated_at: new Date(),
         created_in: 'Default Store View',
         email: `${values.mobile}${config.domain_name}`,
-        firstname: values.firstname,
-        lastname: values.lastname,
+        firstname: itemDetail.firstname,
+        lastname: itemDetail.lastname,
         store_id: 1,
         website_id: 1,
         addresses: [
           {
-            customer_id: userData.id,
+            id: itemDetail.id,
+            customer_id: itemDetail.customer_id,
             region: {
               region_code: region,
               // "region": `${values.region} - ${State}`,
@@ -233,13 +202,13 @@ const EditAddress = ({
               region_id: region,
             },
             region_id: region,
-            country_id: 'BD',
-            street: [values.streetAddress, values.streetAddress2],
+            country_id: itemDetail.country_id,
+            street: [values.streetAddress],
             telephone: values.mobile,
             postcode: values.postalCode,
             city: values.city,
-            firstname: values.firstname,
-            lastname: values.lastname,
+            firstname: itemDetail.firstname,
+            lastname: itemDetail.lastname,
             default_shipping: true,
             default_billing: true,
           },
@@ -247,46 +216,45 @@ const EditAddress = ({
       },
     };
 
-    dispatch(updateProfileRequest(savedata));
-    dispatch(addShippingRequest(data));
+
+    console.log("=========>>", JSON.stringify(savedata))
+
+    editAddressFun(savedata);
+
+    // dispatch(updateProfileRequest(savedata));
+    // dispatch(addShippingRequest(data));
   };
 
-  const updateAddress = async (data) => {
-    // alert(JSON.stringify(data))
-    const savedata = {
-      customer: {
-        id: userData.id,
-        email: data.email,
-        firstname: userData.firstname,
-        lastname: userData.lastname,
-        middlename: '',
-        gender: 0,
-        store_id: 1,
-        website_id: 1,
-      },
-      mobile: '',
-      websiteId: 1,
 
-      addresses: [
-        {
-          id: userData.id,
-          customer_id: 352,
-          region: region,
-          region_id: data.region_id,
-          country_id: 'BD',
-          street: data.street,
-          telephone: data.telephone,
-          postcode: data.ps,
-          city: data.city,
-          firstname: data.firstname,
-          lastname: data.lastname,
-          default_shipping: true,
-          default_billing: true,
-        },
-      ],
+  const editAddressFun = async (editData) => {
+    const token = await AsyncStorage.getItem('token');
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
     };
-    dispatch(updateProfileRequest(savedata));
-  };
+    return fetch(
+      `${config.Api_Url}/V1/customers/me/ `,
+      {
+        method: 'PUT',
+        headers: headers,
+        body: JSON.stringify(editData)
+      },
+    )
+      .then((r) => r.json())
+      .then((r) => {
+        console.log("edit====", r)
+        Navigation.goBack()
+      })
+      .catch((error) => {
+        console.error(error);
+        return [];
+      });
+
+  }
+
+
+
+
 
   const selectDistrict = (value) => {
     dispatch(searchAreaRequest(value));
@@ -310,18 +278,21 @@ const EditAddress = ({
         initialValues={{
           firstname: userData.firstname,
           lastname: userData.lastname,
-          mobile: '',
-          company: '',
-          streetAddress: '',
-          streetAddress2: '',
-          city: '',
-          postalCode: '',
+          mobile: userData.addresses[0].telephone,
+          //company: '',
+          streetAddress: userData.addresses[0].street[0],
+          city: userData.addresses[0].city,
+          postalCode: userData.addresses[0].postcode,
+          // streetAddress: '',
+          // streetAddress2: '',
+          // city: '',
+          // postalCode: '',
           country: 'Bangladesh',
           district: '',
           region: '',
-          shipping: '',
-          carrier_code: '',
-          method_code: '',
+          // shipping: '',
+          // carrier_code: '',
+          // method_code: '',
         }}
         onSubmit={submitValues}
         validationSchema={yup.object().shape({
@@ -334,14 +305,16 @@ const EditAddress = ({
           lastname: yup.string().min(1).required('Last Name is Required'),
           streetAddress: yup.string().required('Street Address is Required'),
           city: yup.string().required('City is Required'),
-          shipping: yup.string().required('Please choose Shipping method'),
+          // shipping: yup.string().required('Please choose Shipping method'),
           postalCode: yup
             .string()
             .min(3)
             .max(6)
             .required('Zip/Postal Code is Required'),
           country: yup.string().required('Country is Required'),
-        })}>
+        })}
+
+      >
         {({
           values,
           handleChange,
@@ -349,9 +322,9 @@ const EditAddress = ({
           setFieldTouched,
           touched,
           handleSubmit,
-          setFieldValue,
-          isValid,
-          dirty,
+          // setFieldValue,
+          // isValid,
+          // dirty,
         }) => {
           return (
             <View style={{ flex: 1 }}>
@@ -441,14 +414,14 @@ const EditAddress = ({
                     error={touched.lastname && errors.lastname}
                     errorText={touched.lastname && errors.lastname}
                   />
-                  <Input
+                  {/* <Input
                     label="Company"
                     value={values.company}
                     onChangeText={handleChange('company')}
                     onBlur={() => setFieldTouched('company')}
                     error={touched.company && errors.company}
                     errorText={touched.company && errors.company}
-                  />
+                  /> */}
                   <Input
                     label="Street Address"
                     value={values.streetAddress}
@@ -457,7 +430,7 @@ const EditAddress = ({
                     error={touched.streetAddress && errors.streetAddress}
                     errorText={touched.streetAddress && errors.streetAddress}
                   />
-                  <Input
+                  {/* <Input
                     value={values.streetAddress2}
                     onChangeText={handleChange('streetAddress2')}
                     onBlur={() => setFieldTouched('streetAddress2')}
@@ -465,7 +438,7 @@ const EditAddress = ({
                     errorText={
                       touched.streetAddress2 && errors.streetAddress2
                     }
-                  />
+                  /> */}
                   <Input
                     label="City"
                     value={values.city}
@@ -505,10 +478,10 @@ const EditAddress = ({
                     Please add number without country code
                     </Text>
                   <Block margin={[t4, 0, 0, 0]}>
-                                     
+
                     <Button
                       isLoading={isLoad}
-                      disabled={!isValid || !dirty}
+                      // disabled={!isValid || !dirty}
                       onPress={handleSubmit}
                       style={buttonStyle}
                       color="secondary">

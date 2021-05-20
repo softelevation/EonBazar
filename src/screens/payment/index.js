@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
@@ -44,6 +45,7 @@ const PaymentMethod = ({
   const [termsToggle, setTermsToggle] = useState(false);
   const isLoad = useSelector((state) => state.payment.loading);
   const dispatch = useDispatch();
+  const [couponCode, setCouponCode] = useState('')
 
   const {cards, cash} = toggleCheckBox;
   const {addressInformation} = item;
@@ -82,6 +84,58 @@ const PaymentMethod = ({
 
     dispatch(paymentRequest(data));
   };
+
+
+  
+  const applyCoupon = async (couponCode) => {
+    
+    if(termsToggle == false){
+      Toast.show('Please check terms and conditions');
+    }
+    else if (cards == false) {
+      Toast.show('Please select payment option');
+    }
+    else if (couponCode == null || couponCode == '') {
+      Toast.show('Please enter discount coupon');
+    } else {
+     const token = await AsyncStorage.getItem('token');
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      };
+      return fetch(
+        `${config.Api_Url}/V1/carts/mine/coupons/${couponCode}`,
+        {
+          method: 'PUT',
+          headers: headers,
+        },
+      )
+        .then((r) => r.json())
+        .then((r) => {
+          console.log("====", r)
+
+          if(r == true) {
+            setTimeout(() => {
+              Toast.show('Coupon apply successfully');
+            }, 1000);
+            onSubmit()
+          }else {
+            setTimeout(() => {
+              Toast.show(r.message);
+            }, 1000);
+          }
+
+        })
+        .catch((error) => {
+          console.error(error);
+          return [];
+        });
+
+    }
+  };
+
+
+
   return (
     <Block>
       <Header leftIcon={false} />
@@ -189,8 +243,11 @@ const PaymentMethod = ({
           </CustomButton>
           {discount && (
             <>
-              <Input label="Discount Coupon" />
-              <Button color="secondary">Apply Discount</Button>
+              <Input
+                value={couponCode}
+                onChangeText={text => setCouponCode(text)}
+                label="Discount Coupon" />
+              <Button onPress={() => applyCoupon(couponCode)} color="secondary">Apply Discount</Button>
             </>
           )}
         </Block>

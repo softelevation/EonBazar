@@ -63,6 +63,7 @@ const Cart = () => {
   const [cartlist, setList] = useState([]);
   const dispatch = useDispatch();
   const [refreshing, setrefreshing] = useState(false);
+  const [qtySum, setSum] = useState([]);
 
   useEffect(() => {
     dispatch(searchDistrictRequest());
@@ -107,6 +108,16 @@ const Cart = () => {
       });
 
     setList(newData);
+
+    var numbers = newData
+    var sum = 0;
+    for (var i = 0; i < numbers.length; i++) {
+
+      sum += numbers[i].qty
+
+    }
+    setSum(sum)
+
   }, [cart_list, errorCartLoad]);
 
   const changeQty = (qty, index, item) => {
@@ -404,7 +415,7 @@ const Cart = () => {
                   top: 20,
                 }}>
                 <Text center color={'white'} size={10}>
-                  {cartlist.length}
+                {qtySum}
                 </Text>
               </View>
             ) : null}
