@@ -1,14 +1,14 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import React, {useEffect, useState} from 'react';
-import {ScrollView} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ScrollView } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {useDispatch, useSelector} from 'react-redux';
-import {images} from '../../assets';
+import { useDispatch, useSelector } from 'react-redux';
+import { images } from '../../assets';
 import Footer from '../../common/footer';
 import Header from '../../common/header';
 import Toast from '../../common/toast';
@@ -21,12 +21,12 @@ import {
   Text,
 } from '../../components';
 import Checkbox from '../../components/checkbox';
-import {paymentRequest} from '../../redux/action';
+import { paymentRequest } from '../../redux/action';
 import {
   strictValidArray,
   strictValidArrayWithLength,
 } from '../../utils/commonUtils';
-import {config} from '../../utils/config';
+import { config } from '../../utils/config';
 
 const initialState = {
   cards: false,
@@ -34,7 +34,7 @@ const initialState = {
 };
 const PaymentMethod = ({
   route: {
-    params: {item},
+    params: { item },
   },
 }) => {
   const nav = useNavigation();
@@ -47,9 +47,9 @@ const PaymentMethod = ({
   const dispatch = useDispatch();
   const [couponCode, setCouponCode] = useState('')
 
-  const {cards, cash} = toggleCheckBox;
-  const {addressInformation} = item;
-  const {shipping_address} = addressInformation;
+  const { cards, cash } = toggleCheckBox;
+  const { addressInformation } = item;
+  const { shipping_address } = addressInformation;
   const paymentMethod = useSelector(
     (v) => v.shipping.shippingDetails.data.payment_methods,
   );
@@ -86,10 +86,10 @@ const PaymentMethod = ({
   };
 
 
-  
+
   const applyCoupon = async (couponCode) => {
-    
-    if(termsToggle == false){
+
+    if (termsToggle == false) {
       Toast.show('Please check terms and conditions');
     }
     else if (cards == false) {
@@ -98,7 +98,7 @@ const PaymentMethod = ({
     else if (couponCode == null || couponCode == '') {
       Toast.show('Please enter discount coupon');
     } else {
-     const token = await AsyncStorage.getItem('token');
+      const token = await AsyncStorage.getItem('token');
       const headers = {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token,
@@ -114,12 +114,12 @@ const PaymentMethod = ({
         .then((r) => {
           console.log("====", r)
 
-          if(r == true) {
+          if (r == true) {
             setTimeout(() => {
               Toast.show('Coupon apply successfully');
             }, 1000);
             onSubmit()
-          }else {
+          } else {
             setTimeout(() => {
               Toast.show(r.message);
             }, 1000);
@@ -149,11 +149,11 @@ const PaymentMethod = ({
               <>
                 <Block margin={[hp(1), 0, 0]} row center flex={false}>
                   <Checkbox
-                    checkboxStyle={{height: 20, width: 20}}
+                    checkboxStyle={{ height: 20, width: 20 }}
                     label={a.title}
                     checked={a.code === cards}
-                    onChange={(newValue) => setToggleCheckBox({cards: a.code})}
-                    labelStyle={{fontSize: 12, color: '#818991'}}
+                    onChange={(newValue) => setToggleCheckBox({ cards: a.code })}
+                    labelStyle={{ fontSize: 12, color: '#818991' }}
                   />
                 </Block>
 
@@ -171,6 +171,21 @@ const PaymentMethod = ({
                         {shipping_address.telephone}
                       </Text>
                     </Block>
+
+                    {strictValidArrayWithLength(terms) && (
+                      <Block margin={[hp(1), 0, 0]} row center flex={false}>
+                        <Checkbox
+                          checkboxStyle={{ height: 20, width: 20 }}
+                          label={terms[0].checkbox_text}
+                          checked={termsToggle}
+                          onChange={(newValue) => setTermsToggle(!termsToggle)}
+                          labelStyle={{ fontSize: 12, color: '#818991' }}
+                          checkedImage={images.checkbox_icon}
+                          uncheckedImage={images.uncheckbox_icon}
+                        />
+                      </Block>
+                    )}
+
                     <CustomButton
                       onPress={() => setinstruction(!instruction)}
                       center
@@ -196,7 +211,7 @@ const PaymentMethod = ({
                           placeholder="Enter Your comment"
                           multiline={true}
                           numberOfLines={4}
-                          style={{height: hp(8)}}
+                          style={{ height: hp(8) }}
                         />
                       </>
                     )}
@@ -205,19 +220,7 @@ const PaymentMethod = ({
               </>
             );
           })}
-          {strictValidArrayWithLength(terms) && (
-            <Block margin={[hp(1), 0, 0]} row center flex={false}>
-              <Checkbox
-                checkboxStyle={{height: 20, width: 20}}
-                label={terms[0].checkbox_text}
-                checked={termsToggle}
-                onChange={(newValue) => setTermsToggle(!termsToggle)}
-                labelStyle={{fontSize: 12, color: '#818991'}}
-                checkedImage={images.checkbox_icon}
-                uncheckedImage={images.uncheckbox_icon}
-              />
-            </Block>
-          )}
+
 
           <Button
             disabled={!termsToggle || !cards}

@@ -139,7 +139,8 @@ const Details = ({
 
   const navigateToShipping = () => {
     if (strictValidObjectWithKeys(userData)) {
-      nav.navigate('Shipping', {
+      // nav.navigate('BillingAddress'  , {
+        nav.navigate('Shipping', {
         price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
       });
     } else {

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../common/header';
 import {
   ActivityIndicator,
@@ -20,7 +20,7 @@ import {
   Input,
   Button,
 } from '../../components';
-import {t1, t2, t4, w2, w3, w4} from '../../components/theme/fontsize';
+import { t1, t2, t4, w2, w3, w4 } from '../../components/theme/fontsize';
 import EmptyFile from '../../components/emptyFile';
 import {
   heightPercentageToDP,
@@ -30,8 +30,8 @@ import styled from 'styled-components';
 import Icon from 'react-native-vector-icons/Entypo';
 import Icons from 'react-native-vector-icons/Ionicons';
 
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   strictValidArrayWithLength,
   strictValidObjectWithKeys,
@@ -46,7 +46,7 @@ import {
   updateGuestCartRequest,
 } from '../../redux/action';
 import ActivityLoader from '../../components/activityLoader';
-import {light} from '../../components/theme/colors';
+import { light } from '../../components/theme/colors';
 const Cart = () => {
   const userData = useSelector((state) => state.user.profile.user);
   const cart_list = useSelector((state) => state.cart.list.data);
@@ -135,7 +135,7 @@ const Cart = () => {
 
     const id = item.item_id;
     const old = cartlist[index];
-    const updated = {...old, qty: qty, price_copy: item.price * qty};
+    const updated = { ...old, qty: qty, price_copy: item.price * qty };
     const clone = [...cartlist];
     clone[index] = updated;
     setList(clone);
@@ -144,19 +144,19 @@ const Cart = () => {
       qty: qty,
       quote_id: item.quote_id,
     };
-    // if (strictValidObjectWithKeys(userData)) {
-    //   dispatch(updateCartRequest({data, id}));
-    // } else {
-    //   dispatch(
-    //     updateGuestCartRequest({token: guestCartToken, id: id, items: data}),
-    //   );
-    // }
-    // }
+    if (strictValidObjectWithKeys(userData)) {
+      dispatch(updateCartRequest({data, id}));
+    } else {
+      dispatch(
+        updateGuestCartRequest({token: guestCartToken, id: id, items: data}),
+      );
+    }
+    
   };
 
   const updateProducts = (item, index) => {
     const old = cartlist[index];
-    const updated = {...old, isLoad: true};
+    const updated = { ...old, isLoad: true };
     const clone = [...cartlist];
     clone[index] = updated;
     setList(clone);
@@ -167,17 +167,17 @@ const Cart = () => {
     };
     const id = item.item_id;
     if (strictValidObjectWithKeys(userData)) {
-      dispatch(updateCartRequest({data, id}));
+      dispatch(updateCartRequest({ data, id }));
     } else {
       dispatch(
-        updateGuestCartRequest({token: guestCartToken, id: id, items: data}),
+        updateGuestCartRequest({ token: guestCartToken, id: id, items: data }),
       );
     }
   };
 
   const ChangeQtyText = (text, index) => {
     const old = cartlist[index];
-    const updated = {...old, qtyText: text};
+    const updated = { ...old, qtyText: text };
     const clone = [...cartlist];
     clone[index] = updated;
     setList(clone);
@@ -185,14 +185,14 @@ const Cart = () => {
 
   const deleteProduct = (id, index) => {
     const old = cartlist[index];
-    const updated = {...old, isDelete: true};
+    const updated = { ...old, isDelete: true };
     const clone = [...cartlist];
     clone[index] = updated;
     setList(clone);
     if (strictValidObjectWithKeys(userData)) {
       dispatch(deleteItemRequest(id));
     } else {
-      dispatch(deleteGuestCartRequest({token: guestCartToken, id: id}));
+      dispatch(deleteGuestCartRequest({ token: guestCartToken, id: id }));
     }
   };
 
@@ -208,17 +208,18 @@ const Cart = () => {
     }
   };
   const navigateToShipping = () => {
-    if (strictValidObjectWithKeys(userData)) {
+    if (strictValidObjectWithKeys(userData)) {      
+     // nav.navigate('BillingAddress', {
       nav.navigate('Shipping', {
         price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
       });
     } else {
       global.isLoggedIn = true;
-      navigation.navigate('Login', {isLoggedIn: true});
+      navigation.navigate('Login', { isLoggedIn: true });
     }
   };
 
-  const _renderItem = ({item, index}) => {
+  const _renderItem = ({ item, index }) => {
     return (
       <Block row flex={false} padding={[t2, w2]}>
         <Block flex={false}>
@@ -228,7 +229,7 @@ const Cart = () => {
             <CustomButton
               onPress={() => deleteProduct(item.item_id, index)}
               flex={false}
-              style={{height: 20, width: 20}}
+              style={{ height: 20, width: 20 }}
               center
               middle
               secondary>
@@ -242,7 +243,7 @@ const Cart = () => {
           )}
           {item.isLoad ? (
             <ActivityIndicator
-              style={{marginTop: t1}}
+              style={{ marginTop: t1 }}
               color={light.secondary}
               size="small"
             />
@@ -251,7 +252,7 @@ const Cart = () => {
               onPress={() => updateProducts(item, index)}
               margin={[t1, 0, 0, 0]}
               flex={false}
-              style={{height: 20, width: 20}}
+              style={{ height: 20, width: 20 }}
               center
               middle
               secondary>
@@ -267,7 +268,7 @@ const Cart = () => {
           <CustomButton
             margin={[t1, 0, 0, 0]}
             flex={false}
-            style={{height: 20, width: 20}}
+            style={{ height: 20, width: 20 }}
             center
             middle
             secondary>
@@ -276,7 +277,7 @@ const Cart = () => {
         </Block>
         <ImageComponent isURL name={item.image} />
         <Block flex={false} margin={[0, w3]}>
-          <Text style={{width: widthPercentageToDP(38)}} size={13}>
+          <Text style={{ width: widthPercentageToDP(38) }} size={13}>
             {item.name}
           </Text>
         </Block>
@@ -309,7 +310,7 @@ const Cart = () => {
           </Block> */}
           <Block
             margin={[heightPercentageToDP(1.5), 0, 0]}
-            style={{width: widthPercentageToDP(18)}}
+            style={{ width: widthPercentageToDP(18) }}
             center
             row
             space={'between'}
@@ -346,9 +347,8 @@ const Cart = () => {
             Your Cart
           </Text>
           <Text size={12}>
-            {`${
-              (strictValidArrayWithLength(cartlist) && cartlist.length) || 0
-            } item`}
+            {`${(strictValidArrayWithLength(cartlist) && cartlist.length) || 0
+              } item`}
           </Text>
         </Block>
         <Block
@@ -366,7 +366,7 @@ const Cart = () => {
           data={strictValidArrayWithLength(cartlist) && cartlist}
           renderItem={_renderItem}
           ListEmptyComponent={<EmptyFile />}
-          contentContainerStyle={{flexGrow: 1}}
+          contentContainerStyle={{ flexGrow: 1 }}
         />
       </Block>
       {strictValidArrayWithLength(cartlist) && (
@@ -389,7 +389,7 @@ const Cart = () => {
           <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
             <CartButton
               onPress={() => nav.navigate('DashboardLogo')}
-              textStyle={{textTransform: 'uppercase'}}
+              textStyle={{ textTransform: 'uppercase' }}
               color="primary">
               Continue Shopping
             </CartButton>
@@ -397,7 +397,7 @@ const Cart = () => {
               onPress={() => {
                 navigateToShipping();
               }}
-              textStyle={{textTransform: 'uppercase'}}
+              textStyle={{ textTransform: 'uppercase' }}
               color="secondary">
               Buy Now
             </CartButton>
@@ -415,7 +415,7 @@ const Cart = () => {
                   top: 20,
                 }}>
                 <Text center color={'white'} size={10}>
-                {qtySum}
+                  {qtySum}
                 </Text>
               </View>
             ) : null}

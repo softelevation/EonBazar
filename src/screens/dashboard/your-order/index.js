@@ -71,7 +71,14 @@ const YourOrder = () => {
               <Text size={14} bold>
                 {item.base_grand_total}
               </Text>
+              
             </Text>
+            <Text size={14} bold>
+              discount:{item.discount_amount}
+              </Text>
+              {/* <Text size={14} bold>
+              subTotal:{item.subtotal}
+              </Text> */}
           </Block>
           <Block right flex={false}>
             <StarRating
@@ -140,6 +147,20 @@ const YourOrder = () => {
                           {currency} {item.row_total_incl_tax}
                         </Text>
                       </Block>
+                      {/* <Block margin={[t1, 0, 0, 0]} row space={'between'}>
+                        {item.base_discount_amount ? (
+                          <Text regular size={12}>{item.base_discount_amount}</Text>
+                        ) : (
+                          <Text regular style={{ width: wp(8) }} size={12} />
+                        )}
+                        <Text regular size={12}>
+                          Qty. {item.discount_amount}
+                        </Text>
+                        <Text regular size={12}>
+                          {currency} {item.subtotal_with_discount}
+                        </Text>
+                      </Block> */}
+
                     </Block>
                   </Block>
                 );

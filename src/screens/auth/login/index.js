@@ -48,7 +48,7 @@ const Login = ({route}) => {
         }),
       );
     }
-  }, [userProfile]);
+  }, []);
 
   const handleForgot = () => {
     if (phoneNumber == null || phoneNumber === '') {

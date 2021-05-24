@@ -41,6 +41,10 @@ import ChangePassword from '../screens/auth/change-password';
 import AddAddress from '../screens/auth/add-address';
 import ShowAddress from '../screens/auth/show-address';
 
+import PaymentSuccess from '../screens/payment/paymentSuccess'
+import PaymentError from '../screens/payment/paymentError'
+import BillingAddress from '../screens/payment/billingAddress'
+
 
 const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -89,6 +93,9 @@ function Routes() {
         <RootStack.Screen name="ForgotPassword" component={ForgotPassword} />
         <RootStack.Screen name="DashboardLogo" component={DashboardStack} />
         <RootStack.Screen name="Payment" component={PaymentModal} />
+        <RootStack.Screen name="PaymentSuccess" component={PaymentSuccess} />
+        <RootStack.Screen name="PaymentError" component={PaymentError} />
+        <RootStack.Screen name="BillingAddress" component={BillingAddress} />        
       </RootStack.Navigator>
     );
   };
@@ -123,6 +130,9 @@ function Routes() {
         <RootStack.Screen name="SearchList" component={SearchList} />
         <RootStack.Screen name="Payment" component={PaymentModal} />
         <RootStack.Screen name="DashboardLogo" component={DashboardStack} />
+        <RootStack.Screen name="PaymentSuccess" component={PaymentSuccess} />
+        <RootStack.Screen name="PaymentError" component={PaymentError} />
+        <RootStack.Screen name="BillingAddress" component={BillingAddress} /> 
       </RootStack.Navigator>
     );
   };
@@ -152,6 +162,9 @@ function Routes() {
         <RootStack.Screen name="SearchList" component={SearchList} />
         <RootStack.Screen name="Payment" component={PaymentModal} />
         <RootStack.Screen name="PaymentMethod" component={PaymentMethod} />
+        <RootStack.Screen name="PaymentSuccess" component={PaymentSuccess} />
+        <RootStack.Screen name="PaymentError" component={PaymentError} />
+        <RootStack.Screen name="BillingAddress" component={BillingAddress} /> 
       </RootStack.Navigator>
     );
   };
@@ -184,6 +197,9 @@ function Routes() {
         <RootStack.Screen name="SearchList" component={SearchList} />
         <RootStack.Screen name="Payment" component={PaymentModal} />
         <RootStack.Screen name="DashboardLogo" component={DashboardStack} />
+        <RootStack.Screen name="PaymentSuccess" component={PaymentSuccess} />
+        <RootStack.Screen name="PaymentError" component={PaymentError} />
+        <RootStack.Screen name="BillingAddress" component={BillingAddress} /> 
       </RootStack.Navigator>
     );
   };
@@ -214,6 +230,9 @@ function Routes() {
         <RootStack.Screen name="Payment" component={PaymentModal} />
         <RootStack.Screen name="PaymentMethod" component={PaymentMethod} />
         <RootStack.Screen name="DashboardLogo" component={DashboardStack} />
+        <RootStack.Screen name="PaymentSuccess" component={PaymentSuccess} />
+        <RootStack.Screen name="PaymentError" component={PaymentError} />
+        <RootStack.Screen name="BillingAddress" component={BillingAddress} /> 
       </RootStack.Navigator>
     );
   };

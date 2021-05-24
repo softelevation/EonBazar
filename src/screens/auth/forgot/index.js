@@ -150,7 +150,7 @@ const ForgotPassword = () => {
                       onBlur={() => setFieldTouched('otp')}
                       error={touched.otp && errors.otp}
                       errorText={touched.otp && errors.otp}
-                      maxLength={4}
+                      maxLength={5}
                     />
                     <Button
                       onPress={() => resendOtp()}

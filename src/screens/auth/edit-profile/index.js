@@ -131,34 +131,34 @@ const EditProfile = () => {
 
 
 
-    const generateOtp = () => {
-      if (formikRef.current) {
-        const { mobile } = formikRef.current.values;
-        const data = {
-          resend,
-          mobile,
-          eventType: eventType.customer_account_edit_otp,
-        };
-        dispatch(generateOtpRequest(data));
-        setGenerate(true);
-      }
-    };
-    const resendOtp = () => {
-      if (formikRef.current) {
-        const { mobile } = formikRef.current.values;
-        const data = {
-          resend: resend + 1,
-          mobile,
-          eventType: eventType.customer_signup_otp,
-        };
-        setResend(resend + 1);
-        dispatch(generateOtpRequest(data));
-        setGenerate(true);
-      }
-    };
+    
   }
 
-
+  const generateOtp = () => {
+    if (formikRef.current) {
+      const { mobile } = formikRef.current.values;
+      const data = {
+        resend,
+        mobile,
+        eventType: eventType.customer_account_edit_otp,
+      };
+      dispatch(generateOtpRequest(data));
+      setGenerate(true);
+    }
+  };
+  const resendOtp = () => {
+    if (formikRef.current) {
+      const { mobile } = formikRef.current.values;
+      const data = {
+        resend: resend + 1,
+        mobile,
+        eventType: eventType.customer_signup_otp,
+      };
+      setResend(resend + 1);
+      dispatch(generateOtpRequest(data));
+      setGenerate(true);
+    }
+  };
 
   const editAddressFun = async (editData) => {
     const token = await AsyncStorage.getItem('token');

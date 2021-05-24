@@ -4,6 +4,7 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
+  Dimensions,
   View,
 } from 'react-native';
 import {
@@ -58,6 +59,7 @@ const Category = (props) => {
   const [endReached, setEndReached] = useState(false);
   const { data } = state;
   const [scrollHeight, setScrollHeight] = useState(0);
+  const flatListRef = useRef()
   // Reducers Values
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
   const userProfile = useSelector((v) => v.user.profile.user);
@@ -93,7 +95,13 @@ const Category = (props) => {
     //   y: scrollHeight,
     //   animated: true
     // });
-    scrollRef.current.scrollToEnd();
+    setTimeout(() => {
+      scrollRef.current.scrollToEnd({animated: true,
+       // y: (100 *10)
+      });
+    }, 1000);
+   
+   // flatListRef.current.scrollToOffset({ animated: true, offset: 0,viewPosition:1 })
 
     //scrollRef.current && scrollRef.current.scrollIntoView({ behavior: 'smooth' })
     setstate({ data: [] });
@@ -244,6 +252,7 @@ const Category = (props) => {
 
   const navigateToShipping = () => {
     if (strictValidObjectWithKeys(userData)) {
+      // nav.navigate('BillingAddress', {
       nav.navigate('Shipping', {
         price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
       });
@@ -459,6 +468,7 @@ const Category = (props) => {
               contentContainerStyle={flatlistContentStyle}
               data={strictValidArray(data) && data}
               renderItem={renderItem}
+              ref={flatListRef}
               // onEndReached={LoadMoreRandomData}
               onEndReachedThreshold={0.1}
               bounces={false}
@@ -524,7 +534,7 @@ const Category = (props) => {
                   top: 20,
                 }}>
                 <Text center color={'white'} size={10}>
-                {qtySum}
+                  {qtySum}
                 </Text>
               </View>
             ) : null}

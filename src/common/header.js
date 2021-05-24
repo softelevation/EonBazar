@@ -64,6 +64,7 @@ const Header = ({ leftIcon, Logo, rightIcon }) => {
 
   useEffect(() => {
     const newData = [];
+
     cart_list &&
       cart_list.map((a) => {
         console.log(JSON.stringify(a))

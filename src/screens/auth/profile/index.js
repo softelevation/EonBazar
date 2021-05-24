@@ -37,7 +37,7 @@ const Profile = () => {
         }),
       );
     }
-  }, [userData]);
+  }, []);
 
  
   useEffect(() => {

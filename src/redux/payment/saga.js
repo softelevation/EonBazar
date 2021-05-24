@@ -15,10 +15,11 @@ export function* paymentRequest(action) {
       if (action.payload.method === 'sslcommerz') {
         RootNavigation.navigate('Payment');
       } else {
-         RootNavigation.navigate('YourOrder');
+         RootNavigation.navigate('PaymentSuccess');
         yield put(createCartRequest());
       }
     } else {
+      RootNavigation.navigate('PaymentError');
       yield put(paymentError(response));
     }
   } catch (err) {

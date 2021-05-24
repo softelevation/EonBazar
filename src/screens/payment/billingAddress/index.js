@@ -87,7 +87,7 @@ const stylesPicker = StyleSheet.create({
   },
 });
 
-const Shipping = ({
+const BillingAddress = ({
   route: {
     params: { price },
   },
@@ -96,6 +96,7 @@ const Shipping = ({
   const [State, setState] = useState('');
   const [region, setregion] = useState(null);
   const [shipping, setShipping] = useState([]);
+  const navigation = useNavigation();
   const currency = useSelector(
     (state) => state.currency.currencyDetail.data.base_currency_code,
   );
@@ -103,7 +104,7 @@ const Shipping = ({
   const city = useSelector((state) => state.area.cities.data);
   const isLoad = useSelector((state) => state.shipping.shippingDetails.loading);
   const userData = useSelector((state) => state.user.profile.user);
-  const [selectTab, setSelectTab] = useState('Shipping');
+  const [selectTab, setSelectTab] = useState('List');
   const [listMainColor, setListMainColor] = useState('#ffffff');
   const [listTextColor, setListTextColor] = useState('#7D7F86');
   const [shippingMainColor, setShippingMainColor] = useState('#78A942');
@@ -309,12 +310,15 @@ const Shipping = ({
   };
 
   const listClick = () => {
-    getShippingAddress();
-    setSelectTab('List');
-    setListMainColor('#78A942');
-    setListTextColor('#ffffff');
-    setShippingMainColor('#ffffff');
-    setShippingTextColor('#7D7F86');
+    navigation.navigate('Shipping', {
+        price: price,
+      });
+    // getShippingAddress();
+    // setSelectTab('List');
+    // setListMainColor('#78A942');
+    // setListTextColor('#ffffff');
+    // setShippingMainColor('#ffffff');
+    // setShippingTextColor('#7D7F86');
   };
 
   const shippingClick = () => {
@@ -452,6 +456,47 @@ const Shipping = ({
             <View style={{ flex: 1 }}>
 
 
+
+
+              <View
+                style={{
+                  marginTop: 20,
+                  marginLeft: 20,
+                  marginRight: 20,
+                  flexDirection: 'row',
+                  height: 50,
+                  borderRadius: 10,
+                  backgroundColor: '#ffffff',
+                  borderWidth: 1,
+                  borderColor: 'grey',
+                }}>
+
+                <TouchableOpacity
+                  style={[
+                    stylesPicker.inputBox,
+                    {
+                      borderColor: 'transparent',
+                      flex: 1,
+                      borderWidth: 0,
+                      backgroundColor: listMainColor,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flexDirection: 'row', paddingLeft: 20, paddingRight: 20
+                    },
+                  ]}
+                  onPress={() => listClick()}>
+                  <Text
+                    style={{
+                      color: 'black',
+                      fontSize: 16,
+                      flex: 1
+                    }}>
+                    Shipping Address </Text>
+                  <AntDesign name="right" size={20} />
+                </TouchableOpacity>
+              </View>
+
+              {/* 
               <View
                 style={{
                   marginTop: 20,
@@ -509,7 +554,7 @@ const Shipping = ({
                     Billing Address
                   </Text>
                 </TouchableOpacity>
-              </View>
+              </View> */}
 
               {selectTab == 'Shipping' ? (
                 <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
@@ -844,4 +889,4 @@ const buttonStyle = {
 };
 const checkboxStyle = { height: 20, width: 20 };
 const labelStyle = { marginLeft: w3, fontSize: 12 };
-export default Shipping;
+export default BillingAddress;
