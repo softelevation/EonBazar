@@ -5,6 +5,7 @@ const initialState = {
   loading: false,
   data: [],
   error: '',
+  isSucess: false,
 };
 export function contact(state = initialState, action) {
   switch (action.type) {
@@ -13,6 +14,7 @@ export function contact(state = initialState, action) {
         ...state,
         loading: true,
         error: '',
+        isSucess: false,
       };
     case ActionConstants.CONTACT_US_SUCCESS:
       return {
@@ -20,12 +22,14 @@ export function contact(state = initialState, action) {
         loading: false,
         data: action.data,
         error: '',
+        isSucess: true,
       };
     case ActionConstants.CONTACT_US_ERROR:
       return {
         ...state,
         loading: false,
         error: action.error,
+        isSucess: false,
       };
 
     default:

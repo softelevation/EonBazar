@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -23,9 +23,9 @@ import {
   Text,
 } from '../../components';
 import Search from '../../components/search';
-import { t1, t2, w2, w3 } from '../../components/theme/fontsize';
+import {t1, t2, w2, w3} from '../../components/theme/fontsize';
 import HeaderCatgoryMenu from '../../common/HeaderCatgoryMenu';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   addToCartRequest,
   addToGuestCartRequest,
@@ -36,13 +36,12 @@ import {
   strictValidArray,
   strictValidObjectWithKeys,
 } from '../../utils/commonUtils';
-import { light } from '../../components/theme/colors';
-import { useNavigation } from '@react-navigation/core';
+import {light} from '../../components/theme/colors';
+import {useNavigation} from '@react-navigation/core';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { config } from '../../utils/config';
+import {config} from '../../utils/config';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import OverlayLoader from '../../components/overlayLoader';
-
 
 const initialState = {
   data: [],
@@ -57,9 +56,9 @@ const Category = (props) => {
   const [loader, setloader] = useState(false);
   const [showPrice, setShowPrice] = useState(false);
   const [endReached, setEndReached] = useState(false);
-  const { data } = state;
+  const {data} = state;
   const [scrollHeight, setScrollHeight] = useState(0);
-  const flatListRef = useRef()
+  const flatListRef = useRef();
   // Reducers Values
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
   const userProfile = useSelector((v) => v.user.profile.user);
@@ -87,7 +86,6 @@ const Category = (props) => {
   const userData = useSelector((state) => state.user.profile.user);
   const [qtySum, setSum] = useState([]);
 
-
   const sortingMenu = (val) => {
     //   scrollRef.scrollToEnd()
     // scrollRef.scrollView.getScrollResponder().scrollResponderScrollTo({
@@ -96,15 +94,16 @@ const Category = (props) => {
     //   animated: true
     // });
     setTimeout(() => {
-      scrollRef.current.scrollToEnd({animated: true,
-       // y: (100 *10)
+      scrollRef.current.scrollToEnd({
+        animated: true,
+        // y: (100 *10)
       });
     }, 1000);
-   
-   // flatListRef.current.scrollToOffset({ animated: true, offset: 0,viewPosition:1 })
+
+    // flatListRef.current.scrollToOffset({ animated: true, offset: 0,viewPosition:1 })
 
     //scrollRef.current && scrollRef.current.scrollIntoView({ behavior: 'smooth' })
-    setstate({ data: [] });
+    setstate({data: []});
     setmenu(val.id);
     setname(val.name);
   };
@@ -143,6 +142,7 @@ const Category = (props) => {
   };
   useEffect(() => {
     const newData = [];
+    console.log(filteredData, 'filteredData');
     filteredData &&
       filteredData.map((a) => {
         const special_price = a.custom_attributes.find(
@@ -162,9 +162,10 @@ const Category = (props) => {
             : a.price,
           isLoad: false,
           sku: a.sku,
+          id: a.id,
         });
       });
-    setstate({ ...state, data: data.concat(newData) });
+    setstate({...state, data: data.concat(newData)});
   }, [filteredData]);
 
   const LoadMoreRandomData = async () => {
@@ -178,10 +179,10 @@ const Category = (props) => {
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = data[index];
-      const updated = { ...old, isLoad: true };
+      const updated = {...old, isLoad: true};
       const clone = [...data];
       clone[index] = updated;
-      setstate({ data: clone });
+      setstate({data: clone});
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -190,47 +191,44 @@ const Category = (props) => {
       await dispatch(addToCartRequest(newData));
     } else {
       const old = data[index];
-      const updated = { ...old, isLoad: true };
+      const updated = {...old, isLoad: true};
       const clone = [...data];
       clone[index] = updated;
-      setstate({ data: clone });
+      setstate({data: clone});
       const newData = {
         sku: val.sku,
         qty: val.qty,
         quote_id: guestCartToken,
       };
       await dispatch(
-        addToGuestCartRequest({ token: guestCartToken, items: newData }),
+        addToGuestCartRequest({token: guestCartToken, items: newData}),
       );
     }
     setShowPrice(true);
   };
 
-
   const addToWishlist = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = data[index];
-      const updated = { ...old, isWishlist: true };
+      const updated = {...old, isWishlist: true};
       const clone = [...data];
       clone[index] = updated;
-
-      // setstate({ data: clone });
-      // const id = val.id;
-      // await dispatch(updateWishlistRequest(id));
+      setstate({data: clone});
+      const id = val.id;
+      await dispatch(updateWishlistRequest(id));
     } else {
       nav.reset({
-        routes: [{ name: 'Login' }],
+        routes: [{name: 'Login'}],
       });
     }
   };
 
-
   const updateQty = (qty, index) => {
     const old = data[index];
-    const updated = { ...old, qty: qty };
+    const updated = {...old, qty: qty};
     const clone = [...data];
     clone[index] = updated;
-    setstate({ data: clone });
+    setstate({data: clone});
     setShowPrice(true);
   };
 
@@ -258,7 +256,7 @@ const Category = (props) => {
       });
     } else {
       global.isLoggedIn = true;
-      nav.navigate('Login', { isLoggedIn: true });
+      nav.navigate('Login', {isLoggedIn: true});
     }
   };
   useEffect(() => {
@@ -282,20 +280,18 @@ const Category = (props) => {
       });
 
     setList(newData);
-    var numbers = newData
+    var numbers = newData;
     var sum = 0;
     for (var i = 0; i < numbers.length; i++) {
-
-      sum += numbers[i].qty
-
+      sum += numbers[i].qty;
     }
-    setSum(sum)
+    setSum(sum);
   }, [cart_list]);
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({item, index}) => {
     return (
       <Block
-        style={{ width: widthPercentageToDP(45), minHeight: hp(35) }}
+        style={{width: widthPercentageToDP(45), minHeight: hp(35)}}
         padding={[hp(2)]}
         margin={[hp(0.5), widthPercentageToDP(1.8)]}
         primary
@@ -343,7 +339,7 @@ const Category = (props) => {
           space={'between'}
           flex={false}>
           <Block
-            style={{ width: widthPercentageToDP(18) }}
+            style={{width: widthPercentageToDP(18)}}
             center
             row
             space={'between'}
@@ -431,7 +427,7 @@ const Category = (props) => {
           <Text semibold size={15}>
             {name || ''}
           </Text>
-          <ShopByButton style={{ marginTop: 5 }} color="secondary">
+          <ShopByButton style={{marginTop: 5}} color="secondary">
             Shop by
           </ShopByButton>
         </Block>
@@ -448,12 +444,12 @@ const Category = (props) => {
           <Block center flex={false} row />
         </Block>
         {loading ? (
-          <Block color="transparent" style={{ height: hp(30) }} center middle>
+          <Block color="transparent" style={{height: hp(30)}} center middle>
             <ActivityIndicator color={light.secondary} size="large" />
           </Block>
         ) : (
           <View
-            style={{ flex: 1 }}
+            style={{flex: 1}}
             onStartShouldSetResponderCapture={() => {
               setScrollView(false);
               if (
@@ -507,7 +503,7 @@ const Category = (props) => {
           <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
             <CartButton
               onPress={() => nav.navigate('DashboardLogo', setShowPrice(false))}
-              textStyle={{ textTransform: 'uppercase' }}
+              textStyle={{textTransform: 'uppercase'}}
               color="primary">
               Continue Shopping
             </CartButton>
@@ -516,7 +512,7 @@ const Category = (props) => {
               onPress={() => {
                 navigateToShipping();
               }}
-              textStyle={{ textTransform: 'uppercase' }}
+              textStyle={{textTransform: 'uppercase'}}
               color="secondary">
               Buy Now
             </CartButton>

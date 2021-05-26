@@ -50,10 +50,7 @@ export function* loginRequest(action) {
       yield put(loginError(response));
     }
   } catch (err) {
-    // Alert.alert(err.response.data.message);
-    setTimeout(() => {
-      Toast.show(err.response.data.message);
-    }, 1000);
+    Toast(err.response.data.message);
     yield put(loginError(''));
   }
 }

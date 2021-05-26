@@ -1,4 +1,4 @@
-import { ActionConstants } from '../constants';
+import {ActionConstants} from '../constants';
 import {
   getCartDetailsError,
   addToCartSuccess,
@@ -24,7 +24,7 @@ import {
   GuestMergeSuccess,
   GuestMergeError,
 } from '../action';
-import { put, call, all, takeLatest } from 'redux-saga/effects';
+import {put, call, all, takeLatest} from 'redux-saga/effects';
 import {
   ListApi,
   SaveListApi,
@@ -45,8 +45,8 @@ import {
   guestCartRequest,
 } from './action';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Alert } from 'react-native';
-import Toast from '../../common/toast';
+import {Alert} from 'react-native';
+import {Toast} from '../../common/toast';
 
 export function* requestList(action) {
   try {
@@ -66,7 +66,7 @@ export function* requestSaveList(action) {
     const response = yield call(SaveListApi, action.payload);
     if (response) {
       setTimeout(() => {
-        Toast.show('Product added to cart successfully...');
+        Toast('Product added to cart successfully...');
       }, 1000);
       yield put(addToCartSuccess(response.data));
       yield put(getCartDetailsRequest());
@@ -76,7 +76,7 @@ export function* requestSaveList(action) {
     }
   } catch (err) {
     setTimeout(() => {
-      Toast.show(err.response.data.message);
+      Toast(err.response.data.message);
     }, 1000);
     yield put(addToCartError(err.response.data.message));
   }
@@ -107,7 +107,7 @@ export function* updateCart(action) {
   } catch (err) {
     // alert(err.response.data.message);
     setTimeout(() => {
-      Toast.show(err.response.data.message);
+      Toast(err.response.data.message);
     }, 1000);
     yield put(updateCartError(err.response.data.message));
   }
@@ -172,7 +172,7 @@ export function* guestSaveList(action) {
       const token = yield call(getToken);
       if (token) {
         setTimeout(() => {
-          Toast.show('Product added to cart successfully...');
+          Toast('Product added to cart successfully...');
         }, 1000);
         yield put(guestCartRequest(token));
       }
@@ -183,7 +183,7 @@ export function* guestSaveList(action) {
     }
   } catch (err) {
     setTimeout(() => {
-      Toast.show(err.response.data.message);
+      Toast(err.response.data.message);
     }, 1000);
     yield put(addToGuestCartError(err.response.data.message));
   }
@@ -204,7 +204,7 @@ export function* guestupdateCart(action) {
   } catch (err) {
     // alert(err.response.data.message);
     setTimeout(() => {
-      Toast.show(err.response.data.message);
+      Toast(err.response.data.message);
     }, 1000);
     yield put(updateGuestCartError(err.response.data.message));
   }

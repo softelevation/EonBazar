@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Header from '../../../common/header';
 import ActivityLoader from '../../../components/activityLoader';
 import {createCartRequest} from '../../../redux/action';
-import Toast from '../../../common/toast'
+import {Toast} from '../../../common/toast';
 
 const Payment = () => {
   const id = useSelector((state) => state.payment.data);
@@ -22,26 +22,15 @@ const Payment = () => {
 
   const handleNavigation = (v) => {
     setloader(v.loading);
-
-    if (
-      !v.title &&
-      v.url === 'http://stage.eonbazar.com/order/payment/success'
-    ) {
+    console.log(v, 'v');
+    if (v.url === 'http://stage.eonbazar.com/order/payment/success') {
       // Alert.alert('Payment Success');
-      setTimeout(() => {
-        Toast.show('Payment Success');
-      }, 1000);
+      Toast('Payment Success');
       navigation.navigate('YourOrder');
       dispatch(createCartRequest());
     }
-    if (
-      v.title === 'SSLCOMMERZ' &&
-      v.url === 'http://stage.eonbazar.com/order/payment/fail'
-    ) {
-      // Alert.alert('Payment Failed');
-      setTimeout(() => {
-        Toast.show('Payment Failed');
-      }, 1000);
+    if (v.url === 'http://stage.eonbazar.com/order/payment/fail') {
+      Toast('Payment Failed');
       navigation.navigate('YourOrder');
       dispatch(createCartRequest());
     }

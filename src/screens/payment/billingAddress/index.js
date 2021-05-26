@@ -1,22 +1,22 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import Footer from '../../../common/footer';
 import Header from '../../../common/header';
-import { Block, Button, Input, Text } from '../../../components';
+import {Block, Button, Input, Text} from '../../../components';
 import Checkbox from '../../../components/checkbox';
-import { t1, t2, t4, w3, w5 } from '../../../components/theme/fontsize';
+import {t1, t2, t4, w3, w5} from '../../../components/theme/fontsize';
 import RNPickerSelect from 'react-native-picker-select';
-import { useDispatch, useSelector } from 'react-redux';
-import { generateOtpRequest, updateProfileRequest } from '../../../redux/action';
+import {useDispatch, useSelector} from 'react-redux';
+import {generateOtpRequest, updateProfileRequest} from '../../../redux/action';
 
 import * as yup from 'yup';
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import {
   searchDistrictRequest,
   searchAreaRequest,
@@ -28,15 +28,13 @@ import {
   strictValidNumber,
   strictValidObjectWithKeys,
 } from '../../../utils/commonUtils';
-import { config } from '../../../utils/config';
+import {config} from '../../../utils/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import { color, onChange } from 'react-native-reanimated';
+import {color, onChange} from 'react-native-reanimated';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Toast from '../../../common/toast';
+import {Toast} from '../../../common/toast';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-
-
 
 global.shippingAddress = '';
 const stylesPicker = StyleSheet.create({
@@ -89,7 +87,7 @@ const stylesPicker = StyleSheet.create({
 
 const BillingAddress = ({
   route: {
-    params: { price },
+    params: {price},
   },
 }) => {
   const dispatch = useDispatch();
@@ -137,8 +135,7 @@ const BillingAddress = ({
       url: `${config.Api_Url}/V1/customers/me`,
       headers,
     }).then((res) => {
-
-      console.log("======>>>", res.data.addresses)
+      console.log('======>>>', res.data.addresses);
       setShippingAddress(res.data.addresses);
     });
   };
@@ -311,8 +308,8 @@ const BillingAddress = ({
 
   const listClick = () => {
     navigation.navigate('Shipping', {
-        price: price,
-      });
+      price: price,
+    });
     // getShippingAddress();
     // setSelectTab('List');
     // setListMainColor('#78A942');
@@ -330,12 +327,9 @@ const BillingAddress = ({
   };
 
   const listPress = (item) => {
-
-    if (carrier == null || carrier == '') {
-      Toast.show('Please select payment method');
-    }
-    else {
-
+    if (carrier == null || carrier === '') {
+      Toast('Please select payment method');
+    } else {
       const data = {
         addressInformation: {
           shipping_address: {
@@ -370,10 +364,8 @@ const BillingAddress = ({
         },
       };
       dispatch(addShippingRequest(data));
-
     }
   };
-
 
   const deleteAddress = async (item) => {
     const token = await AsyncStorage.getItem('token');
@@ -381,25 +373,20 @@ const BillingAddress = ({
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token,
     };
-    return fetch(
-      `${config.Api_Url}/V1/addresses/${item.customer_id}`,
-      {
-        method: 'DELETE',
-        headers: headers,
-        body: JSON.stringify(editData)
-      },
-    )
+    return fetch(`${config.Api_Url}/V1/addresses/${item.customer_id}`, {
+      method: 'DELETE',
+      headers: headers,
+      // body: JSON.stringify(editData),
+    })
       .then((r) => r.json())
       .then((r) => {
-        console.log("edit====", r)
+        console.log('edit====', r);
       })
       .catch((error) => {
         console.error(error);
         return [];
       });
-
-  }
-
+  };
 
   return (
     <Block>
@@ -453,11 +440,7 @@ const BillingAddress = ({
           dirty,
         }) => {
           return (
-            <View style={{ flex: 1 }}>
-
-
-
-
+            <View style={{flex: 1}}>
               <View
                 style={{
                   marginTop: 20,
@@ -470,7 +453,6 @@ const BillingAddress = ({
                   borderWidth: 1,
                   borderColor: 'grey',
                 }}>
-
                 <TouchableOpacity
                   style={[
                     stylesPicker.inputBox,
@@ -481,7 +463,9 @@ const BillingAddress = ({
                       backgroundColor: listMainColor,
                       justifyContent: 'center',
                       alignItems: 'center',
-                      flexDirection: 'row', paddingLeft: 20, paddingRight: 20
+                      flexDirection: 'row',
+                      paddingLeft: 20,
+                      paddingRight: 20,
                     },
                   ]}
                   onPress={() => listClick()}>
@@ -489,14 +473,15 @@ const BillingAddress = ({
                     style={{
                       color: 'black',
                       fontSize: 16,
-                      flex: 1
+                      flex: 1,
                     }}>
-                    Shipping Address </Text>
+                    Shipping Address{' '}
+                  </Text>
                   <AntDesign name="right" size={20} />
                 </TouchableOpacity>
               </View>
 
-              {/* 
+              {/*
               <View
                 style={{
                   marginTop: 20,
@@ -606,7 +591,7 @@ const BillingAddress = ({
                       </Text>
                     ) : null}
                     {strictValidNumber(values.district) &&
-                      strictValidArrayWithLength(city.items) ? (
+                    strictValidArrayWithLength(city.items) ? (
                       <>
                         <RNPickerSelect
                           placeholder={
@@ -737,7 +722,7 @@ const BillingAddress = ({
                             />
                             <Text size={12}>{a.method_title}</Text>
                             <Text
-                              style={{ width: widthPercentageToDP(27) }}
+                              style={{width: widthPercentageToDP(27)}}
                               size={12}>
                               {a.carrier_title}
                             </Text>
@@ -762,11 +747,11 @@ const BillingAddress = ({
                   <Footer images={false} />
                 </KeyboardAwareScrollView>
               ) : (
-                <View style={{ flex: 1, marginTop: 10 }}>
+                <View style={{flex: 1, marginTop: 10}}>
                   {shippingAddress ? (
                     <FlatList
                       data={shippingAddress}
-                      renderItem={({ item, index }) => (
+                      renderItem={({item, index}) => (
                         <View
                           style={{
                             backgroundColor: 'white',
@@ -776,9 +761,8 @@ const BillingAddress = ({
                             padding: 15,
                             borderRadius: 20,
                           }}>
-
-                          <View style={{ flexDirection: 'row' }}>
-                            <Text style={[stylesPicker.itemStyle, { flex: 1 }]}>
+                          <View style={{flexDirection: 'row'}}>
+                            <Text style={[stylesPicker.itemStyle, {flex: 1}]}>
                               {item.firstname + ' ' + item.lastname}
                             </Text>
 
@@ -825,7 +809,7 @@ const BillingAddress = ({
                                   />
                                   <Text size={12}>{a.method_title}</Text>
                                   <Text
-                                    style={{ width: widthPercentageToDP(27) }}
+                                    style={{width: widthPercentageToDP(27)}}
                                     size={12}>
                                     {a.carrier_title}
                                   </Text>
@@ -862,7 +846,7 @@ const BillingAddress = ({
                           </Block>
                         </View>
                       )}
-                    // ItemSeparatorComponent={this.renderSeparator}
+                      // ItemSeparatorComponent={this.renderSeparator}
                     />
                   ) : (
                     <View
@@ -887,6 +871,6 @@ const buttonStyle = {
   width: widthPercentageToDP(50),
   alignSelf: 'center',
 };
-const checkboxStyle = { height: 20, width: 20 };
-const labelStyle = { marginLeft: w3, fontSize: 12 };
+const checkboxStyle = {height: 20, width: 20};
+const labelStyle = {marginLeft: w3, fontSize: 12};
 export default BillingAddress;

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ActivityIndicator, Dimensions, ScrollView, View } from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {ActivityIndicator, Dimensions, ScrollView, View} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -10,12 +10,12 @@ import {
 } from 'react-native-responsive-screen';
 import Banner from '../../common/banner';
 import Header from '../../common/header';
-import { Block, ImageComponent, Text, Button } from '../../components';
+import {Block, ImageComponent, Text, Button} from '../../components';
 import Search from '../../components/search';
 import Footer from '../../common/footer';
 import Cards from '../../common/cards';
 import HeaderMenu from '../../common/headerMenu';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   bannerRequest,
   bestOfferRequest,
@@ -31,14 +31,14 @@ import {
   strictValidArrayWithLength,
   strictValidObjectWithKeys,
 } from '../../utils/commonUtils';
-import { w3, t2 } from '../../components/theme/fontsize';
-import { useNavigation } from '@react-navigation/native';
-import { light } from '../../components/theme/colors';
+import {w3, t2} from '../../components/theme/fontsize';
+import {useNavigation} from '@react-navigation/native';
+import {light} from '../../components/theme/colors';
 import AsyncStorage from '@react-native-community/async-storage';
 import HorizontalCards from '../../common/horizontal-cards';
 import ImageSlider from '../../components/ImageSlider';
 import styled from 'styled-components';
-import { config } from '../../utils/config';
+import {config} from '../../utils/config';
 import OverlayLoader from '../../components/overlayLoader';
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -83,7 +83,6 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-
     checkApi();
     dispatch(bannerRequest());
     dispatch(topOfferRequest(topOffer));
@@ -100,7 +99,7 @@ const Dashboard = () => {
     const unsubscribe = navigation.addListener('focus', () => {
       // scrollRef.current.scrollTo()
       // alert('aa')
-      scrollRef.current && scrollRef.current.scrollTo()
+      scrollRef.current && scrollRef.current.scrollTo();
       scrollRef.current?.scrollTo({
         y: 0,
         animated: true,
@@ -124,14 +123,13 @@ const Dashboard = () => {
   const navigateToShipping = () => {
     // alert(JSON.stringify(userData))
     if (strictValidObjectWithKeys(userData)) {
-      
       // navigation.navigate('BillingAddress', {
       navigation.navigate('Shipping', {
         price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
       });
     } else {
       global.isLoggedIn = true;
-      navigation.navigate('Login', { isLoggedIn: true });
+      navigation.navigate('Login', {isLoggedIn: true});
     }
   };
   useEffect(() => {
@@ -156,14 +154,12 @@ const Dashboard = () => {
     setShowPrice(true);
     setList(newData);
 
-    var numbers = newData
+    var numbers = newData;
     var sum = 0;
     for (var i = 0; i < numbers.length; i++) {
-
-      sum += numbers[i].qty
-
+      sum += numbers[i].qty;
     }
-    setSum(sum)
+    setSum(sum);
   }, [cart_list]);
   return (
     <Block>
@@ -188,16 +184,14 @@ const Dashboard = () => {
           color="green"
         />
       </BackButton>
-      <ScrollView
-        ref={scrollRef}
-        showsVerticalScrollIndicator={false}>
+      <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
         <HeaderMenu onPress={sortingMenu} color={menu} />
         {isLoadBanner ? (
-          <Block color="transparent" style={{ height: hp(23) }} center middle>
+          <Block color="transparent" style={{height: hp(23)}} center middle>
             <ActivityIndicator color={light.secondary} size="large" />
           </Block>
         ) : (
-          <View style={{ height: 200, width: '100%' }}>
+          <View style={{height: 200, width: '100%'}}>
             <Banner data={bannerData} />
           </View>
         )}
@@ -209,7 +203,7 @@ const Dashboard = () => {
           </Block>
 
           {topOfferLoad ? (
-            <Block color="transparent" style={{ height: hp(30) }} center middle>
+            <Block color="transparent" style={{height: hp(30)}} center middle>
               <ActivityIndicator color={light.secondary} size="large" />
             </Block>
           ) : (
@@ -226,7 +220,7 @@ const Dashboard = () => {
           </Block>
           {console.log(overlayLoader, 'overlayLoader')}
           {bestOfferLoad ? (
-            <Block color="transparent" style={{ height: hp(30) }} center middle>
+            <Block color="transparent" style={{height: hp(30)}} center middle>
               <ActivityIndicator color={light.secondary} size="large" />
             </Block>
           ) : (
@@ -244,7 +238,7 @@ const Dashboard = () => {
           </Block>
 
           {newOfferLoad ? (
-            <Block color="transparent" style={{ height: hp(30) }} center middle>
+            <Block color="transparent" style={{height: hp(30)}} center middle>
               <ActivityIndicator color={light.secondary} size="large" />
             </Block>
           ) : (
@@ -269,7 +263,7 @@ const Dashboard = () => {
           </Block>
 
           {isLoad ? (
-            <Block color="transparent" style={{ height: hp(30) }} center middle>
+            <Block color="transparent" style={{height: hp(30)}} center middle>
               <ActivityIndicator color={light.secondary} size="large" />
             </Block>
           ) : (
@@ -302,7 +296,7 @@ const Dashboard = () => {
           <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
             <CartButton
               onPress={() => setShowPrice(false)}
-              textStyle={{ textTransform: 'uppercase' }}
+              textStyle={{textTransform: 'uppercase'}}
               color="primary">
               Continue Shopping
             </CartButton>
@@ -311,7 +305,7 @@ const Dashboard = () => {
               onPress={() => {
                 navigateToShipping();
               }}
-              textStyle={{ textTransform: 'uppercase' }}
+              textStyle={{textTransform: 'uppercase'}}
               color="secondary">
               Buy Now
             </CartButton>

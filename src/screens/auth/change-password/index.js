@@ -13,6 +13,7 @@ import {Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {loginSuccess, profileFlush} from '../../../redux/action';
 import {useDispatch} from 'react-redux';
+import {Toast} from '../../../common/toast';
 const ChangePassword = () => {
   const formikRef = useRef();
   const [isLoad, setLoader] = useState(0);
@@ -37,20 +38,25 @@ const ChangePassword = () => {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token,
     };
-    const res = await axios({
+    await axios({
       method: 'put',
       url: 'http://stage.eonbazar.com/rest/default/V1/customers/me/password',
       headers,
       data: values,
-    });
-    if (res) {
-      logoutFun();
-      Alert.alert('Password changed successfully. Please login again');
-      setLoader(false);
-    } else {
-      setLoader(false);
-      Alert.alert(res.data.message);
-    }
+    })
+      .then((res) => {
+        console.log(res);
+
+        logoutFun();
+        Toast('Password changed successfully. Please login again');
+        setLoader(false);
+      })
+      .catch((error) => {
+        if (error.response) {
+          setLoader(false);
+          Toast(error.response.data.message);
+        }
+      });
   };
 
   return (

@@ -5,7 +5,7 @@ import {Api} from './api';
 import {Alert} from 'react-native';
 import * as RootNavigation from '../../routes/NavigationService';
 import AsyncStorage from '@react-native-community/async-storage';
-import Toast from '../../common/toast';
+import {Toast} from '../../common/toast';
 
 export function* paymentRequest(action) {
   try {
@@ -15,7 +15,7 @@ export function* paymentRequest(action) {
       if (action.payload.method === 'sslcommerz') {
         RootNavigation.navigate('Payment');
       } else {
-         RootNavigation.navigate('PaymentSuccess');
+        RootNavigation.navigate('PaymentSuccess');
         yield put(createCartRequest());
       }
     } else {
@@ -24,10 +24,8 @@ export function* paymentRequest(action) {
     }
   } catch (err) {
     // Alert.alert(err.response.data.message);
-    
-    setTimeout(() => {
-      Toast.show(err.response.data.message);
-    }, 1000);
+
+    Toast(err.response.data.message);
     yield put(paymentError(err));
   }
 }

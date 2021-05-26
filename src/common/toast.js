@@ -1,9 +1,9 @@
-import SimpleToast from "react-native-simple-toast";
+import SimpleToast from 'react-native-simple-toast';
 
-export default Toast = {
-    show(message) {
-        setTimeout(() => {
-            SimpleToast.showWithGravity(message, SimpleToast.SHORT, SimpleToast.CENTER)
-        }, 1000)
-    }
-}
+export const Toast = (message) => {
+  return SimpleToast.showWithGravity(
+    message,
+    SimpleToast.LONG,
+    SimpleToast.CENTER,
+  );
+};

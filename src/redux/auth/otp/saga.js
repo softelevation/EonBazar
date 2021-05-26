@@ -3,7 +3,8 @@ import {generateOtpError, generateOtpSuccess} from '../../action';
 import {put, call, all, takeLatest} from 'redux-saga/effects';
 import {Api} from './api';
 import {Alert} from 'react-native';
-import Toast from '../../../common/toast';
+import {Toast} from '../../../common/toast';
+
 export function* request(action) {
   try {
     const response = yield call(Api, action.payload);
@@ -11,7 +12,7 @@ export function* request(action) {
       yield put(generateOtpSuccess(response.data));
       // Alert.alert('Please check otp on your mobile number');
       setTimeout(() => {
-        Toast.show('Please check otp on your mobile number');
+        Toast('Please check otp on your mobile number');
       }, 1000);
     } else {
       yield put(generateOtpError(response));
@@ -19,7 +20,7 @@ export function* request(action) {
   } catch (err) {
     // Alert.alert(err.response.data.message);
     setTimeout(() => {
-      Toast.show(err.response.data.message);
+      Toast(err.response.data.message);
     }, 1000);
     yield put(generateOtpError(err));
   }

@@ -1,5 +1,5 @@
 import {Formik} from 'formik';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {ScrollView} from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -15,11 +15,13 @@ import {contactUsRequest} from '../../redux/action';
 const Help = () => {
   const user = useSelector((state) => state.user.profile.user);
   const loading = useSelector((state) => state.contact.loading);
+  const isSucess = useSelector((state) => state.contact.isSucess);
   const dispatch = useDispatch();
+  const formikRef = useRef();
   const mobileValue =
     strictValidObjectWithKeys(user) &&
     user.custom_attributes.find((v) => v.attribute_code === 'customer_mobile');
-  const submitValues = (values, {resetForm}) => {
+  const submitValues = async (values) => {
     const {name, email, mobile, message} = values;
     const data = {
       name: name,
@@ -28,8 +30,20 @@ const Help = () => {
       comment: message,
     };
     dispatch(contactUsRequest(data));
-    resetForm();
   };
+  console.log(formikRef.current);
+  useEffect(() => {
+    if (isSucess) {
+      formikRef.current?.resetForm({
+        values: {
+          name: '',
+          message: '',
+          email: '',
+          mobile: mobileValue.value || '',
+        },
+      });
+    }
+  }, [isSucess]);
   return (
     <Block>
       <Header />
@@ -43,6 +57,7 @@ const Help = () => {
             Contact Us
           </Text>
           <Formik
+            innerRef={formikRef}
             enableReinitialize={true}
             initialValues={{
               mobile: mobileValue.value || '',

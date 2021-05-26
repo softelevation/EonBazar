@@ -27,7 +27,7 @@ import {
   strictValidObjectWithKeys,
   strictValidString,
 } from '../../../utils/commonUtils';
-import Toast from '../../../common/toast';
+import {Toast} from '../../../common/toast';
 
 const Login = ({route}) => {
   const nav = useNavigation();
@@ -52,15 +52,9 @@ const Login = ({route}) => {
 
   const handleForgot = () => {
     if (phoneNumber == null || phoneNumber === '') {
-      // Alert.alert('Please enter mobile number');
-      setTimeout(() => {
-        Toast.show('Please enter mobile number');
-      }, 1000);
+      Toast('Please enter mobile number');
     } else if (phoneNumber.length < 10 || phoneNumber.length > 15) {
-      // Alert.alert('Please enter valid mobile number');
-      setTimeout(() => {
-        Toast.show('Please enter valid mobile number');
-      }, 1000);
+      Toast('Please enter valid mobile number');
     } else {
       // alert(phoneNumber)
       setModalVisible(false);
@@ -233,10 +227,6 @@ const Login = ({route}) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          // Alert.alert('Modal has been closed.');
-          setTimeout(() => {
-            Toast.show('Modal has been closed.');
-          }, 1000);
           setModalVisible(!modalVisible);
         }}>
         <View

@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   Alert,
   FlatList,
+  Platform,
   ScrollView,
   TouchableOpacity,
   View,
@@ -43,7 +44,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import Toast from '../../../common/toast';
+import {Toast} from '../../../common/toast';
 
 const initialState = {
   reviews: true,
@@ -77,7 +78,6 @@ const Details = ({
   const userData = useSelector((state) => state.user.profile.user);
   const [qtySum, setSum] = useState([]);
 
-
   // useEffect(() => {
   //   Object.keys(scrollHeight).forEach((a) => {
   //     if (scrollHeight[a] > currentScrollHeight) {
@@ -94,7 +94,6 @@ const Details = ({
         quote_id: quote_id,
       };
 
-     
       await dispatch(addToCartRequest(newData));
     } else {
       const newData = {
@@ -114,10 +113,7 @@ const Details = ({
     if (strictValidObjectWithKeys(userProfile)) {
       await dispatch(updateWishlistRequest(id));
     } else {
-      // Alert.alert('Error', 'Please login First');
-      setTimeout(() => {
-        Toast.show('Please login First');
-      }, 1000);
+      Toast('Please login First');
     }
   };
   const onBuyNow = () => {
@@ -133,7 +129,7 @@ const Details = ({
   const navigateToShipping = () => {
     if (strictValidObjectWithKeys(userData)) {
       // nav.navigate('BillingAddress'  , {
-        nav.navigate('Shipping', {
+      nav.navigate('Shipping', {
         price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
       });
     } else {
@@ -163,15 +159,12 @@ const Details = ({
 
     setList(newData);
 
-    var numbers = newData
+    var numbers = newData;
     var sum = 0;
     for (var i = 0; i < numbers.length; i++) {
-
-      sum += numbers[i].qty
-
+      sum += numbers[i].qty;
     }
-    setSum(sum)
-
+    setSum(sum);
   }, [cart_list]);
 
   const renderConditions = () => {
@@ -662,7 +655,7 @@ const Details = ({
                   top: 20,
                 }}>
                 <Text center color={'white'} size={10}>
-                {qtySum}
+                  {qtySum}
                 </Text>
               </View>
             ) : null}
