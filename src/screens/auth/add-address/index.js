@@ -180,18 +180,16 @@ const AddAddress = ({
 
         const savedata = {
             customer: {
-                id:  userData.addresses[0].id ,
+                // id: userData.addresses[0].id,
                 email: `${values.mobile}${config.domain_name}`,
                 firstname: values.firstname,
                 lastname: values.lastname,
                 store_id: 1,
                 website_id: 1,
-
-
                 addresses: [
                     {
 
-                        customer_id: userData.addresses[0].customer_id ,
+                        customer_id: userData.addresses[0].customer_id,
                         region: {
                             region_code: null,
                             region: null,
@@ -199,7 +197,7 @@ const AddAddress = ({
                         },
                         region_id: 0,
                         country_id: "BD",
-                        street: [values.streetAddress],
+                        street: ['Test'],
                         telephone: values.mobile,
                         postcode: values.postalCode,
                         city: values.city,
@@ -223,7 +221,7 @@ const AddAddress = ({
 
 
         console.log('======>>>>', JSON.stringify(savedata))
- addNewAddress(savedata);
+        addNewAddress(savedata);
 
     };
 
@@ -245,7 +243,7 @@ const AddAddress = ({
         )
             .then((r) => r.json())
             .then((r) => {
-                console.log("edit====", r)
+                console.log("add address====>>>", r)
                 Navigation.goBack()
             })
             .catch((error) => {

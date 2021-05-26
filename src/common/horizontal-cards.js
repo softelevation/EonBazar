@@ -89,11 +89,6 @@ const HorizontalCards = ({ data, isLoad, setIsLoad }) => {
       //   setData(clone);
       // }, 5000);
 
-      setTimeout(() => {
-        Toast.show('Product added to cart successfully...');
-      }, 4000);
-
-
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -115,10 +110,6 @@ const HorizontalCards = ({ data, isLoad, setIsLoad }) => {
       //   clone[index] = updated;
       //   setData(clone);
       // }, 5000);
-
-      setTimeout(() => {
-        Toast.show('Product added to cart successfully...');
-      }, 4000);
 
 
       const newData = {

@@ -23,6 +23,8 @@ const AdvanceSearch = ({route}) => {
       toPrice: values.toPrice,
       sku: values.sku,
       description: values.description,
+      short_description: values.short_description,
+
     };
     dispatch(advanceSearchRequest(data));
   };
@@ -45,7 +47,7 @@ const AdvanceSearch = ({route}) => {
               name: route.params?route.params.data.name:null,
               sku:  route.params?route.params.data.sku:null,
               description: route.params?route.params.data.description:null,
-              short_description: '',
+              short_description:  route.params?route.params.data.short_description:null,
               fromPrice: route.params?route.params.data.fromPrice:null,
               toPrice: route.params?route.params.data.toPrice:null,
             }}

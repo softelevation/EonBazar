@@ -120,10 +120,6 @@ const SeeAllDetails = () => {
       //   setstate({data: clone});
       // }, 5000);
 
-      setTimeout(() => {
-        Toast.show('Product added to cart successfully...');
-      }, 4000);
-
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -145,9 +141,6 @@ const SeeAllDetails = () => {
       //   setstate({data: clone});
       // }, 5000);
 
-      setTimeout(() => {
-        Toast.show('Product added to cart successfully...');
-      }, 4000);
 
       const newData = {
         sku: val.sku,
@@ -159,7 +152,7 @@ const SeeAllDetails = () => {
   };
 
 
-  
+
   const addToWishlist = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = data[index];

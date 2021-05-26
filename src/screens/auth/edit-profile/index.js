@@ -25,7 +25,12 @@ import Toast from '../../../common/toast'
 import * as Navigation from '../../../routes/NavigationService';
 
 
-const EditProfile = () => {
+const EditProfile = ({
+  route: {
+    params: { firstName },
+    params: { lastName },
+  },
+}) =>{
   const userData = useSelector((state) => state.user.profile.user);
   const isOtpLoad = useSelector((state) => state.user.otp.loading);
   const [generate, setGenerate] = useState(false);
@@ -131,7 +136,7 @@ const EditProfile = () => {
 
 
 
-    
+
   }
 
   const generateOtp = () => {
@@ -201,8 +206,8 @@ const EditProfile = () => {
             innerRef={formikRef}
             enableReinitialize
             initialValues={{
-              firstname: user.firstname,
-              lastname: user.lastname,
+              firstname:  firstName ? firstName : user.firstname,
+              lastname: lastName ? lastName : user.lastname,
               mobile: mobileNumber.value || emailMobile,
               email: user.email,
               currentpass: '',
@@ -269,7 +274,7 @@ const EditProfile = () => {
                   }
                   containerStyle={{marginTop: heightPercentageToDP(1)}}
                 /> */}
-               {/*  <Checkbox
+                {/*  <Checkbox
                   checked={values.passwordCheck}
                   checkboxStyle={{ height: 20, width: 20 }}
                   checkedImage={images.checkbox_icon}
@@ -290,7 +295,7 @@ const EditProfile = () => {
                     errorText={touched.email && errors.email}
                   />
                 )} */}
-               {/*  {values.passwordCheck && (
+                {/*  {values.passwordCheck && (
                   <>
                     <Input
                       label="New Password"

@@ -102,7 +102,7 @@ const DrawerScreen = () => {
 
 
     // else if (val === 'Profile' || val === 'YourOrder' || val === 'Wishlist') {
-    else if (val === 'YourOrder' || val === 'Wishlist') {
+    else if (val === 'YourOrder' || val === 'Wishlist') {   
       if (strictValidObjectWithKeys(user)) {
         nav.navigate(val);
       } else {
@@ -111,7 +111,14 @@ const DrawerScreen = () => {
           routes: [{ name: 'Login' }],
         });
       }
-    } else {
+    }
+    else if (val === 'Category'){
+      nav.dispatch(DrawerActions.closeDrawer());
+      nav.reset({
+        routes: [{ name: 'Category' }],
+      });
+    }
+    else {
       nav.navigate(val);
     }
   };

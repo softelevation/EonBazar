@@ -94,10 +94,7 @@ const Details = ({
         quote_id: quote_id,
       };
 
-      setTimeout(() => {
-        Toast.show('Product added to cart successfully...');
-      }, 4000);
-
+     
       await dispatch(addToCartRequest(newData));
     } else {
       const newData = {
@@ -105,10 +102,6 @@ const Details = ({
         qty: qty,
         quote_id: guestCartToken,
       };
-
-      setTimeout(() => {
-        Toast.show('Product added to cart successfully...');
-      }, 4000);
 
       await dispatch(
         addToGuestCartRequest({token: guestCartToken, items: newData}),

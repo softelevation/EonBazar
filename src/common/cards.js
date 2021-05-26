@@ -89,11 +89,6 @@ const Cards = ({ data, maxHeight }) => {
       //   setData(clone);
       // }, 5000);
 
-      setTimeout(() => {
-        Toast.show('Product added to cart successfully...');
-      }, 4000);
-
-
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -114,11 +109,6 @@ const Cards = ({ data, maxHeight }) => {
       //   clone[index] = updated;
       //   setData(clone);
       // }, 5000);
-
-      setTimeout(() => {
-        Toast.show('Product added to cart successfully...');
-      }, 4000);
-
 
       const newData = {
         sku: val.sku,

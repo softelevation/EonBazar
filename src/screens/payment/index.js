@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
+import { Keyboard, ScrollView } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -89,6 +89,8 @@ const PaymentMethod = ({
 
   const applyCoupon = async (couponCode) => {
 
+    Keyboard.dismiss()
+
     if (termsToggle == false) {
       Toast.show('Please check terms and conditions');
     }
@@ -139,7 +141,7 @@ const PaymentMethod = ({
   return (
     <Block>
       <Header leftIcon={false} />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         <Text margin={[hp(2), 0, 0, 0]} semibold transform="uppercase" center>
           Payment Method
         </Text>
@@ -232,7 +234,8 @@ const PaymentMethod = ({
           <CustomButton
             row
             center
-            margin={[hp(1), 0, 0]}
+            padding={[hp(1), 0, 0]}
+            // margin={[hp(1), 0, 0]}
             onPress={() => setdiscount(!discount)}
             flex={false}>
             <Text link margin={[0, wp(1), 0, 0]} grey size={12}>

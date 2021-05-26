@@ -506,7 +506,7 @@ const Shipping = ({
                       color: listTextColor,
                       fontSize: 14,
                     }}>
-                    Billing Address
+                    Saved Address
                   </Text>
                 </TouchableOpacity>
               </View>

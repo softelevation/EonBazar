@@ -95,7 +95,8 @@ function Routes() {
         <RootStack.Screen name="Payment" component={PaymentModal} />
         <RootStack.Screen name="PaymentSuccess" component={PaymentSuccess} />
         <RootStack.Screen name="PaymentError" component={PaymentError} />
-        <RootStack.Screen name="BillingAddress" component={BillingAddress} />        
+        <RootStack.Screen name="BillingAddress" component={BillingAddress} />   
+        <RootStack.Screen name="Dashboard" component={Dashboard} />     
       </RootStack.Navigator>
     );
   };
@@ -133,6 +134,7 @@ function Routes() {
         <RootStack.Screen name="PaymentSuccess" component={PaymentSuccess} />
         <RootStack.Screen name="PaymentError" component={PaymentError} />
         <RootStack.Screen name="BillingAddress" component={BillingAddress} /> 
+        <RootStack.Screen name="Dashboard" component={Dashboard} />
       </RootStack.Navigator>
     );
   };
@@ -200,6 +202,7 @@ function Routes() {
         <RootStack.Screen name="PaymentSuccess" component={PaymentSuccess} />
         <RootStack.Screen name="PaymentError" component={PaymentError} />
         <RootStack.Screen name="BillingAddress" component={BillingAddress} /> 
+        <RootStack.Screen name="Dashboard" component={Dashboard} />
       </RootStack.Navigator>
     );
   };
@@ -233,6 +236,7 @@ function Routes() {
         <RootStack.Screen name="PaymentSuccess" component={PaymentSuccess} />
         <RootStack.Screen name="PaymentError" component={PaymentError} />
         <RootStack.Screen name="BillingAddress" component={BillingAddress} /> 
+        <RootStack.Screen name="Dashboard" component={Dashboard} />
       </RootStack.Navigator>
     );
   };

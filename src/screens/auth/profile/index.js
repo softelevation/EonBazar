@@ -39,7 +39,7 @@ const Profile = () => {
     }
   }, []);
 
- 
+
   useEffect(() => {
     setUser(userData);
 
@@ -48,27 +48,30 @@ const Profile = () => {
       getUserDetail()
     })
 
-    
+
   }, [userData]);
 
 
   const getUserDetail = async () => {
-      const token = await AsyncStorage.getItem('token');
-      const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      };
-      axios({
-        method: 'get',
-        url: `${config.Api_Url}/V1/customers/me`,
-        headers,
-      }).then((res) => {
-  
-        // console.log("======>>>", res.data)
-        setUser(res.data);
-        
-      });
-    
+    const token = await AsyncStorage.getItem('token');
+
+    console.log("=======>>>>>", token)
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+    axios({
+      method: 'get',
+      url: `${config.Api_Url}/V1/customers/me`,
+      headers,
+    }).then((res) => {
+
+      // console.log("======>>>", res.data)
+      setUser(res.data);
+
+    });
+
   }
 
 
@@ -144,7 +147,7 @@ const Profile = () => {
                   />
                   <Block row flex={false}>
                     <Text
-                      onPress={() => nav.navigate('EditProfile',)}
+                      onPress={() => nav.navigate('EditProfile', { firstName: user.firstname, lastName: user.lastname })}
                       secondary
                       size={16}>
                       Edit Profile
@@ -160,7 +163,7 @@ const Profile = () => {
                 </Block>
                 <Block padding={[0, wp(8)]}>
                   {/* <Button color="secondary">Address Book</Button> */}
-                  <Button    margin={[hp(2), 0]} onPress={() => nav.navigate('ShowAddress')} color="primary">Your Addresses</Button>
+                  <Button margin={[hp(2), 0]} onPress={() => nav.navigate('ShowAddress')} color="primary">Your Addresses</Button>
                   <FlatList
                     data={user.addresses}
                     renderItem={({ item }) => {

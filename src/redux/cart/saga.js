@@ -1,4 +1,4 @@
-import {ActionConstants} from '../constants';
+import { ActionConstants } from '../constants';
 import {
   getCartDetailsError,
   addToCartSuccess,
@@ -24,7 +24,7 @@ import {
   GuestMergeSuccess,
   GuestMergeError,
 } from '../action';
-import {put, call, all, takeLatest} from 'redux-saga/effects';
+import { put, call, all, takeLatest } from 'redux-saga/effects';
 import {
   ListApi,
   SaveListApi,
@@ -45,7 +45,7 @@ import {
   guestCartRequest,
 } from './action';
 import AsyncStorage from '@react-native-community/async-storage';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 import Toast from '../../common/toast';
 
 export function* requestList(action) {
@@ -65,6 +65,9 @@ export function* requestSaveList(action) {
   try {
     const response = yield call(SaveListApi, action.payload);
     if (response) {
+      setTimeout(() => {
+        Toast.show('Product added to cart successfully...');
+      }, 1000);
       yield put(addToCartSuccess(response.data));
       yield put(getCartDetailsRequest());
       // RootNavigation.navigate('Cart');
@@ -72,7 +75,6 @@ export function* requestSaveList(action) {
       yield put(addToCartError(response));
     }
   } catch (err) {
-    // alert(err.response.data.message);
     setTimeout(() => {
       Toast.show(err.response.data.message);
     }, 1000);
@@ -169,6 +171,9 @@ export function* guestSaveList(action) {
       yield put(addToGuestCartSuccess(response.data));
       const token = yield call(getToken);
       if (token) {
+        setTimeout(() => {
+          Toast.show('Product added to cart successfully...');
+        }, 1000);
         yield put(guestCartRequest(token));
       }
 
@@ -177,7 +182,6 @@ export function* guestSaveList(action) {
       yield put(addToGuestCartError(response));
     }
   } catch (err) {
-    // alert(err.response.data.message);
     setTimeout(() => {
       Toast.show(err.response.data.message);
     }, 1000);

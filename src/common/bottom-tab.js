@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 
 const tabImages = {
   // Dashboard: 'heart',
-  Wishlist : 'heart',
+  Wishlist: 'heart',
   Category: 'category_icon',
   image: 'DashboardLogo',
   Cart: 'your_order_icon',
@@ -151,7 +151,6 @@ const BottomTab = ({ state, descriptors, navigation }) => {
           });
 
           if (!isFocused && !event.defaultPrevented) {
-
             if (route.name == 'DashboardLogo') {
               navigation.reset({
                 routes: [{ name: route.name }],
@@ -160,6 +159,19 @@ const BottomTab = ({ state, descriptors, navigation }) => {
               navigation.navigate(route.name);
             }
           }
+
+          if (route.name == 'Login') {
+            navigation.reset({
+              routes: [{ name: route.name }],
+            });
+          }
+
+          if (route.name == 'Category') {
+            navigation.reset({
+              routes: [{ name: route.name }],
+            });
+          }
+
         };
 
         const onLongPress = () => {
