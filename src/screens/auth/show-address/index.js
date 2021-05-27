@@ -120,6 +120,11 @@ const ShowAddress = ({
             getShippingChargeByGuest();
         }
 
+        /* unsubsribe value */
+        const unsubscribe = navigation.addListener('focus', () => {
+            getShippingAddress();
+        })
+
         getShippingAddress();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -312,7 +317,7 @@ const ShowAddress = ({
         navigation.navigate('AddAddress')
     };
 
-    
+
 
     const listPress = (item) => {
         navigation.navigate('EditAddress', { itemDetail: item })
@@ -320,6 +325,7 @@ const ShowAddress = ({
 
 
     const deleteAddress = async (item) => {
+
         const token = await AsyncStorage.getItem('token');
         const headers = {
             'Content-Type': 'application/json',
@@ -330,12 +336,13 @@ const ShowAddress = ({
             {
                 method: 'DELETE',
                 headers: headers,
-                body: JSON.stringify(editData)
+                body: JSON.stringify(item)
             },
         )
             .then((r) => r.json())
             .then((r) => {
-                console.log("edit====", r)
+                console.log("deleteAddress====", r)
+                getShippingAddress();
             })
             .catch((error) => {
                 console.error(error);

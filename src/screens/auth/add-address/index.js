@@ -1,22 +1,22 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import Footer from '../../../common/footer';
 import Header from '../../../common/header';
-import {Block, Button, Input, Text} from '../../../components';
+import { Block, Button, Input, Text } from '../../../components';
 import Checkbox from '../../../components/checkbox';
-import {t1, t2, t4, w3, w5} from '../../../components/theme/fontsize';
+import { t1, t2, t4, w3, w5 } from '../../../components/theme/fontsize';
 import RNPickerSelect from 'react-native-picker-select';
-import {useDispatch, useSelector} from 'react-redux';
-import {generateOtpRequest, updateProfileRequest} from '../../../redux/action';
+import { useDispatch, useSelector } from 'react-redux';
+import { generateOtpRequest, updateProfileRequest } from '../../../redux/action';
 
 import * as yup from 'yup';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import {
   searchDistrictRequest,
   searchAreaRequest,
@@ -28,10 +28,10 @@ import {
   strictValidNumber,
   strictValidObjectWithKeys,
 } from '../../../utils/commonUtils';
-import {config} from '../../../utils/config';
+import { config } from '../../../utils/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import {color, onChange} from 'react-native-reanimated';
+import { color, onChange } from 'react-native-reanimated';
 import * as Navigation from '../../../routes/NavigationService';
 import Toast from '../../../common/toast';
 
@@ -178,45 +178,96 @@ const AddAddress = (
   };
 
   const submitValues = (values) => {
-    const savedata = {
-      customer: {
-        email: `${values.mobile}${config.domain_name}`,
+
+    if (userData.addresses.length > 0) {
+
+      const savedata = {
+        customer_id: userData.addresses[0].customer_id,
+        region: {
+          region_code: null,
+          region: null,
+          region_id: 0,
+        },
+        region_id: 0,
+        country_id: 'BD',
+        street: ['Test'],
+        telephone: values.mobile,
+        postcode: values.postalCode,
+        city: values.city,
         firstname: values.firstname,
         lastname: values.lastname,
-        store_id: 1,
-        website_id: 1,
-        id: userData.addresses[0].customer_id,
-        addresses: [
+        default_shipping: true,
+        default_billing: true,
+        custom_attributes: [
           {
-            customer_id: userData.addresses[0].customer_id,
-            region: {
-              region_code: null,
-              region: null,
-              region_id: 0,
-            },
-            region_id: 0,
-            country_id: 'BD',
-            street: ['Test'],
-            telephone: values.mobile,
-            postcode: values.postalCode,
-            city: values.city,
-            firstname: values.firstname,
-            lastname: values.lastname,
-            default_shipping: true,
-            default_billing: true,
-            custom_attributes: [
-              {
-                attribute_code: 'sa_area_id',
-                value: '0',
-              },
-            ],
+            attribute_code: 'sa_area_id',
+            value: '0',
           },
         ],
-      },
-    };
+      }
+      var userAddress = userData.addresses;
+      var joined = userAddress.concat(savedata);
 
-    console.log('======>>>>', JSON.stringify(savedata));
-    addNewAddress(savedata);
+      const submitData = {
+        customer: {
+          email: `${values.mobile}${config.domain_name}`,
+          firstname: values.firstname,
+          lastname: values.lastname,
+          store_id: 1,
+          website_id: 1,
+          id: userData.addresses[0].customer_id,
+          addresses: joined,
+        },
+      };
+
+      // console.log('======>>>>', JSON.stringify(submitData));
+      addNewAddress(submitData);
+    }
+    else {
+
+      const submitData = {
+        customer: {
+          email: `${values.mobile}${config.domain_name}`,
+          firstname: values.firstname,
+          lastname: values.lastname,
+          store_id: 1,
+          website_id: 1,
+          id: userData.addresses[0].customer_id,
+          addresses: [
+            {
+              customer_id: userData.addresses[0].customer_id,
+              region: {
+                region_code: null,
+                region: null,
+                region_id: 0,
+              },
+              region_id: 0,
+              country_id: 'BD',
+              street: ['Test'],
+              telephone: values.mobile,
+              postcode: values.postalCode,
+              city: values.city,
+              firstname: values.firstname,
+              lastname: values.lastname,
+              default_shipping: true,
+              default_billing: true,
+              custom_attributes: [
+                {
+                  attribute_code: 'sa_area_id',
+                  value: '0',
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+
+      // console.log('======>>>>else  ', JSON.stringify(submitData));
+      addNewAddress(submitData);
+
+    }
+
   };
 
   const addNewAddress = async (editData) => {
@@ -309,7 +360,7 @@ const AddAddress = (
           // dirty,
         }) => {
           return (
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
               <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
                 <Block white padding={[t2]} margin={[t1, w3]}>
                   <Text margin={[t2, 0]} bold transform="uppercase">
@@ -350,7 +401,7 @@ const AddAddress = (
                     </Text>
                   ) : null}
                   {strictValidNumber(values.district) &&
-                  strictValidArrayWithLength(city.items) ? (
+                    strictValidArrayWithLength(city.items) ? (
                     <>
                       <RNPickerSelect
                         placeholder={
@@ -479,7 +530,7 @@ const buttonStyle = {
   width: widthPercentageToDP(50),
   alignSelf: 'center',
 };
-const checkboxStyle = {height: 20, width: 20};
-const labelStyle = {marginLeft: w3, fontSize: 12};
+const checkboxStyle = { height: 20, width: 20 };
+const labelStyle = { marginLeft: w3, fontSize: 12 };
 
 export default AddAddress;
