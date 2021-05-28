@@ -1,24 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { Block, Button, ImageComponent, Text } from '../../../components';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useState} from 'react';
+import {Block, Button, Text} from '../../../components';
 import Header from '../../../common/header';
-import { FlatList, ScrollView, View } from 'react-native';
-import { t1, t2, w3, w4, w5 } from '../../../components/theme/fontsize';
-import StarRating from 'react-native-star-rating';
+import {FlatList, ScrollView} from 'react-native';
+import {t1, t2, w4} from '../../../components/theme/fontsize';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import styled from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
-import { myOrderRequest } from '../../../redux/action';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {myOrderRequest} from '../../../redux/action';
 import ActivityLoader from '../../../components/activityLoader';
 import moment from 'moment';
 import EmptyFile from '../../../components/emptyFile';
-import * as Navigation from '../../../routes/NavigationService';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { set } from 'react-native-reanimated';
-
 
 const YourOrder = () => {
   const [toggle, setToggle] = useState();
@@ -30,9 +26,7 @@ const YourOrder = () => {
     (v) => v.currency.currencyDetail.data.base_currency_code,
   );
 
-
   const [upDownIcon, setIconUpDown] = useState(false);
-
 
   useEffect(() => {
     dispatch(myOrderRequest());
@@ -45,127 +39,235 @@ const YourOrder = () => {
     return moment(date).format('hh:mm a');
   };
 
+  const setIconUpDownFun = (value) => {
+    setIconUpDown(value);
+  };
 
-  const setIconUpDownFun =(value)=> {
-      setIconUpDown(value)
-  }
+  const renderTopWithBorder = (title, subtitle) => {
+    return (
+      <Block
+        borderColorDeafult
+        borderWidth={1}
+        center
+        row
+        space="between"
+        flex={false}>
+        <Block
+          flex={false}
+          padding={[hp(1), 0]}
+          borderWidth={[0, 1, 0, 0]}
+          style={{width: wp(42)}}>
+          <Text semibold margin={[0, wp(2)]} size={12}>
+            {title}
+          </Text>
+        </Block>
+        <Block
+          padding={[hp(1), 0]}
+          center
+          middle
+          style={{width: wp(41)}}
+          flex={false}>
+          <Text uppercase size={12}>
+            {subtitle}
+          </Text>
+        </Block>
+      </Block>
+    );
+  };
+  const renderThreeRow = (title, qty, price, bold = false) => {
+    return (
+      <Block
+        borderColorDeafult
+        borderWidth={1}
+        center
+        row
+        space="between"
+        flex={false}>
+        <Block
+          flex={false}
+          padding={[hp(1), 0]}
+          borderWidth={[0, 1, 0, 0]}
+          style={{width: wp(40)}}>
+          <Text numberOfLines={1} bold={bold} margin={[0, wp(2)]} size={12}>
+            {title}
+          </Text>
+        </Block>
+        <Block
+          padding={[hp(1), 0]}
+          borderWidth={[0, 1, 0, 0]}
+          style={{width: wp(20)}}
+          flex={false}>
+          <Text bold={bold} center uppercase size={12}>
+            {qty}
+          </Text>
+        </Block>
+        <Block
+          padding={[hp(1), 0]}
+          center
+          middle
+          style={{width: wp(20)}}
+          flex={false}>
+          <Text bold={bold} uppercase size={12}>
+            {price}
+          </Text>
+        </Block>
+      </Block>
+    );
+  };
 
-  const _renderItem = ({ item }) => {
+  const _renderItem = ({item}) => {
+    console.log(item, 'item');
+    const {extension_attributes, billing_address} = item;
+    const {
+      shipping_assignments,
+      payment_additional_info,
+    } = extension_attributes;
+    const {shipping} = shipping_assignments[0];
+    const {address} = shipping;
     return (
       <Block white padding={[t2]} margin={[t1, w4]} shadow>
-        <Block row flex={false} space={'between'}>
+        <Block flex={false} space={'between'}>
           <Block flex={false}>
-            <StatusButton
-              textStyle={{ color: '#fff' }}
-              color={item.status === 'completed' ? 'secondary' : 'accent'}>
-              {item.status}
-            </StatusButton>
-            <Text height={22} size={12} body>
-              Order{'  '}
-              <Text size={14} bold>
-                #{item.entity_id}
-              </Text>
-            </Text>
-            <Text height={22} size={12} bold body>
-              {item.base_currency_code}{' '}
-              <Text size={14} bold>
-                {item.base_grand_total}
-              </Text>
-              
-            </Text>
-            <Text size={14} bold>
-              discount:{item.discount_amount}
-              </Text>
-              {/* <Text size={14} bold>
-              subTotal:{item.subtotal}
-              </Text> */}
-          </Block>
-          <Block right flex={false}>
-            <StarRating
-              disabled={false}
-              starSize={15}
-              maxStars={5}
-              fullStarColor={'#78A942'}
-              rating={0}
-              containerStyle={{ width: wp(20), marginBottom: hp(0.5) }}
-            />
-            <Text height={22} body bold>
-              {item.entity_id}
-            </Text>
-            <Text height={22} body>
-              {formatDate(item.created_at)}
-            </Text>
-            <Text height={22} body>
-              {formatTime(item.created_at)}
-            </Text>
+            <Block
+              borderColorDeafult
+              borderWidth={1}
+              center
+              row
+              space="between"
+              flex={false}>
+              <Block
+                flex={false}
+                padding={[hp(1), 0]}
+                borderWidth={[0, 1, 0, 0]}
+                style={{width: wp(42)}}>
+                <Text margin={[0, wp(2)]} size={16}>
+                  Order Status :
+                </Text>
+              </Block>
+              <Block
+                padding={[hp(1), 0]}
+                center
+                middle
+                color={item.status === 'completed' ? '#78A942' : '#FF0000'}
+                style={{width: wp(41)}}
+                flex={false}>
+                <Text capitalize white size={16}>
+                  {item.status}
+                </Text>
+              </Block>
+            </Block>
+            <Block flex={false} margin={[hp(2), 0, 0]}>
+              {renderTopWithBorder('Order ID', `#${item.entity_id}`)}
+
+              {renderTopWithBorder(
+                'Order Date',
+                `${formatDate(item.created_at)}, ${formatTime(
+                  item.created_at,
+                )}`,
+              )}
+              {renderTopWithBorder(
+                'Subtotal',
+                `${item.store_currency_code} ${item.subtotal}`,
+              )}
+              {renderTopWithBorder(
+                'Discount',
+                `${item.store_currency_code} ${item.discount_amount}`,
+              )}
+              {renderTopWithBorder(
+                'Shipping & Handling',
+                `${item.store_currency_code} ${item.shipping_tax_amount}`,
+              )}
+              {renderTopWithBorder(
+                'Grand Total',
+                `${item.store_currency_code} ${item.grand_total}`,
+              )}
+            </Block>
           </Block>
         </Block>
         {toggle === item.entity_id && (
           <>
-            <Block margin={[t2, 0]} flex={false}>
-              <Text center semibold body>
-                Delivery Address
-              </Text>
-              <Text margin={[t1, 0, 0, 0]} center semibold size={12}>
-                {item.billing_address.city},{' '}
-                {item.billing_address.street && item.billing_address.street[0]}
-              </Text>
-              <Block
-                borderColorDeafult
-                borderWidth={[0, 0, 1, 0]}
-                padding={[t1, 0, 0, 0]}
+            <Block margin={[hp(2), 0]} flex={false}>
+              {renderThreeRow('Product Name', 'Qty', 'Price', true)}
+              <FlatList
+                data={item.items}
+                renderItem={({item}) => {
+                  const qty = `${item.qty_ordered} QTY`;
+                  return (
+                    <>
+                      {renderThreeRow(
+                        item.sku,
+                        qty,
+                        `${currency} ${item.row_total_incl_tax}`,
+                      )}
+                    </>
+                  );
+                }}
               />
-              <Block margin={[t2, 0, 0, 0]} flex={false} row space={'between'}>
-                <Text size={14} bold>
-                  #{item.entity_id}
+            </Block>
+            <Block flex={false} margin={[hp(1), 0, hp(1)]}>
+              <Text bold size={18}>
+                Shipping Address
+              </Text>
+              <Block flex={false} margin={[hp(0.5), 0]}>
+                <Text margin={[hp(0.5), 0, 0]} size={16}>
+                  {address.firstname} {address.lastname}
                 </Text>
-                <Text size={12}>
-                  {formatDate(item.created_at)}, {formatTime(item.created_at)}
+                <Text margin={[hp(0.5), 0, 0]} size={16}>
+                  {address.street[0]} {address.street[1]}
+                </Text>
+                <Text margin={[hp(0.5), 0, 0]} size={16}>
+                  {address.city} {address.postcode}
+                </Text>
+                <Text margin={[hp(0.5), 0, 0]} size={16}>
+                  {address.country_id === 'BD' ? 'Bangladesh' : ''}
+                </Text>
+                <Text margin={[hp(0.5), 0, 0]} size={16}>
+                  {address.telephone}
                 </Text>
               </Block>
             </Block>
-            <FlatList
-              data={item.items}
-              renderItem={({ item }) => {
-                return (
-                  <Block center margin={[t1, 0]} row flex={false}>
-                    {/* <ImageComponent name="product" height={60} width={60} /> */}
-                    <Block margin={[0, w3]}>
-                      <Text size={12} semibold>
-                        {item.sku}
-                      </Text>
-                      <Block margin={[t1, 0, 0, 0]} row space={'between'}>
-                        {item.weight ? (
-                          <Text regular size={12}>{`(${item.weight}kg)`}</Text>
-                        ) : (
-                          <Text regular style={{ width: wp(8) }} size={12} />
-                        )}
-                        <Text regular size={12}>
-                          Qty. {item.qty_ordered}
-                        </Text>
-                        <Text regular size={12}>
-                          {currency} {item.row_total_incl_tax}
-                        </Text>
-                      </Block>
-                      {/* <Block margin={[t1, 0, 0, 0]} row space={'between'}>
-                        {item.base_discount_amount ? (
-                          <Text regular size={12}>{item.base_discount_amount}</Text>
-                        ) : (
-                          <Text regular style={{ width: wp(8) }} size={12} />
-                        )}
-                        <Text regular size={12}>
-                          Qty. {item.discount_amount}
-                        </Text>
-                        <Text regular size={12}>
-                          {currency} {item.subtotal_with_discount}
-                        </Text>
-                      </Block> */}
-
-                    </Block>
-                  </Block>
-                );
-              }}
-            />
+            <Block flex={false} margin={[hp(1), 0, hp(1)]}>
+              <Text bold size={18}>
+                Billing Address
+              </Text>
+              <Block flex={false} margin={[hp(0.5), 0]}>
+                <Text margin={[hp(0.5), 0, 0]} size={16}>
+                  {billing_address.firstname} {billing_address.lastname}
+                </Text>
+                <Text margin={[hp(0.5), 0, 0]} size={16}>
+                  {billing_address.street[0]} {billing_address.street[1]}
+                </Text>
+                <Text margin={[hp(0.5), 0, 0]} size={16}>
+                  {billing_address.city} {billing_address.postcode}
+                </Text>
+                <Text margin={[hp(0.5), 0, 0]} size={16}>
+                  {billing_address.country_id === 'BD' ? 'Bangladesh' : ''}
+                </Text>
+                <Text margin={[hp(0.5), 0, 0]} size={16}>
+                  {billing_address.telephone}
+                </Text>
+              </Block>
+            </Block>
+            <Block flex={false} margin={[hp(1), 0, hp(1)]}>
+              <Text bold size={18}>
+                Shipping Method
+              </Text>
+              <Block flex={false} margin={[hp(0.5), 0]}>
+                <Text margin={[hp(0.5), 0, 0]} size={16}>
+                  {item.shipping_description}
+                </Text>
+              </Block>
+            </Block>
+            <Block flex={false} margin={[hp(1), 0, hp(1)]}>
+              <Text bold size={18}>
+                Payment Method
+              </Text>
+              <Block flex={false} margin={[hp(0.5), 0]}>
+                <Text margin={[hp(0.5), 0, 0]} size={16}>
+                  {payment_additional_info[0].value}
+                </Text>
+              </Block>
+            </Block>
           </>
         )}
 
@@ -186,18 +288,40 @@ const YourOrder = () => {
       <Header />
       {isload && <ActivityLoader />}
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{flexGrow: 1}}
         showsVerticalScrollIndicator={false}>
-
-        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ flex: 1 }} margin={[t2, 0]} center bold transform="uppercase">
+        <Block
+          padding={[0, wp(3)]}
+          space="between"
+          flex={false}
+          row
+          center
+          middle>
+          <Text
+            margin={[t2, 0]}
+            style={{width: wp(10)}}
+            center
+            bold
+            transform="uppercase"
+          />
+          <Text margin={[t2, 0]} center bold transform="uppercase">
             My Orders
-        </Text>
+          </Text>
 
-        {upDownIcon ? <Icon onPress={() => setIconUpDownFun(!upDownIcon)} name="arrowdown" style={{ marginRight: 10 }} size={30} />
-        : 
-        <Icon onPress={() => setIconUpDownFun(!upDownIcon)} name="arrowup" style={{ marginRight: 10 }} size={30} />}
-        </View>
+          {upDownIcon ? (
+            <Icon
+              onPress={() => setIconUpDownFun(!upDownIcon)}
+              name="arrowdown"
+              size={30}
+            />
+          ) : (
+            <Icon
+              onPress={() => setIconUpDownFun(!upDownIcon)}
+              name="arrowup"
+              size={30}
+            />
+          )}
+        </Block>
 
         <FlatList
           data={orderData.items}
@@ -214,9 +338,4 @@ const YourOrder = () => {
     </Block>
   );
 };
-const StatusButton = styled(Button)({
-  paddingVertical: hp(0.5),
-  marginTop: 0,
-  borderRadius: 0,
-});
 export default YourOrder;

@@ -40,6 +40,7 @@ const componentStyles = () => {
     grey: {color: light.subtitleColor},
     errorColor: {color: light.warning},
     linkColor: {color: light.link},
+    accent: {color: light.warning},
     // // fonts
     h1: {fontSize: h1},
     h2: {fontSize: h2},
@@ -98,6 +99,7 @@ const CustomText = ({
   margin,
   errorColor,
   link,
+  capitalize,
   ...props
 }) => {
   const styles = componentStyles();
@@ -170,6 +172,7 @@ const CustomText = ({
     color && styles[color],
     link && styles.linkColor,
     color && !styles[color] && {color},
+    capitalize && {textTransform: 'capitalize'},
     // color shortcuts
     accent && styles.accent,
     primary && styles.primary,

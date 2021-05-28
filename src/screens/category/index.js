@@ -37,7 +37,7 @@ import {
   strictValidObjectWithKeys,
 } from '../../utils/commonUtils';
 import {light} from '../../components/theme/colors';
-import {useNavigation} from '@react-navigation/core';
+import {useFocusEffect, useNavigation} from '@react-navigation/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {config} from '../../utils/config';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -119,6 +119,17 @@ const Category = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [menu]);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      setstate({
+        data: [],
+      });
+      return () =>
+        setstate({
+          data: [],
+        });
+    }, []),
+  );
   useEffect(() => {
     if (!menu) {
       setmenu(category[0].id);
