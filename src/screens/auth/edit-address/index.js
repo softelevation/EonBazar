@@ -1,22 +1,26 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import Footer from '../../../common/footer';
 import Header from '../../../common/header';
-import { Block, Button, Input, Text } from '../../../components';
+import {Block, Button, Input, Text} from '../../../components';
 import Checkbox from '../../../components/checkbox';
-import { t1, t2, t4, w3, w5 } from '../../../components/theme/fontsize';
+import {t1, t2, t4, w3, w5} from '../../../components/theme/fontsize';
 import RNPickerSelect from 'react-native-picker-select';
-import { useDispatch, useSelector } from 'react-redux';
-import { generateOtpRequest, updateProfileRequest } from '../../../redux/action';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  generateOtpRequest,
+  profileRequest,
+  updateProfileRequest,
+} from '../../../redux/action';
 
 import * as yup from 'yup';
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import {
   searchDistrictRequest,
   searchAreaRequest,
@@ -28,13 +32,12 @@ import {
   strictValidNumber,
   strictValidObjectWithKeys,
 } from '../../../utils/commonUtils';
-import { config } from '../../../utils/config';
+import {config} from '../../../utils/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import { color, onChange } from 'react-native-reanimated';
+import {color, onChange} from 'react-native-reanimated';
 import * as Navigation from '../../../routes/NavigationService';
-import Toast from '../../../common/toast'
-
+import Toast from '../../../common/toast';
 
 global.shippingAddress = '';
 const stylesPicker = StyleSheet.create({
@@ -87,7 +90,7 @@ const stylesPicker = StyleSheet.create({
 
 const EditAddress = ({
   route: {
-    params: { itemDetail },
+    params: {itemDetail},
   },
 }) => {
   const dispatch = useDispatch();
@@ -101,15 +104,9 @@ const EditAddress = ({
   const city = useSelector((state) => state.area.cities.data);
   const isLoad = useSelector((state) => state.shipping.shippingDetails.loading);
   const userData = useSelector((state) => state.user.profile.user);
-  const [selectTab, setSelectTab] = useState('Shipping');
-  const [listMainColor, setListMainColor] = useState('#ffffff');
-  const [listTextColor, setListTextColor] = useState('#7D7F86');
-  const [shippingMainColor, setShippingMainColor] = useState('#78A942');
-  const [shippingTextColor, setShippingTextColor] = useState('#ffffff');
+  const [loader, setLoader] = useState(false);
+
   const [shippingAddress, setShippingAddress] = useState([]);
-  const [checkedList, setCheckedList] = useState([]);
-  const [carrier, setCarrier] = useState('');
-  const [method, setMethod] = useState('');
 
   useEffect(() => {
     strictValidArray(district.items) && selectDistrict(1);
@@ -177,84 +174,112 @@ const EditAddress = ({
   };
 
   const submitValues = (values) => {
+    if (userData.addresses.length > 0) {
+      const savedata = {
+        id: itemDetail.id,
+        customer_id: itemDetail.customer_id,
+        region: {
+          region_code: region,
+          // "region": `${values.region} - ${State}`,
+          region: State ? State : 'Dhaka',
+          region_id: region,
+        },
+        region_id: region,
+        country_id: itemDetail.country_id,
+        street: [values.streetAddress],
+        telephone: values.mobile,
+        postcode: values.postalCode,
+        city: values.city,
+        firstname: values.firstname,
+        lastname: values.lastname,
+        default_shipping: true,
+        default_billing: true,
+      };
+      var userAddress = userData.addresses;
+      var joined = userAddress.concat(savedata);
 
-    const savedata = {
-      customer: {
-        group_id: 1,
-        default_billing: '2',
-        default_shipping: '2',
-        created_at: new Date(),
-        updated_at: new Date(),
-        created_in: 'Default Store View',
-        email: `${values.mobile}${config.domain_name}`,
-        firstname: itemDetail.firstname,
-        lastname: itemDetail.lastname,
-        store_id: 1,
-        website_id: 1,
-        addresses: [
-          {
-            id: itemDetail.id,
-            customer_id: itemDetail.customer_id,
-            region: {
-              region_code: region,
-              // "region": `${values.region} - ${State}`,
-              region: State ? State : 'Dhaka',
+      const submitData = {
+        customer: {
+          email: `${values.mobile}${config.domain_name}`,
+          firstname: values.firstname,
+          lastname: values.lastname,
+          store_id: 1,
+          website_id: 1,
+          id: userData.id,
+          addresses: joined,
+        },
+      };
+      editAddressFun(submitData);
+    } else {
+      const savedata = {
+        customer: {
+          group_id: 1,
+          default_billing: '2',
+          default_shipping: '2',
+          created_at: new Date(),
+          updated_at: new Date(),
+          created_in: 'Default Store View',
+          email: `${values.mobile}${config.domain_name}`,
+          firstname: values.firstname,
+          lastname: values.lastname,
+          store_id: 1,
+          website_id: 1,
+          addresses: [
+            {
+              id: itemDetail.id,
+              customer_id: itemDetail.customer_id,
+              region: {
+                region_code: region,
+                // "region": `${values.region} - ${State}`,
+                region: State ? State : 'Dhaka',
+                region_id: region,
+              },
               region_id: region,
+              country_id: itemDetail.country_id,
+              street: [values.streetAddress],
+              telephone: values.mobile,
+              postcode: values.postalCode,
+              city: values.city,
+              firstname: values.firstname,
+              lastname: values.lastname,
+              default_shipping: true,
+              default_billing: true,
             },
-            region_id: region,
-            country_id: itemDetail.country_id,
-            street: [values.streetAddress],
-            telephone: values.mobile,
-            postcode: values.postalCode,
-            city: values.city,
-            firstname: itemDetail.firstname,
-            lastname: itemDetail.lastname,
-            default_shipping: true,
-            default_billing: true,
-          },
-        ],
-      },
-    };
-
-
-    console.log("=========>>", JSON.stringify(savedata))
-
-    editAddressFun(savedata);
+          ],
+        },
+      };
+      editAddressFun(savedata);
+    }
 
     // dispatch(updateProfileRequest(savedata));
     // dispatch(addShippingRequest(data));
   };
 
-
   const editAddressFun = async (editData) => {
+    setLoader(true);
     const token = await AsyncStorage.getItem('token');
     const headers = {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token,
     };
-    return fetch(
-      `${config.Api_Url}/V1/customers/me/ `,
-      {
-        method: 'PUT',
-        headers: headers,
-        body: JSON.stringify(editData)
-      },
-    )
+    return fetch(`${config.Api_Url}/V1/customers/me/ `, {
+      method: 'PUT',
+      headers: headers,
+      body: JSON.stringify(editData),
+    })
       .then((r) => r.json())
       .then((r) => {
-        console.log("edit====", r)
-        Navigation.goBack()
+        setLoader(false);
+        console.log('edit====', r);
+        dispatch(profileRequest());
+        Navigation.goBack();
       })
       .catch((error) => {
+        setLoader(false);
         console.error(error);
         return [];
       });
-
-  }
-
-
-
-
+  };
 
   const selectDistrict = (value) => {
     dispatch(searchAreaRequest(value));
@@ -268,7 +293,6 @@ const EditAddress = ({
       strictValidArray(city.items) && city.items.filter((v) => v.name === val);
     getStates.map((c) => setregion(c.id));
   };
-
 
   return (
     <Block>
@@ -312,9 +336,7 @@ const EditAddress = ({
             .max(6)
             .required('Zip/Postal Code is Required'),
           country: yup.string().required('Country is Required'),
-        })}
-
-      >
+        })}>
         {({
           values,
           handleChange,
@@ -322,18 +344,16 @@ const EditAddress = ({
           setFieldTouched,
           touched,
           handleSubmit,
-          // setFieldValue,
-          // isValid,
-          // dirty,
+          isValid,
+          dirty,
         }) => {
           return (
-            <View style={{ flex: 1 }}>
+            <View style={{flex: 1}}>
               <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
-
                 <Block white padding={[t2]} margin={[t1, w3]}>
                   <Text margin={[t2, 0]} bold transform="uppercase">
                     Edit Address
-                    </Text>
+                  </Text>
                   {strictValidNumber(values.district) ? (
                     <Text margin={[t1, 0, 0]} body color="#636363">
                       {'Select District'}
@@ -369,7 +389,7 @@ const EditAddress = ({
                     </Text>
                   ) : null}
                   {strictValidNumber(values.district) &&
-                    strictValidArrayWithLength(city.items) ? (
+                  strictValidArrayWithLength(city.items) ? (
                     <>
                       <RNPickerSelect
                         placeholder={
@@ -474,24 +494,20 @@ const EditAddress = ({
                     errorText={touched.mobile && errors.mobile}
                     keyboardType="number-pad"
                   />
-                  <Text size={12}>
-                    Please add number without country code
-                    </Text>
+                  <Text size={12}>Please add number without country code</Text>
                   <Block margin={[t4, 0, 0, 0]}>
-
                     <Button
-                      isLoading={isLoad}
-                      // disabled={!isValid || !dirty}
+                      isLoading={loader}
+                      disabled={!isValid || !dirty}
                       onPress={handleSubmit}
                       style={buttonStyle}
                       color="secondary">
                       Save
-                      </Button>
+                    </Button>
                   </Block>
                 </Block>
                 <Footer images={false} />
               </KeyboardAwareScrollView>
-
             </View>
           );
         }}
@@ -503,7 +519,7 @@ const buttonStyle = {
   width: widthPercentageToDP(50),
   alignSelf: 'center',
 };
-const checkboxStyle = { height: 20, width: 20 };
-const labelStyle = { marginLeft: w3, fontSize: 12 };
+const checkboxStyle = {height: 20, width: 20};
+const labelStyle = {marginLeft: w3, fontSize: 12};
 
 export default EditAddress;

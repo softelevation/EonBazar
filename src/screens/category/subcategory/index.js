@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -22,9 +22,9 @@ import {
   Text,
 } from '../../../components';
 import Search from '../../../components/search';
-import { t1, t2, w2, w3 } from '../../../components/theme/fontsize';
+import {t1, t2, w2, w3} from '../../../components/theme/fontsize';
 import SubCatgoryMenu from '../../../common/SubCatgoryMenu';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   addToCartRequest,
   addToGuestCartRequest,
@@ -35,10 +35,10 @@ import {
   strictValidArray,
   strictValidObjectWithKeys,
 } from '../../../utils/commonUtils';
-import { light } from '../../../components/theme/colors';
-import { useNavigation } from '@react-navigation/core';
+import {light} from '../../../components/theme/colors';
+import {useNavigation} from '@react-navigation/core';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { config } from '../../../utils/config';
+import {config} from '../../../utils/config';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import OverlayLoader from '../../../components/overlayLoader';
 
@@ -55,7 +55,7 @@ const SubCategory = (props) => {
   const [loader, setloader] = useState(false);
   const [showPrice, setShowPrice] = useState(false);
   const [endReached, setEndReached] = useState(false);
-  const { data } = state;
+  const {data} = state;
   const [scrollHeight, setScrollHeight] = useState(0);
   // Reducers Values
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
@@ -82,9 +82,8 @@ const SubCategory = (props) => {
   const cart_list = useSelector((state) => state.cart.list.data);
   const [cartlist, setList] = useState([]);
   const userData = useSelector((state) => state.user.profile.user);
-  const [pageSize, setPageSize] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
   const [qtySum, setSum] = useState([]);
-
 
   const sortingMenu = (val) => {
     //   scrollRef.scrollToEnd()
@@ -96,7 +95,7 @@ const SubCategory = (props) => {
     scrollRef.current.scrollToEnd();
 
     //scrollRef.current && scrollRef.current.scrollIntoView({ behavior: 'smooth' })
-    setstate({ data: [] });
+    setstate({data: []});
     setmenu(val.id);
     setname(val.name);
   };
@@ -156,7 +155,7 @@ const SubCategory = (props) => {
           sku: a.sku,
         });
       });
-    setstate({ ...state, data: data.concat(newData) });
+    setstate({...state, data: data.concat(newData)});
   }, [filteredData]);
 
   const LoadMoreRandomData = async () => {
@@ -170,10 +169,10 @@ const SubCategory = (props) => {
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = data[index];
-      const updated = { ...old, isLoad: true };
+      const updated = {...old, isLoad: true};
       const clone = [...data];
       clone[index] = updated;
-      setstate({ data: clone });
+      setstate({data: clone});
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -182,27 +181,26 @@ const SubCategory = (props) => {
       await dispatch(addToCartRequest(newData));
     } else {
       const old = data[index];
-      const updated = { ...old, isLoad: true };
+      const updated = {...old, isLoad: true};
       const clone = [...data];
       clone[index] = updated;
-      setstate({ data: clone });
+      setstate({data: clone});
       const newData = {
         sku: val.sku,
         qty: val.qty,
         quote_id: guestCartToken,
       };
       await dispatch(
-        addToGuestCartRequest({ token: guestCartToken, items: newData }),
+        addToGuestCartRequest({token: guestCartToken, items: newData}),
       );
     }
     setShowPrice(true);
   };
 
-  
   const addToWishlist = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = data[index];
-      const updated = { ...old, isWishlist: true };
+      const updated = {...old, isWishlist: true};
       const clone = [...data];
       clone[index] = updated;
 
@@ -211,17 +209,17 @@ const SubCategory = (props) => {
       // await dispatch(updateWishlistRequest(id));
     } else {
       nav.reset({
-        routes: [{ name: 'Login' }],
+        routes: [{name: 'Login'}],
       });
     }
   };
 
   const updateQty = (qty, index) => {
     const old = data[index];
-    const updated = { ...old, qty: qty };
+    const updated = {...old, qty: qty};
     const clone = [...data];
     clone[index] = updated;
-    setstate({ data: clone });
+    setstate({data: clone});
     setShowPrice(true);
   };
 
@@ -244,12 +242,12 @@ const SubCategory = (props) => {
   const navigateToShipping = () => {
     if (strictValidObjectWithKeys(userData)) {
       // nav.navigate('BillingAddress', {
-        nav.navigate('Shipping', {
+      nav.navigate('Shipping', {
         price: cartlist.reduce((sum, i) => (sum += i.price_copy), 0).toFixed(2),
       });
     } else {
       global.isLoggedIn = true;
-      nav.navigate('Login', { isLoggedIn: true });
+      nav.navigate('Login', {isLoggedIn: true});
     }
   };
   useEffect(() => {
@@ -274,20 +272,18 @@ const SubCategory = (props) => {
 
     setList(newData);
 
-    var numbers = newData
+    var numbers = newData;
     var sum = 0;
     for (var i = 0; i < numbers.length; i++) {
-
-      sum += numbers[i].qty
-
+      sum += numbers[i].qty;
     }
-    setSum(sum)
+    setSum(sum);
   }, [cart_list]);
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({item, index}) => {
     return (
       <Block
-        style={{ width: widthPercentageToDP(45), minHeight: hp(35) }}
+        style={{width: widthPercentageToDP(45), minHeight: hp(35)}}
         padding={[hp(2)]}
         margin={[hp(0.5), widthPercentageToDP(1.8)]}
         primary
@@ -335,7 +331,7 @@ const SubCategory = (props) => {
           space={'between'}
           flex={false}>
           <Block
-            style={{ width: widthPercentageToDP(18) }}
+            style={{width: widthPercentageToDP(18)}}
             center
             row
             space={'between'}
@@ -419,7 +415,7 @@ const SubCategory = (props) => {
           <Text semibold size={15}>
             {name || ''}
           </Text>
-          <ShopByButton style={{ marginTop: 5 }} color="secondary">
+          <ShopByButton style={{marginTop: 5}} color="secondary">
             Shop by
           </ShopByButton>
         </Block>
@@ -435,12 +431,12 @@ const SubCategory = (props) => {
           {data && <Text size={12}>{data && data.length} items</Text>}
         </Block>
         {loading ? (
-          <Block color="transparent" style={{ height: hp(30) }} center middle>
+          <Block color="transparent" style={{height: hp(30)}} center middle>
             <ActivityIndicator color={light.secondary} size="large" />
           </Block>
         ) : (
           <View
-            style={{ flex: 1 }}
+            style={{flex: 1}}
             onStartShouldSetResponderCapture={() => {
               setScrollView(false);
               if (
@@ -493,7 +489,7 @@ const SubCategory = (props) => {
           <Block row space={'around'} flex={false} margin={[0, w3, t2, w3]}>
             <CartButton
               onPress={() => nav.navigate('DashboardLogo', setShowPrice(false))}
-              textStyle={{ textTransform: 'uppercase' }}
+              textStyle={{textTransform: 'uppercase'}}
               color="primary">
               Continue Shopping
             </CartButton>
@@ -501,7 +497,7 @@ const SubCategory = (props) => {
               onPress={() => {
                 navigateToShipping();
               }}
-              textStyle={{ textTransform: 'uppercase' }}
+              textStyle={{textTransform: 'uppercase'}}
               color="secondary">
               Buy Now
             </CartButton>
@@ -519,7 +515,7 @@ const SubCategory = (props) => {
                   top: 20,
                 }}>
                 <Text center color={'white'} size={10}>
-                {qtySum}
+                  {qtySum}
                 </Text>
               </View>
             ) : null}

@@ -80,29 +80,18 @@ const Category = (props) => {
   const scrollRef = useRef();
   const [menu, setmenu] = useState(saveFiltered.id);
   const [name, setname] = useState(saveFiltered.name);
-  const [pageSize, setPageSize] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
   const cart_list = useSelector((state) => state.cart.list.data);
   const [cartlist, setList] = useState([]);
   const userData = useSelector((state) => state.user.profile.user);
   const [qtySum, setSum] = useState([]);
 
   const sortingMenu = (val) => {
-    //   scrollRef.scrollToEnd()
-    // scrollRef.scrollView.getScrollResponder().scrollResponderScrollTo({
-    //   x: 0,
-    //   y: scrollHeight,
-    //   animated: true
-    // });
     setTimeout(() => {
       scrollRef.current.scrollToEnd({
         animated: true,
-        // y: (100 *10)
       });
     }, 1000);
-
-    // flatListRef.current.scrollToOffset({ animated: true, offset: 0,viewPosition:1 })
-
-    //scrollRef.current && scrollRef.current.scrollIntoView({ behavior: 'smooth' })
     setstate({data: []});
     setmenu(val.id);
     setname(val.name);
@@ -112,7 +101,7 @@ const Category = (props) => {
     dispatch(
       filterCategoryListRequest({
         currentPage,
-        pageSize: 500,
+        pageSize: pageSize,
         menu,
       }),
     );
@@ -333,15 +322,6 @@ const Category = (props) => {
           <Text size={12} body margin={[hp(1), 0, 0, 0]} semibold>
             {item.currency_code} {item.price_info}
           </Text>
-          {/* {item.price_info !== item.specialPrice && (
-            <LineAboveText
-              body
-              size={12}
-              color="grey"
-              margin={[hp(0.2), 0, 0, 0]}>
-              {item.currency_code} {item.price_info}
-            </LineAboveText>
-          )} */}
         </CustomButton>
         <Block
           margin={[hp(1), 0, 0, 0]}
@@ -380,11 +360,6 @@ const Category = (props) => {
             center
             middle
             flex={false}>
-            {/* {item.isLoad ? (
-              <ActivityIndicator size="small" color="#fff" />
-            ) : (
-              <MaterialIcon name="shopping-bag" size={20} color="#fff" />
-            )} */}
             <MaterialIcon name="shopping-bag" size={20} color="#fff" />
           </CustomButton>
         </Block>
@@ -454,46 +429,40 @@ const Category = (props) => {
           {data && <Text size={12}>{data && data.length} items</Text>}
           <Block center flex={false} row />
         </Block>
-        {loading ? (
+        {/* {loading ? (
           <Block color="transparent" style={{height: hp(30)}} center middle>
             <ActivityIndicator color={light.secondary} size="large" />
           </Block>
-        ) : (
-          <View
-            style={{flex: 1}}
-            onStartShouldSetResponderCapture={() => {
-              setScrollView(false);
-              if (
-                scrollRef &&
-                scrollRef.current?.contentOffset === 0 &&
-                scrollView === false
-              ) {
-                setScrollView(true);
-              }
-            }}>
-            <FlatList
-              contentContainerStyle={flatlistContentStyle}
-              data={strictValidArray(data) && data}
-              renderItem={renderItem}
-              ref={flatListRef}
-              // onEndReached={LoadMoreRandomData}
-              onEndReachedThreshold={0.1}
-              bounces={false}
-              ListFooterComponent={renderFooter}
-              maxHeight={500}
-              onMomentumScrollBegin={() => {
-                setEndReached(false);
-              }}
-            />
-          </View>
-        )}
-
-        {/* <Footer images={false} /> */}
+        ) : ( */}
+        <View
+          style={{flex: 1}}
+          onStartShouldSetResponderCapture={() => {
+            setScrollView(false);
+            if (
+              scrollRef &&
+              scrollRef.current?.contentOffset === 0 &&
+              scrollView === false
+            ) {
+              setScrollView(true);
+            }
+          }}>
+          <FlatList
+            contentContainerStyle={flatlistContentStyle}
+            data={strictValidArray(data) && data}
+            renderItem={renderItem}
+            ref={flatListRef}
+            // onEndReached={LoadMoreRandomData}
+            onEndReachedThreshold={0.1}
+            bounces={false}
+            ListFooterComponent={renderFooter}
+            maxHeight={500}
+            onMomentumScrollBegin={() => {
+              setEndReached(false);
+            }}
+          />
+        </View>
+        {/* )} */}
       </ScrollView>
-
-      {/* <TouchableOpacity style={{flex:1,borderRadius: 20, height: 80,marginTop:10, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.8, shadowRadius: 2, elevation: 5,flex:1,bottom:0,position:'absolute'}}>
-
-                </TouchableOpacity> */}
       {cartlist.length > 0 && showPrice ? (
         <Block
           borderWidth={[0.5, 0, 0, 0]}

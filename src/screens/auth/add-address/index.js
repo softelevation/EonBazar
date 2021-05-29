@@ -1,26 +1,21 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import React, {useEffect, useRef, useState} from 'react';
+import {Alert, StyleSheet, View} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import Footer from '../../../common/footer';
 import Header from '../../../common/header';
-import { Block, Button, Input, Text } from '../../../components';
-import Checkbox from '../../../components/checkbox';
-import { t1, t2, t4, w3, w5 } from '../../../components/theme/fontsize';
+import {Block, Button, Input, Text} from '../../../components';
+import {t1, t2, t4, w3, w5} from '../../../components/theme/fontsize';
 import RNPickerSelect from 'react-native-picker-select';
-import { useDispatch, useSelector } from 'react-redux';
-import { generateOtpRequest, updateProfileRequest } from '../../../redux/action';
-
+import {useDispatch, useSelector} from 'react-redux';
 import * as yup from 'yup';
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import {
   searchDistrictRequest,
   searchAreaRequest,
-  addShippingRequest,
+  profileRequest,
 } from '../../../redux/action';
 import {
   strictValidArray,
@@ -28,12 +23,10 @@ import {
   strictValidNumber,
   strictValidObjectWithKeys,
 } from '../../../utils/commonUtils';
-import { config } from '../../../utils/config';
+import {config} from '../../../utils/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import { color, onChange } from 'react-native-reanimated';
 import * as Navigation from '../../../routes/NavigationService';
-import Toast from '../../../common/toast';
 
 global.shippingAddress = '';
 const stylesPicker = StyleSheet.create({
@@ -102,15 +95,13 @@ const AddAddress = (
   const city = useSelector((state) => state.area.cities.data);
   const isLoad = useSelector((state) => state.shipping.shippingDetails.loading);
   const userData = useSelector((state) => state.user.profile.user);
-  const [selectTab, setSelectTab] = useState('Shipping');
-  const [listMainColor, setListMainColor] = useState('#ffffff');
-  const [listTextColor, setListTextColor] = useState('#7D7F86');
-  const [shippingMainColor, setShippingMainColor] = useState('#78A942');
-  const [shippingTextColor, setShippingTextColor] = useState('#ffffff');
+  const formikRef = useRef();
   const [shippingAddress, setShippingAddress] = useState([]);
-  const [checkedList, setCheckedList] = useState([]);
-  const [carrier, setCarrier] = useState('');
-  const [method, setMethod] = useState('');
+  const [loader, setLoader] = useState(false);
+
+  useEffect(() => {
+    dispatch(searchDistrictRequest());
+  }, []);
 
   useEffect(() => {
     strictValidArray(district.items) && selectDistrict(1);
@@ -178,11 +169,10 @@ const AddAddress = (
   };
 
   const submitValues = (values) => {
-
+    console.log(values, 'values', userData);
     if (userData.addresses.length > 0) {
-
       const savedata = {
-        customer_id: userData.addresses[0].customer_id,
+        customer_id: userData.id,
         region: {
           region_code: null,
           region: null,
@@ -190,7 +180,7 @@ const AddAddress = (
         },
         region_id: 0,
         country_id: 'BD',
-        street: ['Test'],
+        street: [values.streetAddress],
         telephone: values.mobile,
         postcode: values.postalCode,
         city: values.city,
@@ -204,7 +194,7 @@ const AddAddress = (
             value: '0',
           },
         ],
-      }
+      };
       var userAddress = userData.addresses;
       var joined = userAddress.concat(savedata);
 
@@ -215,16 +205,12 @@ const AddAddress = (
           lastname: values.lastname,
           store_id: 1,
           website_id: 1,
-          id: userData.addresses[0].customer_id,
+          id: userData.id,
           addresses: joined,
         },
       };
-
-      // console.log('======>>>>', JSON.stringify(submitData));
       addNewAddress(submitData);
-    }
-    else {
-
+    } else {
       const submitData = {
         customer: {
           email: `${values.mobile}${config.domain_name}`,
@@ -232,10 +218,10 @@ const AddAddress = (
           lastname: values.lastname,
           store_id: 1,
           website_id: 1,
-          id: userData.addresses[0].customer_id,
+          id: userData.id,
           addresses: [
             {
-              customer_id: userData.addresses[0].customer_id,
+              customer_id: userData.id,
               region: {
                 region_code: null,
                 region: null,
@@ -243,7 +229,7 @@ const AddAddress = (
               },
               region_id: 0,
               country_id: 'BD',
-              street: ['Test'],
+              street: [values.streetAddress],
               telephone: values.mobile,
               postcode: values.postalCode,
               city: values.city,
@@ -261,16 +247,13 @@ const AddAddress = (
           ],
         },
       };
-
-
-      // console.log('======>>>>else  ', JSON.stringify(submitData));
+      console.log(submitData, 'submitData');
       addNewAddress(submitData);
-
     }
-
   };
 
   const addNewAddress = async (editData) => {
+    setLoader(true);
     const token = await AsyncStorage.getItem('token');
     const headers = {
       'Content-Type': 'application/json',
@@ -283,10 +266,13 @@ const AddAddress = (
     })
       .then((r) => r.json())
       .then((r) => {
+        setLoader(false);
         console.log('add address====>>>', r);
+        dispatch(profileRequest());
         Navigation.goBack();
       })
       .catch((error) => {
+        setLoader(false);
         console.error(error);
         return [];
       });
@@ -294,6 +280,7 @@ const AddAddress = (
 
   const selectDistrict = (value) => {
     dispatch(searchAreaRequest(value));
+    formikRef.current?.setFieldValue('district', value);
     const getStates =
       strictValidArray(district.items) &&
       district.items.filter((v) => v.id === value);
@@ -309,25 +296,19 @@ const AddAddress = (
     <Block>
       <Header leftIcon={false} />
       <Formik
+        innerRef={formikRef}
         enableReinitialize
         initialValues={{
-          firstname: '',
-          lastname: '',
+          firstname: userData.firstname,
+          lastname: userData.lastname,
           mobile: '',
           // company: '',
           streetAddress: '',
           city: '',
           postalCode: '',
-          // streetAddress: '',
-          // streetAddress2: '',
-          // city: '',
-          // postalCode: '',
           country: 'Bangladesh',
           district: '',
           region: '',
-          // shipping: '',
-          // carrier_code: '',
-          // method_code: '',
         }}
         onSubmit={submitValues}
         validationSchema={yup.object().shape({
@@ -340,7 +321,6 @@ const AddAddress = (
           lastname: yup.string().min(1).required('Last Name is Required'),
           streetAddress: yup.string().required('Street Address is Required'),
           city: yup.string().required('City is Required'),
-          // shipping: yup.string().required('Please choose Shipping method'),
           postalCode: yup
             .string()
             .min(3)
@@ -355,60 +335,59 @@ const AddAddress = (
           setFieldTouched,
           touched,
           handleSubmit,
-          // setFieldValue,
-          // isValid,
-          // dirty,
+          setFieldValue,
+          isValid,
+          dirty,
         }) => {
+          console.log(values);
           return (
-            <View style={{ flex: 1 }}>
+            <View style={{flex: 1}}>
               <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
                 <Block white padding={[t2]} margin={[t1, w3]}>
                   <Text margin={[t2, 0]} bold transform="uppercase">
                     Add Address
                   </Text>
-                  {strictValidNumber(values.district) ? (
-                    <Text margin={[t1, 0, 0]} body color="#636363">
-                      {'Select District'}
-                    </Text>
-                  ) : null}
-                  {strictValidNumber(values.district) ? (
-                    <RNPickerSelect
-                      placeholder={
-                        {
-                          // label: '',
-                        }
+
+                  <Text margin={[t1, 0, 0]} body color="#636363">
+                    {'Select District'}
+                  </Text>
+
+                  <RNPickerSelect
+                    placeholder={
+                      {
+                        // label: '',
                       }
-                      useNativeAndroidPickerStyle={false}
-                      value={values.district}
-                      mode="dropdown"
-                      style={stylesPicker}
-                      onValueChange={(value) => {
-                        setFieldValue('district', value);
-                        selectDistrict(value);
-                      }}
-                      items={
-                        strictValidArray(district.items) &&
-                        district.items.map((v) => ({
-                          label: v.name,
-                          value: v.id,
-                        }))
-                      }
-                    />
-                  ) : null}
+                    }
+                    useNativeAndroidPickerStyle={false}
+                    value={values.district}
+                    mode="dropdown"
+                    style={stylesPicker}
+                    onValueChange={(value) => {
+                      setFieldValue('district', value);
+                      selectDistrict(value);
+                    }}
+                    items={
+                      strictValidArray(district.items)
+                        ? district.items.map((v) => ({
+                            label: v.name,
+                            value: v.id,
+                          }))
+                        : []
+                    }
+                  />
+
                   {strictValidNumber(values.district) ? (
                     <Text margin={[t1, 0, 0]} body color="#636363">
                       {'Select Delievery Area'}
                     </Text>
                   ) : null}
                   {strictValidNumber(values.district) &&
-                    strictValidArrayWithLength(city.items) ? (
+                  strictValidArrayWithLength(city.items) ? (
                     <>
                       <RNPickerSelect
-                        placeholder={
-                          {
-                            // label: 'Select City',
-                          }
-                        }
+                        placeholder={{
+                          label: 'Select City',
+                        }}
                         useNativeAndroidPickerStyle={false}
                         style={stylesPicker}
                         value={values.region}
@@ -426,7 +405,10 @@ const AddAddress = (
                       />
                     </>
                   ) : strictValidNumber(values.district) ? (
-                    <Text size={12} errorColor>
+                    <Text
+                      margin={[heightPercentageToDP(1), 0]}
+                      size={12}
+                      errorColor>
                       Please choose another District
                     </Text>
                   ) : null}
@@ -446,14 +428,6 @@ const AddAddress = (
                     error={touched.lastname && errors.lastname}
                     errorText={touched.lastname && errors.lastname}
                   />
-                  {/* <Input
-                                        label="Company"
-                                        value={values.company}
-                                        onChangeText={handleChange('company')}
-                                        onBlur={() => setFieldTouched('company')}
-                                        error={touched.company && errors.company}
-                                        errorText={touched.company && errors.company}
-                                    /> */}
                   <Input
                     label="Street Address"
                     value={values.streetAddress}
@@ -462,15 +436,6 @@ const AddAddress = (
                     error={touched.streetAddress && errors.streetAddress}
                     errorText={touched.streetAddress && errors.streetAddress}
                   />
-                  {/* <Input
-                    value={values.streetAddress2}
-                    onChangeText={handleChange('streetAddress2')}
-                    onBlur={() => setFieldTouched('streetAddress2')}
-                    error={touched.streetAddress2 && errors.streetAddress2}
-                    errorText={
-                      touched.streetAddress2 && errors.streetAddress2
-                    }
-                  /> */}
                   <Input
                     label="City"
                     value={values.city}
@@ -507,16 +472,14 @@ const AddAddress = (
                     keyboardType="number-pad"
                   />
                   <Text size={12}>Please add number without country code</Text>
-                  <Block margin={[t4, 0, 0, 0]}>
-                    <Button
-                      isLoading={isLoad}
-                      // disabled={!isValid || !dirty}
-                      onPress={handleSubmit}
-                      style={buttonStyle}
-                      color="secondary">
-                      Save
-                    </Button>
-                  </Block>
+                  <Button
+                    isLoading={loader}
+                    disabled={!isValid || !dirty}
+                    onPress={handleSubmit}
+                    style={buttonStyle}
+                    color="secondary">
+                    Save Address
+                  </Button>
                 </Block>
               </KeyboardAwareScrollView>
             </View>
@@ -530,7 +493,7 @@ const buttonStyle = {
   width: widthPercentageToDP(50),
   alignSelf: 'center',
 };
-const checkboxStyle = { height: 20, width: 20 };
-const labelStyle = { marginLeft: w3, fontSize: 12 };
+const checkboxStyle = {height: 20, width: 20};
+const labelStyle = {marginLeft: w3, fontSize: 12};
 
 export default AddAddress;
