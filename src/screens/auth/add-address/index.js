@@ -41,9 +41,9 @@ const stylesPicker = StyleSheet.create({
   },
   inputAndroid: {
     paddingHorizontal: widthPercentageToDP(3),
+    paddingVertical: t1,
     borderWidth: 1,
     borderColor: '#C2C2C2',
-    paddingVertical: heightPercentageToDP(0.3),
   },
   iconContainer: {
     alignItems: 'center',

@@ -328,7 +328,6 @@ const ShowAddress = (
   };
 
   const listPress = (item) => {
-    //alert(JSON.stringify(item))
     navigation.navigate('EditAddress', {itemDetail: item});
   };
 
@@ -541,7 +540,7 @@ const ShowAddress = (
                           <View style={{flexDirection: 'row'}}>
                             <Button
                               isLoading={isLoad}
-                              onPress={listPress.bind(this, item)}
+                              onPress={() => listPress(item)}
                               style={buttonStyle}
                               color="secondary">
                               Edit{' '}

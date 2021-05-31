@@ -93,6 +93,7 @@ const EditAddress = ({
     params: {itemDetail},
   },
 }) => {
+  console.log(itemDetail, 'itemDetail');
   const dispatch = useDispatch();
   const [State, setState] = useState('');
   const [region, setregion] = useState(null);
@@ -174,7 +175,6 @@ const EditAddress = ({
   };
 
   const submitValues = (values) => {
-    alert(itemDetail.id)
     if (userData.addresses.length > 0) {
       const savedata = {
         id: itemDetail.id,
@@ -301,23 +301,15 @@ const EditAddress = ({
       <Formik
         enableReinitialize
         initialValues={{
-          firstname: userData.firstname,
-          lastname: userData.lastname,
-          mobile: userData.addresses[0].telephone,
-          //company: '',
-          streetAddress: userData.addresses[0].street[0],
-          city: userData.addresses[0].city,
-          postalCode: userData.addresses[0].postcode,
-          // streetAddress: '',
-          // streetAddress2: '',
-          // city: '',
-          // postalCode: '',
+          firstname: itemDetail.firstname,
+          lastname: itemDetail.lastname,
+          mobile: itemDetail.telephone,
+          streetAddress: itemDetail.street[0],
+          city: itemDetail.city,
+          postalCode: itemDetail.postcode,
           country: 'Bangladesh',
           district: '',
           region: '',
-          // shipping: '',
-          // carrier_code: '',
-          // method_code: '',
         }}
         onSubmit={submitValues}
         validationSchema={yup.object().shape({
