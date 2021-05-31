@@ -92,12 +92,30 @@ const SubCategory = (props) => {
     //   y: scrollHeight,
     //   animated: true
     // });
-    scrollRef.current.scrollToEnd();
+    // scrollRef.current.scrollToEnd();
+    // setstate({data: []});
 
-    //scrollRef.current && scrollRef.current.scrollIntoView({ behavior: 'smooth' })
-    setstate({data: []});
-    setmenu(val.id);
-    setname(val.name);
+    // //scrollRef.current && scrollRef.current.scrollIntoView({ behavior: 'smooth' })
+    // setstate({data: []});
+    // setmenu(val.id);
+    // setname(val.name);
+    setTimeout(() => {
+      scrollRef.current.scrollToEnd({
+        animated: true,
+      });
+    }, 1000);
+    if(val.id!=menu){
+      setmenu(val.id);
+      setname(val.name);
+  setstate({data: []});
+    }
+    else{
+      // setmenu(val.id);
+      // setname(val.name);
+
+      // return null
+    }
+
   };
 
   useEffect(() => {

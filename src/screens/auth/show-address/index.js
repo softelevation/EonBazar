@@ -328,6 +328,7 @@ const ShowAddress = (
   };
 
   const listPress = (item) => {
+    //alert(JSON.stringify(item))
     navigation.navigate('EditAddress', {itemDetail: item});
   };
 

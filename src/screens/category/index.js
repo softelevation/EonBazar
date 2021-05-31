@@ -81,6 +81,7 @@ const Category = (props) => {
   const [menu, setmenu] = useState(saveFiltered.id);
   const [name, setname] = useState(saveFiltered.name);
   const [pageSize, setPageSize] = useState(10);
+  const [arrayLength, setArrayLength] = useState(10);
   const cart_list = useSelector((state) => state.cart.list.data);
   const [cartlist, setList] = useState([]);
   const userData = useSelector((state) => state.user.profile.user);
@@ -92,9 +93,19 @@ const Category = (props) => {
         animated: true,
       });
     }, 1000);
-    setstate({data: []});
-    setmenu(val.id);
-    setname(val.name);
+    if(val.id!=menu){
+      setmenu(val.id);
+      setname(val.name);
+  setstate({data: []});
+    }
+    else{
+      // setmenu(val.id);
+      // setname(val.name);
+
+      // return null
+    }
+   
+   
   };
 
   useEffect(() => {
@@ -166,6 +177,7 @@ const Category = (props) => {
         });
       });
     setstate({...state, data: data.concat(newData)});
+    setArrayLength(newData.length)
   }, [filteredData]);
 
   const LoadMoreRandomData = async () => {
@@ -426,7 +438,7 @@ const Category = (props) => {
           space={'between'}
           flex={false}
           padding={[t1, w3]}>
-          {data && <Text size={12}>{data && data.length} items</Text>}
+          <Text size={12}>{data.length} items</Text>
           <Block center flex={false} row />
         </Block>
         {/* {loading ? (
