@@ -337,6 +337,7 @@ const EditAddress = ({
           setFieldTouched,
           touched,
           handleSubmit,
+          setFieldValue,
           isValid,
           dirty,
         }) => {

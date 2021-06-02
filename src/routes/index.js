@@ -248,7 +248,7 @@ function Routes() {
           component={Wishlist}
         />
         <Tab.Screen
-          options={{unmountOnBlur: true}}
+          // options={{unmountOnBlur: true}}
           name="Category"
           component={CategoryStack}
         />

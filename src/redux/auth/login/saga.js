@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {profileSuccess} from '../profile/action';
 import {authCheckSuccess, guestCheckSuccess} from './action';
 import {Alert} from 'react-native';
-import Toast from '../../../common/toast';
+import {Toast} from '../../../common/toast';
 
 import * as Navigation from '../../../routes/NavigationService';
 const SaveToken = async (token) => {
@@ -29,6 +29,7 @@ const clearAuthToken = async () => {
 export function* loginRequest(action) {
   try {
     const response = yield call(Api, action.payload);
+    console.log(response, 'response');
     if (response) {
       yield call(clearAuthToken);
       yield call(SaveToken, response.data);
@@ -39,10 +40,6 @@ export function* loginRequest(action) {
         Navigation.navigate('Cart');
         global.isLoggedIn = false;
       } else {
-        //     Navigation.reset({
-        //       index: 0,
-        //       routes: [{ name: 'Dashboard' }]
-        //  })
         Navigation.navigate('DashboardLogo');
         global.isLoggedIn = false;
       }
@@ -50,8 +47,11 @@ export function* loginRequest(action) {
       yield put(loginError(response));
     }
   } catch (err) {
-    Toast(err.response.data.message);
-    yield put(loginError(''));
+    if (err.response) {
+      console.log(err.response);
+      Toast(err.response.data.message);
+      yield put(loginError(''));
+    }
   }
 }
 

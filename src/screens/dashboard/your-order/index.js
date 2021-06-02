@@ -157,7 +157,7 @@ const YourOrder = () => {
               </Block>
             </Block>
             <Block flex={false} margin={[hp(2), 0, 0]}>
-              {renderTopWithBorder('Order ID', `#${item.entity_id}`)}
+              {renderTopWithBorder('Order ID', `#${item.increment_id}`)}
 
               {renderTopWithBorder(
                 'Order Date',

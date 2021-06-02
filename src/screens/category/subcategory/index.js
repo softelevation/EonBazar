@@ -104,18 +104,15 @@ const SubCategory = (props) => {
         animated: true,
       });
     }, 1000);
-    if(val.id!=menu){
+    if (val.id != menu) {
       setmenu(val.id);
       setname(val.name);
-  setstate({data: []});
-    }
-    else{
+      setstate({data: []});
+    } else {
       // setmenu(val.id);
       // setname(val.name);
-
       // return null
     }
-
   };
 
   useEffect(() => {

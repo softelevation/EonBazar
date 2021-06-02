@@ -27,6 +27,7 @@ import {
   strictValidArrayWithLength,
   strictValidNumber,
   strictValidObjectWithKeys,
+  strictValidString,
 } from '../../../utils/commonUtils';
 import {config} from '../../../utils/config';
 import axios from 'axios';
@@ -46,12 +47,14 @@ const stylesPicker = StyleSheet.create({
     paddingVertical: t1,
     borderWidth: 1,
     borderColor: '#C2C2C2',
+    color: '#999999',
   },
   inputAndroid: {
     paddingHorizontal: widthPercentageToDP(3),
     borderWidth: 1,
     borderColor: '#C2C2C2',
     paddingVertical: heightPercentageToDP(0.3),
+    color: '#999999',
   },
   iconContainer: {
     alignItems: 'center',
@@ -111,6 +114,7 @@ const Shipping = ({
   const [checkedList, setCheckedList] = useState([]);
   const [carrier, setCarrier] = useState('');
   const [method, setMethod] = useState('');
+  const [newItem, setitem] = useState({});
 
   useEffect(() => {
     dispatch(searchDistrictRequest());
@@ -709,103 +713,67 @@ const Shipping = ({
                 </KeyboardAwareScrollView>
               ) : (
                 <View style={{flex: 1, marginTop: 10}}>
+                  <Text center size={16} margin={[heightPercentageToDP(1), 0]}>
+                    Please select at least one address
+                  </Text>
                   {shippingAddress ? (
                     <FlatList
                       data={shippingAddress}
                       renderItem={({item, index}) => (
-                        <View
-                          style={{
-                            backgroundColor: 'white',
-                            margin: 20,
-                            marginTop: 10,
-                            marginBottom: 10,
-                            padding: 15,
-                            borderRadius: 20,
-                          }}>
+                        <TouchableOpacity
+                          activeOpacity={0.7}
+                          onPress={() => {
+                            if (item.id === newItem.id) {
+                              setitem({});
+                            } else {
+                              setitem(item);
+                            }
+                          }}
+                          style={[
+                            item.id === newItem.id
+                              ? {backgroundColor: '#78A942'}
+                              : {backgroundColor: 'white'},
+                            {
+                              margin: 20,
+                              marginTop: 10,
+                              marginBottom: 10,
+                              padding: 15,
+                              borderRadius: 20,
+                            },
+                          ]}>
                           <View style={{flexDirection: 'row'}}>
-                            <Text style={[stylesPicker.itemStyle, {flex: 1}]}>
+                            <Text
+                              color={item.id === newItem.id ? '#fff' : '#000'}
+                              style={[stylesPicker.itemStyle, {flex: 1}]}>
                               {item.firstname + ' ' + item.lastname}
                             </Text>
-
-                            {/* <MaterialIcon onPress={deleteAddress.bind(this, item)} name="delete" zin size={20} marginTop={2} padding={2} /> */}
-                          </View>
-                          <Text style={stylesPicker.itemStyle}>
-                            Mobile No: {item.telephone}
-                          </Text>
-                          <Text style={stylesPicker.itemStyle}>
-                            City: {item.city}
-                          </Text>
-                          <Text style={stylesPicker.itemStyle}>
-                            Street Address: {item.street}
-                          </Text>
-                          <Text style={stylesPicker.itemStyle}>
-                            Postcode: {item.postcode}
-                          </Text>
-
-                          <Block margin={[t4, 0, 0, 0]}>
-                            <Text transform="uppercase" bold>
-                              Shipping Charge
-                            </Text>
-                            {shipping.map((a) => {
-                              return (
-                                <Block
-                                  margin={[t2, 0, 0, 0]}
-                                  row
-                                  space={'between'}
-                                  center>
-                                  <Checkbox
-                                    checkboxStyle={checkboxStyle}
-                                    labelStyle={labelStyle}
-                                    label={`BDT ${a.amount.toFixed(2)}`}
-                                    checked={a.carrier_code === values.shipping}
-                                    onChange={(b) => {
-                                      setFieldValue('shipping', a.carrier_code);
-                                      setFieldValue(
-                                        'method_code',
-                                        a.method_code,
-                                      );
-                                      setCarrier(a.carrier_code);
-                                      setMethod(a.method_code);
-                                    }}
-                                  />
-                                  <Text size={12}>{a.method_title}</Text>
-                                  <Text
-                                    style={{width: widthPercentageToDP(27)}}
-                                    size={12}>
-                                    {a.carrier_title}
-                                  </Text>
-                                </Block>
-                              );
-                            })}
-                            {touched.firstname && errors.firstname && (
-                              <Text size={12} errorColor>
-                                {touched.firstname && errors.firstname}
+                            {item.id === newItem.id && (
+                              <Text white size={14} secondary semibold>
+                                Selected
                               </Text>
                             )}
-                            <TouchableOpacity
-                              onPress={listPress.bind(this, item)}
-                              style={[
-                                stylesPicker.inputBox,
-                                {
-                                  margin: 15,
-                                  borderColor: 'transparent',
-                                  flex: 1,
-                                  borderWidth: 0,
-                                  backgroundColor: '#78A942',
-                                  justifyContent: 'center',
-                                },
-                              ]}>
-                              <Text
-                                style={{
-                                  textAlign: 'center',
-                                  color: 'white',
-                                  fontSize: 14,
-                                }}>
-                                Next
-                              </Text>
-                            </TouchableOpacity>
-                          </Block>
-                        </View>
+                          </View>
+                          <Text
+                            color={item.id === newItem.id ? '#fff' : '#000'}
+                            style={stylesPicker.itemStyle}>
+                            Mobile No: {item.telephone}
+                          </Text>
+                          <Text
+                            color={item.id === newItem.id ? '#fff' : '#000'}
+                            style={stylesPicker.itemStyle}>
+                            City: {item.city}
+                          </Text>
+                          <Text
+                            color={item.id === newItem.id ? '#fff' : '#000'}
+                            style={stylesPicker.itemStyle}>
+                            Street Address: {item.street}
+                          </Text>
+                          <Text
+                            color={item.id === newItem.id ? '#fff' : '#000'}
+                            style={stylesPicker.itemStyle}>
+                            Postcode: {item.postcode}
+                          </Text>
+                        </TouchableOpacity>
                       )}
                       // ItemSeparatorComponent={this.renderSeparator}
                     />
@@ -820,6 +788,64 @@ const Shipping = ({
                     </View>
                   )}
                 </View>
+              )}
+              {selectTab !== 'Shipping' && strictValidObjectWithKeys(newItem) && (
+                <Block
+                  primary
+                  flex={false}
+                  padding={[t2, w3]}
+                  margin={[t2, 0, 0, 0]}>
+                  <Text transform="uppercase" bold>
+                    Shipping Charge
+                  </Text>
+                  {shipping.map((a) => {
+                    return (
+                      <Block
+                        flex={false}
+                        margin={[t2, 0, 0, 0]}
+                        row
+                        space={'between'}
+                        center>
+                        <Checkbox
+                          checkboxStyle={checkboxStyle}
+                          labelStyle={labelStyle}
+                          label={`BDT ${a.amount.toFixed(2)}`}
+                          checked={a.carrier_code === values.shipping}
+                          onChange={(b) => {
+                            // if(item.id === )
+                            setFieldValue('shipping', a.carrier_code);
+                            setFieldValue('method_code', a.method_code);
+                            setCarrier(a.carrier_code);
+                            setMethod(a.method_code);
+                          }}
+                        />
+                        <Text size={12}>{a.method_title}</Text>
+                        <Text
+                          style={{width: widthPercentageToDP(27)}}
+                          size={12}>
+                          {a.carrier_title}
+                        </Text>
+                      </Block>
+                    );
+                  })}
+                  {touched.firstname && errors.firstname && (
+                    <Text size={12} errorColor>
+                      {touched.firstname && errors.firstname}
+                    </Text>
+                  )}
+                  <Button
+                    disabled={!strictValidString(carrier)}
+                    style={{
+                      width: widthPercentageToDP(80),
+                      borderRadius: 20,
+                      alignSelf: 'center',
+                      borderWidth: 0,
+                    }}
+                    onPress={listPress.bind(this, newItem)}
+                    color="secondary">
+                    Next
+                  </Button>
+                </Block>
               )}
             </View>
           );

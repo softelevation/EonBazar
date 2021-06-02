@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
@@ -45,6 +45,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {color, onChange} from 'react-native-reanimated';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import OverlayLoader from '../../../components/overlayLoader';
+import ActivityLoader from '../../../components/activityLoader';
 
 global.shippingAddress = '';
 const stylesPicker = StyleSheet.create({
@@ -81,12 +82,10 @@ const stylesPicker = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#cccccc',
     height: 45,
-    // backgroundColor: ColorConstants.WHITE,
     overflow: 'hidden',
     color: '#999999',
     fontSize: 14,
     marginBottom: 10,
-    // fontFamily: FontConstants.NUNITO_SANS_REGULAR,
   },
   itemStyle: {
     padding: 2,
@@ -106,6 +105,7 @@ const ShowAddress = (
   const navigation = useNavigation();
   const [State, setState] = useState('');
   const [region, setregion] = useState(null);
+  const [screenLoad, setScreenLoad] = useState(false);
   const [shipping, setShipping] = useState([]);
   const currency = useSelector(
     (state) => state.currency.currencyDetail.data.base_currency_code,
@@ -140,7 +140,14 @@ const ShowAddress = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      getShippingAddress();
+    }, []),
+  );
+
   const getShippingAddress = async () => {
+    setScreenLoad(true);
     const token = await AsyncStorage.getItem('token');
     const headers = {
       'Content-Type': 'application/json',
@@ -150,10 +157,15 @@ const ShowAddress = (
       method: 'get',
       url: `${config.Api_Url}/V1/customers/me`,
       headers,
-    }).then((res) => {
-      console.log('======>>>', res.data.addresses);
-      setShippingAddress(res.data.addresses);
-    });
+    })
+      .then((res) => {
+        setScreenLoad(false);
+        console.log('======>>>', res.data.addresses);
+        setShippingAddress(res.data.addresses);
+      })
+      .catch((err) => {
+        setScreenLoad(false);
+      });
   };
 
   const getShippingCharge = async () => {
@@ -397,183 +409,124 @@ const ShowAddress = (
     <Block>
       <Header leftIcon={false} />
       {loader && <OverlayLoader />}
-      <Formik
-        enableReinitialize
-        initialValues={{
-          firstname: userData.firstname,
-          lastname: userData.lastname,
-          mobile: '',
-          company: '',
-          streetAddress: '',
-          streetAddress2: '',
-          city: '',
-          postalCode: '',
-          country: 'Bangladesh',
-          district: '',
-          region: '',
-          shipping: '',
-          carrier_code: '',
-          method_code: '',
-        }}
-        onSubmit={submitValues}
-        validationSchema={yup.object().shape({
-          mobile: yup
-            .string()
-            .min(10)
-            .max(15)
-            .required('Mobile Number is Required'),
-          firstname: yup.string().min(3).required('First Name is Required'),
-          lastname: yup.string().min(1).required('Last Name is Required'),
-          streetAddress: yup.string().required('Street Address is Required'),
-          city: yup.string().required('City is Required'),
-          shipping: yup.string().required('Please choose Shipping method'),
-          postalCode: yup
-            .string()
-            .min(3)
-            .max(6)
-            .required('Zip/Postal Code is Required'),
-          country: yup.string().required('Country is Required'),
-        })}>
-        {({
-          values,
-          handleChange,
-          errors,
-          setFieldTouched,
-          touched,
-          handleSubmit,
-          setFieldValue,
-          isValid,
-          dirty,
-        }) => {
-          return (
-            <View style={{flex: 1}}>
-              <Text
-                style={{
-                  color: 'black',
-                  fontWeight: 'bold',
-                  fontSize: 22,
-                  marginTop: 20,
-                  marginLeft: 20,
-                  marginRight: 20,
-                }}>
-                Your Addresses{' '}
-              </Text>
-              <View
-                style={{
-                  marginTop: 20,
-                  marginLeft: 20,
-                  marginRight: 20,
-                  flexDirection: 'row',
-                  height: 50,
-                  borderRadius: 10,
-                  backgroundColor: '#ffffff',
-                  borderWidth: 1,
-                  borderColor: 'grey',
-                }}>
-                <TouchableOpacity
-                  style={[
-                    stylesPicker.inputBox,
-                    {
-                      borderColor: 'transparent',
-                      flex: 1,
-                      borderWidth: 0,
-                      backgroundColor: listMainColor,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      flexDirection: 'row',
-                      paddingLeft: 20,
-                      paddingRight: 20,
-                    },
-                  ]}
-                  onPress={() => listClick()}>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontSize: 16,
-                      flex: 1,
-                    }}>
-                    Add Address{' '}
-                  </Text>
-                  <AntDesign name="right" size={20} />
-                </TouchableOpacity>
-              </View>
 
-              <View style={{flex: 1, marginTop: 10}}>
-                {console.log(shippingAddress, 'shippingAddress')}
-                {shippingAddress ? (
-                  <FlatList
-                    data={shippingAddress}
-                    renderItem={({item, index}) => (
-                      <View
-                        style={{
-                          backgroundColor: 'white',
-                          margin: 20,
-                          marginTop: 10,
-                          marginBottom: 10,
-                          padding: 15,
-                          borderRadius: 20,
-                        }}>
-                        <View style={{flexDirection: 'row'}}>
-                          <Text
-                            style={[
-                              stylesPicker.itemStyle,
-                              {flex: 1, fontWeight: 'bold'},
-                            ]}>
-                            {item.firstname + ' ' + item.lastname}
-                          </Text>
-                        </View>
-
-                        <Text style={stylesPicker.itemStyle}>
-                          Mobile No: {item.telephone}
-                        </Text>
-                        <Text style={stylesPicker.itemStyle}>
-                          City: {item.city}
-                        </Text>
-                        <Text style={stylesPicker.itemStyle}>
-                          Street Address: {item.street}
-                        </Text>
-                        <Text style={stylesPicker.itemStyle}>
-                          Postcode: {item.postcode}
-                        </Text>
-
-                        <Block margin={[t2, 0, 0, 0]}>
-                          <View style={{flexDirection: 'row'}}>
-                            <Button
-                              isLoading={isLoad}
-                              onPress={() => listPress(item)}
-                              style={buttonStyle}
-                              color="secondary">
-                              Edit{' '}
-                            </Button>
-
-                            <Button
-                              isLoading={isLoad}
-                              onPress={() => deleteItem(item)}
-                              style={buttonStyle}
-                              color="secondary">
-                              Remove{' '}
-                            </Button>
-                          </View>
-                        </Block>
-                      </View>
-                    )}
-                    // ItemSeparatorComponent={this.renderSeparator}
-                  />
-                ) : (
-                  <View
-                    style={{
-                      justifyContent: 'center',
-                      flex: 1,
-                      alignItems: 'center',
-                    }}>
-                    <Text>No address found</Text>
+      <View style={{flex: 1}}>
+        <Text
+          style={{
+            color: 'black',
+            fontWeight: 'bold',
+            fontSize: 22,
+            marginTop: 20,
+            marginLeft: 20,
+            marginRight: 20,
+          }}>
+          Your Addresses
+        </Text>
+        <View
+          style={{
+            marginTop: 20,
+            marginLeft: 20,
+            marginRight: 20,
+            flexDirection: 'row',
+            height: 50,
+            borderRadius: 10,
+            backgroundColor: '#ffffff',
+            borderWidth: 1,
+            borderColor: 'grey',
+          }}>
+          <TouchableOpacity
+            style={[
+              stylesPicker.inputBox,
+              {
+                borderColor: 'transparent',
+                flex: 1,
+                borderWidth: 0,
+                backgroundColor: listMainColor,
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'row',
+                paddingLeft: 20,
+                paddingRight: 20,
+              },
+            ]}
+            onPress={() => listClick()}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 16,
+                flex: 1,
+              }}>
+              Add Address{' '}
+            </Text>
+            <AntDesign name="right" size={20} />
+          </TouchableOpacity>
+        </View>
+        {screenLoad && <ActivityLoader />}
+        <View style={{flex: 1, marginTop: 10}}>
+          {console.log(shippingAddress, 'shippingAddress')}
+          {strictValidArrayWithLength(shippingAddress) ? (
+            <FlatList
+              data={shippingAddress}
+              renderItem={({item, index}) => (
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    margin: 20,
+                    marginTop: 10,
+                    marginBottom: 10,
+                    padding: 15,
+                    borderRadius: 20,
+                  }}>
+                  <View style={{flexDirection: 'row'}}>
+                    <Text
+                      style={[
+                        stylesPicker.itemStyle,
+                        {flex: 1, fontWeight: 'bold'},
+                      ]}>
+                      {item.firstname + ' ' + item.lastname}
+                    </Text>
                   </View>
-                )}
-              </View>
-            </View>
-          );
-        }}
-      </Formik>
+
+                  <Text style={stylesPicker.itemStyle}>
+                    Mobile No: {item.telephone}
+                  </Text>
+                  <Text style={stylesPicker.itemStyle}>City: {item.city}</Text>
+                  <Text style={stylesPicker.itemStyle}>
+                    Street Address: {item.street}
+                  </Text>
+                  <Text style={stylesPicker.itemStyle}>
+                    Postcode: {item.postcode}
+                  </Text>
+
+                  <Block margin={[t2, 0, 0, 0]}>
+                    <View style={{flexDirection: 'row'}}>
+                      <Button
+                        isLoading={isLoad}
+                        onPress={() => listPress(item)}
+                        style={buttonStyle}
+                        color="secondary">
+                        Edit{' '}
+                      </Button>
+
+                      <Button
+                        isLoading={isLoad}
+                        onPress={() => deleteItem(item)}
+                        style={buttonStyle}
+                        color="secondary">
+                        Remove{' '}
+                      </Button>
+                    </View>
+                  </Block>
+                </View>
+              )}
+            />
+          ) : (
+            <Block center middle>
+              <Text size={16}>No address found</Text>
+            </Block>
+          )}
+        </View>
+      </View>
     </Block>
   );
 };
