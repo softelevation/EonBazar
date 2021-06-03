@@ -7,7 +7,6 @@ import {Formik} from 'formik';
 import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  strictValidNumber,
   strictValidObjectWithKeys,
   strictValidString,
 } from '../../../utils/commonUtils';
@@ -17,12 +16,18 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import {generateOtpRequest, updateProfileRequest} from '../../../redux/action';
+import {
+  generateOtpRequest,
+  loginSuccess,
+  profileFlush,
+  updateProfileRequest,
+} from '../../../redux/action';
 import {eventType} from '../../../utils/static-data';
 import {config} from '../../../utils/config';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Toast} from '../../../common/toast';
 import * as Navigation from '../../../routes/NavigationService';
+import {useNavigation} from '@react-navigation/core';
 
 const EditProfile = ({
   route: {
@@ -36,7 +41,8 @@ const EditProfile = ({
   const formikRef = useRef();
   const isLoad = useSelector((state) => state.user.profile.loading);
   const [resend, setResend] = useState(0);
-
+  const nav = useNavigation();
+  console.log(isLoad, 'isLoad');
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
   useEffect(() => {
@@ -49,7 +55,7 @@ const EditProfile = ({
   const emailMobile =
     strictValidObjectWithKeys(user) && user.email.replace(/\D/g, '');
 
-  const submitValues = (values) => {
+  const submitValues = async (values) => {
     const data = {
       customer: {
         id: userData.id,
@@ -67,66 +73,18 @@ const EditProfile = ({
       websiteId: 1,
     };
 
-    if (values.passwordCheck === true) {
-      dispatch(updateProfileRequest({data: data, type: 'customereditwithotp'}));
-
-      if (strictValidString(values.otp)) {
-        dispatch(
-          updateProfileRequest({data: data, type: 'customereditwithotp'}),
-        );
-      } else {
-        dispatch(updateProfileRequest({data: data, type: 'customers/me'}));
-      }
+    if (strictValidString(values.otp)) {
+      dispatch(
+        updateProfileRequest({
+          data: data,
+          type: 'customereditwithotp',
+          method: 'POST',
+        }),
+      );
     } else {
-      const savedata = {
-        customer: {
-          group_id: 1,
-          default_billing: '2',
-          default_shipping: '2',
-          created_at: new Date(),
-          updated_at: new Date(),
-          created_in: 'Default Store View',
-          email: `${values.mobile}${config.domain_name}`,
-          firstname: values.firstname,
-          lastname: values.lastname,
-          store_id: 1,
-          website_id: 1,
-          addresses: [
-            {
-              id: userData ? userData.addresses[0].id : null,
-              customer_id: userData ? userData.addresses[0].customer_id : null,
-              region: {
-                region_code: userData
-                  ? userData.addresses[0].region.region_code
-                  : null,
-                region: userData ? userData.addresses[0].region.region : null,
-                region_id: userData
-                  ? userData.addresses[0].region.region_id
-                  : null,
-              },
-              region_id: userData
-                ? userData.addresses[0].region.region_id
-                : null,
-              country_id: userData ? userData.addresses[0].country_id : null,
-              street: userData ? userData.addresses[0].street : null,
-              telephone: userData ? userData.addresses[0].telephone : null,
-              postcode: userData ? userData.addresses[0].postalCode : null,
-              city: userData ? userData.addresses[0].city : null,
-              firstname: values.firstname ? values.firstname : null,
-              lastname: values.firstname ? values.lastname : null,
-              default_shipping: true,
-              default_billing: true,
-            },
-          ],
-        },
-      };
-
-      // console.log(data)
-
-      // // console.log(userData)
-
-      console.log(JSON.stringify(savedata));
-      editAddressFun(savedata);
+      dispatch(
+        updateProfileRequest({data: data, type: 'customers/me', method: 'PUT'}),
+      );
     }
   };
 
@@ -155,6 +113,16 @@ const EditProfile = ({
       setGenerate(true);
     }
   };
+  const logoutFun = async () => {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      await AsyncStorage.multiRemove(keys);
+      dispatch(loginSuccess(''));
+      dispatch(profileFlush());
+      // setTimeout(() => { alert('Logout Successfully...') }, 2000)
+      nav.navigate('Login');
+    } catch (error) {}
+  };
 
   const editAddressFun = async (editData) => {
     const token = await AsyncStorage.getItem('token');
@@ -169,8 +137,6 @@ const EditProfile = ({
     })
       .then((r) => r.json())
       .then((r) => {
-        console.log('edit====>>>>', r);
-
         // yield put(profileSuccess(response.data));
         Toast('Your Profile has been sucessfully updated');
         Navigation.goBack();
@@ -247,62 +213,6 @@ const EditProfile = ({
                   error={touched.lastname && errors.lastname}
                   errorText={touched.lastname && errors.lastname}
                 />
-                {/* <Checkbox
-                  checked={values.emailCheck}
-                  checkboxStyle={{height: 20, width: 20}}
-                  checkedImage={images.checkbox_icon}
-                  uncheckedImage={images.uncheckbox_icon}
-                  label={'Change Email'}
-                  onChange={(newValue) =>
-                    setFieldValue('emailCheck', !values.emailCheck)
-                  }
-                  containerStyle={{marginTop: heightPercentageToDP(1)}}
-                /> */}
-                {/*  <Checkbox
-                  checked={values.passwordCheck}
-                  checkboxStyle={{ height: 20, width: 20 }}
-                  checkedImage={images.checkbox_icon}
-                  uncheckedImage={images.uncheckbox_icon}
-                  label={'Change Password'}
-                  onChange={(newValue) =>
-                    setFieldValue('passwordCheck', !values.passwordCheck)
-                  }
-                  containerStyle={{ marginVertical: heightPercentageToDP(1) }}
-                />*/}
-                {/* {values.emailCheck && (
-                  <Input
-                    label="Email"
-                    value={values.email}
-                    onChangeText={handleChange('email')}
-                    onBlur={() => setFieldTouched('email')}
-                    error={touched.email && errors.email}
-                    errorText={touched.email && errors.email}
-                  />
-                )} */}
-                {/*  {values.passwordCheck && (
-                  <>
-                    <Input
-                      label="New Password"
-                      value={values.password}
-                      onChangeText={handleChange('password')}
-                      onBlur={() => setFieldTouched('password')}
-                      error={touched.password && errors.password}
-                      errorText={touched.password && errors.password}
-                      secure={true}
-                    />
-                    <Input
-                      label="Confirm New Password"
-                      value={values.cofirmpassword}
-                      onChangeText={handleChange('cofirmpassword')}
-                      onBlur={() => setFieldTouched('cofirmpassword')}
-                      error={touched.cofirmpassword && errors.cofirmpassword}
-                      secure={true}
-                      errorText={
-                        touched.cofirmpassword && errors.cofirmpassword
-                      }
-                    />
-                  </>
-                )} */}
 
                 <Text margin={[t2, 0]} size={20} bold>
                   ADDITIONAL INFORMATION
@@ -369,7 +279,7 @@ const EditProfile = ({
                   isLoading={isLoad}
                   disabled={
                     values.phoneNumberCheck || values.passwordCheck
-                      ? values.otp.length == 4
+                      ? values.otp.length === 4
                         ? false
                         : true
                       : false

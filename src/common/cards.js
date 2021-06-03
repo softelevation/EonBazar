@@ -28,7 +28,7 @@ import {
 import {config} from '../utils/config';
 import {light} from '../components/theme/colors';
 import Toast from './toast';
-const Cards = ({data, maxHeight}) => {
+const Cards = ({data, maxHeight, initialNumToRender}) => {
   const nav = useNavigation();
   const [products, setData] = useState([]);
   const quote_id = useSelector((state) => state.cart.cartId.id);

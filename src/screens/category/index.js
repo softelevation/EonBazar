@@ -93,19 +93,15 @@ const Category = (props) => {
         animated: true,
       });
     }, 1000);
-    if(val.id!=menu){
+    if (val.id != menu) {
       setmenu(val.id);
       setname(val.name);
-  setstate({data: []});
-    }
-    else{
+      setstate({data: []});
+    } else {
       // setmenu(val.id);
       // setname(val.name);
-
       // return null
     }
-   
-   
   };
 
   useEffect(() => {
@@ -153,7 +149,6 @@ const Category = (props) => {
   };
   useEffect(() => {
     const newData = [];
-    console.log(filteredData, 'filteredData');
     filteredData &&
       filteredData.map((a) => {
         const special_price = a.custom_attributes.find(
@@ -176,17 +171,33 @@ const Category = (props) => {
           id: a.id,
         });
       });
-    setstate({...state, data: data.concat(newData)});
-    setArrayLength(newData.length)
-  }, [filteredData]);
+    const result = [];
 
-  const LoadMoreRandomData = async () => {
-    if (data.length <= totalCount && !endReached) {
-      await setCurrentPage(currentPage + 1);
-      setEndReached(true);
-      LoadRandomData();
+    const updatedArray = data.concat(newData);
+    const map = new Map();
+    for (const item of updatedArray) {
+      if (!map.has(item.id)) {
+        map.set(item.id, true); // set any value to Map
+        result.push({
+          qty: 1,
+          name: item.name,
+          image: item.image,
+          currency_code: currency || 'BDT',
+          price_info: item.price,
+          specialPrice: item.special_price
+            ? Math.ceil(item.special_price.value).toFixed(2)
+            : item.price,
+          isLoad: false,
+          sku: item.sku,
+          id: item.id,
+        });
+      }
     }
-  };
+    console.log(result);
+
+    setstate({data: result});
+    setArrayLength(newData.length);
+  }, [filteredData]);
 
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
@@ -389,7 +400,7 @@ const Category = (props) => {
       <Block flex={false} padding={[0, w3, 0, w3]}>
         <Search />
       </Block>
-      {scrollHeight > 500 && (
+      {scrollHeight > 300 && (
         <BackButton
           onPress={() => scrollRef.current && scrollRef.current.scrollTo()}
           style={{
@@ -463,9 +474,10 @@ const Category = (props) => {
             data={strictValidArray(data) && data}
             renderItem={renderItem}
             ref={flatListRef}
-            // onEndReached={LoadMoreRandomData}
             onEndReachedThreshold={0.1}
             bounces={false}
+            maxToRenderPerBatch={60}
+            initialNumToRender={50}
             ListFooterComponent={renderFooter}
             maxHeight={500}
             onMomentumScrollBegin={() => {

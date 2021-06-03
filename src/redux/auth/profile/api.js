@@ -15,7 +15,7 @@ export const Api = async (data) => {
   });
 };
 
-export const updateApi = async ({data, type}) => {
+export const updateApi = async ({data, type, method}) => {
   //alert(type)
   const token = await AsyncStorage.getItem('token');
   const headers = {
@@ -23,7 +23,7 @@ export const updateApi = async ({data, type}) => {
     Authorization: 'Bearer ' + token,
   };
   return axios({
-    method: 'post',
+    method: method,
     url: `${config.Api_Url_all}/V1/${type}`,
     headers,
     data: data,

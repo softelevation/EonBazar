@@ -45,7 +45,6 @@ const ChangePassword = () => {
       data: values,
     })
       .then((res) => {
-        console.log(res);
         logoutFun();
         Toast('Password changed successfully. Please login again');
         setLoader(false);

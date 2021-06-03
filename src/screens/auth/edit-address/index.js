@@ -37,7 +37,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import {color, onChange} from 'react-native-reanimated';
 import * as Navigation from '../../../routes/NavigationService';
-import Toast from '../../../common/toast';
+import {Toast} from '../../../common/toast';
 
 global.shippingAddress = '';
 const stylesPicker = StyleSheet.create({
@@ -93,7 +93,6 @@ const EditAddress = ({
     params: {itemDetail},
   },
 }) => {
-  console.log(itemDetail, 'itemDetail');
   const dispatch = useDispatch();
   const [State, setState] = useState('');
   const [region, setregion] = useState(null);
@@ -108,7 +107,6 @@ const EditAddress = ({
   const [loader, setLoader] = useState(false);
 
   const [shippingAddress, setShippingAddress] = useState([]);
-
   useEffect(() => {
     strictValidArray(district.items) && selectDistrict(1);
 
@@ -271,8 +269,8 @@ const EditAddress = ({
       .then((r) => r.json())
       .then((r) => {
         setLoader(false);
-        console.log('edit====', r);
         dispatch(profileRequest());
+        Toast('Address Updated Successfully');
         Navigation.goBack();
       })
       .catch((error) => {

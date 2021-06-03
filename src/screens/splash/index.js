@@ -18,10 +18,6 @@ const Splash = () => {
       setTimeout(() => {
         nav.navigate('Home');
       }, 3000);
-    } else if (guest_token) {
-      setTimeout(() => {
-        nav.navigate('Home');
-      }, 3000);
     } else {
       nav.navigate('Home');
     }

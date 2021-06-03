@@ -94,6 +94,11 @@ function Routes() {
         <RootStack.Screen name="PaymentError" component={PaymentError} />
         <RootStack.Screen name="BillingAddress" component={BillingAddress} />
         <RootStack.Screen name="Dashboard" component={Dashboard} />
+        <RootStack.Screen name="EditProfile" component={EditProfile} />
+        <RootStack.Screen name="EditAddress" component={EditAddress} />
+        <RootStack.Screen name="AddAddress" component={AddAddress} />
+        <RootStack.Screen name="ShowAddress" component={ShowAddress} />
+        <RootStack.Screen name="ChangePassword" component={ChangePassword} />
       </RootStack.Navigator>
     );
   };
@@ -237,6 +242,39 @@ function Routes() {
       </RootStack.Navigator>
     );
   };
+  const WishlistStack = () => {
+    return (
+      <RootStack.Navigator
+        screenOptions={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+        initialRouteName="Wishlist"
+        headerMode="none">
+        <RootStack.Screen name="Wishlist" component={Wishlist} />
+        <RootStack.Screen name="NewCustomer" component={NewCustomer} />
+        <RootStack.Screen name="Faq" component={Faq} />
+        <RootStack.Screen name="Terms" component={Terms} />
+        <RootStack.Screen name="Privacy" component={Privacy} />
+        <RootStack.Screen name="Help" component={Help} />
+        <RootStack.Screen name="AdvanceSearch" component={AdvanceSearch} />
+        <RootStack.Screen name="Profile" component={ProfileStack} />
+        <RootStack.Screen name="YourOrder" component={YourOrder} />
+        <RootStack.Screen name="Shipping" component={Shipping} />
+        <RootStack.Screen name="PlaceAnOrder" component={PlaceAnOrder} />
+        <RootStack.Screen name="Details" component={Details} />
+        <RootStack.Screen name="SeeAllDetails" component={SeeAllDetails} />
+        <RootStack.Screen name="SubCategory" component={SubCategory} />
+        <RootStack.Screen name="SearchList" component={SearchList} />
+        <RootStack.Screen name="Payment" component={PaymentModal} />
+        <RootStack.Screen name="PaymentMethod" component={PaymentMethod} />
+        <RootStack.Screen name="DashboardLogo" component={DashboardStack} />
+        <RootStack.Screen name="PaymentSuccess" component={PaymentSuccess} />
+        <RootStack.Screen name="PaymentError" component={PaymentError} />
+        <RootStack.Screen name="BillingAddress" component={BillingAddress} />
+        <RootStack.Screen name="Dashboard" component={Dashboard} />
+      </RootStack.Navigator>
+    );
+  };
   const TabNav = () => {
     return (
       <Tab.Navigator
@@ -245,7 +283,7 @@ function Routes() {
         <Tab.Screen
           options={{unmountOnBlur: true}}
           name="Wishlist"
-          component={Wishlist}
+          component={WishlistStack}
         />
         <Tab.Screen
           // options={{unmountOnBlur: true}}

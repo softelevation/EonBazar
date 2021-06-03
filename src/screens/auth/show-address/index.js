@@ -160,7 +160,6 @@ const ShowAddress = (
     })
       .then((res) => {
         setScreenLoad(false);
-        console.log('======>>>', res.data.addresses);
         setShippingAddress(res.data.addresses);
       })
       .catch((err) => {
@@ -344,12 +343,10 @@ const ShowAddress = (
   };
 
   const deleteItem = (item) => {
-    console.log(item.id);
     if (userData.addresses.length > 0) {
       const res = userData.addresses.filter((a) => {
         return item.id !== a.id;
       });
-      console.log(res, 'res');
 
       const submitData = {
         customer: {
@@ -463,10 +460,10 @@ const ShowAddress = (
         </View>
         {screenLoad && <ActivityLoader />}
         <View style={{flex: 1, marginTop: 10}}>
-          {console.log(shippingAddress, 'shippingAddress')}
           {strictValidArrayWithLength(shippingAddress) ? (
             <FlatList
               data={shippingAddress}
+              inverted
               renderItem={({item, index}) => (
                 <View
                   style={{

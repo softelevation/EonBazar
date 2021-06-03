@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useRef, useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -22,11 +23,14 @@ import {
   strictValidArrayWithLength,
   strictValidNumber,
   strictValidObjectWithKeys,
+  strictValidString,
 } from '../../../utils/commonUtils';
 import {config} from '../../../utils/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Navigation from '../../../routes/NavigationService';
+import {Toast} from '../../../common/toast';
+import SearchableDropdown from 'react-native-searchable-dropdown';
 
 global.shippingAddress = '';
 const stylesPicker = StyleSheet.create({
@@ -171,7 +175,6 @@ const AddAddress = (
   };
 
   const submitValues = (values) => {
-    console.log(values, 'values', userData);
     if (userData.addresses.length > 0) {
       const savedata = {
         customer_id: userData.id,
@@ -249,7 +252,6 @@ const AddAddress = (
           ],
         },
       };
-      console.log(submitData, 'submitData');
       addNewAddress(submitData);
     }
   };
@@ -269,9 +271,9 @@ const AddAddress = (
       .then((r) => r.json())
       .then((r) => {
         setLoader(false);
-        console.log('add address====>>>', r);
         dispatch(profileRequest());
         Navigation.goBack();
+        Toast('Address Added Successfully');
       })
       .catch((error) => {
         setLoader(false);
@@ -283,10 +285,13 @@ const AddAddress = (
   const selectDistrict = (value) => {
     dispatch(searchAreaRequest(value));
     formikRef.current?.setFieldValue('district', value);
+
     const getStates =
       strictValidArray(district.items) &&
       district.items.filter((v) => v.id === value);
-    getStates.map((c) => setState(c.name));
+    getStates.map((c) => {
+      setState(c.name);
+    });
   };
   const selectCity = (val) => {
     const getStates =
@@ -309,7 +314,7 @@ const AddAddress = (
           city: '',
           postalCode: '',
           country: 'Bangladesh',
-          district: '',
+          district: State || '',
           region: '',
         }}
         onSubmit={submitValues}
@@ -344,7 +349,9 @@ const AddAddress = (
           console.log(values);
           return (
             <View style={{flex: 1}}>
-              <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+              <KeyboardAwareScrollView
+                keyboardShouldPersistTaps="always"
+                showsVerticalScrollIndicator={false}>
                 <Block white padding={[t2]} margin={[t1, w3]}>
                   <Text margin={[t2, 0]} bold transform="uppercase">
                     Add Address
@@ -353,60 +360,78 @@ const AddAddress = (
                   <Text margin={[t1, 0, 0]} body color="#636363">
                     {'Select District'}
                   </Text>
-
-                  <RNPickerSelect
-                    placeholder={
-                      {
-                        // label: '',
-                      }
-                    }
-                    useNativeAndroidPickerStyle={false}
-                    value={values.district}
-                    mode="dropdown"
-                    style={stylesPicker}
-                    onValueChange={(value) => {
-                      setFieldValue('district', value);
-                      selectDistrict(value);
+                  <SearchableDropdown
+                    onItemSelect={(item) => {
+                      setFieldValue('district', item.name);
+                      selectDistrict(item.id);
+                    }}
+                    containerStyle={{marginTop: heightPercentageToDP(1)}}
+                    itemStyle={itemstyle}
+                    itemTextStyle={{color: '#222'}}
+                    itemsContainerStyle={{
+                      maxHeight: heightPercentageToDP(20),
                     }}
                     items={
-                      strictValidArray(district.items)
-                        ? district.items.map((v) => ({
-                            label: v.name,
-                            value: v.id,
-                          }))
-                        : []
+                      strictValidArray(district.items) &&
+                      district.items.map((a) => ({
+                        name: a.name,
+                        id: a.id,
+                      }))
                     }
+                    defaultIndex={1}
+                    resetValue={false}
+                    textInputProps={{
+                      placeholder: 'Select District',
+                      underlineColorAndroid: 'transparent',
+                      style: textStyle,
+                      onTextChange: (text) => setFieldValue('district', text),
+                      value: values.district,
+                    }}
+                    listProps={{
+                      nestedScrollEnabled: true,
+                    }}
                   />
 
-                  {strictValidNumber(values.district) ? (
+                  {strictValidString(values.district) &&
+                  strictValidArrayWithLength(city.items) ? (
                     <Text margin={[t1, 0, 0]} body color="#636363">
                       {'Select Delievery Area'}
                     </Text>
                   ) : null}
-                  {strictValidNumber(values.district) &&
+                  {strictValidString(values.district) &&
                   strictValidArrayWithLength(city.items) ? (
-                    <>
-                      <RNPickerSelect
-                        placeholder={{
-                          label: 'Select City',
-                        }}
-                        useNativeAndroidPickerStyle={false}
-                        style={stylesPicker}
-                        value={values.region}
-                        onValueChange={(value) => {
-                          setFieldValue('region', value);
-                          selectCity(value);
-                        }}
-                        items={
-                          strictValidArray(city.items) &&
-                          city.items.map((a) => ({
-                            label: `${a.name} - ${State}`,
-                            value: `${a.name}`,
-                          }))
-                        }
-                      />
-                    </>
-                  ) : strictValidNumber(values.district) ? (
+                    <SearchableDropdown
+                      onItemSelect={(item) => {
+                        setFieldValue('region', item.id);
+                        selectCity(item.id);
+                      }}
+                      containerStyle={{marginTop: heightPercentageToDP(1)}}
+                      itemStyle={itemstyle}
+                      itemTextStyle={{color: '#222'}}
+                      itemsContainerStyle={{
+                        maxHeight: heightPercentageToDP(20),
+                      }}
+                      items={
+                        strictValidArray(city.items) &&
+                        city.items.map((a) => ({
+                          name: `${a.name} - ${State}`,
+                          id: `${a.name}`,
+                        }))
+                      }
+                      defaultIndex={1}
+                      resetValue={false}
+                      textInputProps={{
+                        placeholder: 'Select City',
+                        underlineColorAndroid: 'transparent',
+                        style: textStyle,
+                        onTextChange: (text) => setFieldValue('region', text),
+                        value: values.region,
+                      }}
+                      listProps={{
+                        nestedScrollEnabled: true,
+                      }}
+                    />
+                  ) : strictValidString(values.district) ? (
                     <Text
                       margin={[heightPercentageToDP(1), 0]}
                       size={12}
@@ -495,7 +520,20 @@ const buttonStyle = {
   width: widthPercentageToDP(50),
   alignSelf: 'center',
 };
-const checkboxStyle = {height: 20, width: 20};
-const labelStyle = {marginLeft: w3, fontSize: 12};
+const textStyle = {
+  padding: 12,
+  borderWidth: 1,
+  borderColor: '#ccc',
+  borderRadius: 5,
+  color: '#999999',
+};
+const itemstyle = {
+  padding: 10,
+  marginTop: 5,
+  backgroundColor: '#fff',
+  borderColor: '#bbb',
+  borderWidth: 1,
+  borderRadius: 5,
+};
 
 export default AddAddress;

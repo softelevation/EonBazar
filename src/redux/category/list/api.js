@@ -13,7 +13,7 @@ export const Api = async (data) => {
   };
   return axios({
     method: 'get',
-    url: `${config.Api_Url}/V1/products?storeId=${storeId}&currencyCode=${country}&searchCriteria[currentPage]=${currentPage}&searchCriteria[pageSize]=${pageSize}&searchCriteria[filter_groups][1][filters][0][field]=status&searchCriteria[filter_groups][1][filters][0][value]=1&searchCriteria[filter_groups][1][filters][0][condition_type]=eq&searchCriteria[filter_groups][1][filters][0][field]=status&searchCriteria[filter_groups][1][filters][0][value]=1`,
+    url: `${config.Api_Url}/V1/products?storeId=${storeId}&currencyCode=${country}&searchCriteria[filter_groups][1][filters][0][field]=status&searchCriteria[filter_groups][1][filters][0][value]=1&searchCriteria[filter_groups][1][filters][0][condition_type]=eq&searchCriteria[filter_groups][1][filters][0][field]=status&searchCriteria[filter_groups][1][filters][0][value]=1`,
     headers,
   });
 };

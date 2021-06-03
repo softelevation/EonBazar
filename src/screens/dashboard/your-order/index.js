@@ -116,7 +116,6 @@ const YourOrder = () => {
   };
 
   const _renderItem = ({item}) => {
-    console.log(item, 'item');
     const {extension_attributes, billing_address} = item;
     const {
       shipping_assignments,
@@ -175,7 +174,7 @@ const YourOrder = () => {
               )}
               {renderTopWithBorder(
                 'Shipping & Handling',
-                `${item.store_currency_code} ${item.shipping_tax_amount}`,
+                `${item.store_currency_code} ${item.shipping_amount}`,
               )}
               {renderTopWithBorder(
                 'Grand Total',

@@ -31,7 +31,6 @@ const Help = () => {
     };
     dispatch(contactUsRequest(data));
   };
-  console.log(formikRef.current);
   useEffect(() => {
     if (isSucess) {
       formikRef.current?.resetForm({

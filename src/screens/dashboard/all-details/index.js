@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -12,10 +12,10 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import Header from '../../../common/header';
-import { Block, CustomButton, ImageComponent, Text } from '../../../components';
+import {Block, CustomButton, ImageComponent, Text} from '../../../components';
 import {
   addToCartRequest,
   addToGuestCartRequest,
@@ -23,12 +23,12 @@ import {
   updateWishlistRequest,
 } from '../../../redux/action';
 import ActivityLoader from '../../../components/activityLoader';
-import { light } from '../../../components/theme/colors';
+import {light} from '../../../components/theme/colors';
 import {
   strictValidArray,
   strictValidObjectWithKeys,
 } from '../../../utils/commonUtils';
-import { config } from '../../../utils/config';
+import {config} from '../../../utils/config';
 import OverlayLoader from '../../../components/overlayLoader';
 import Toast from '../../../common/toast';
 
@@ -52,7 +52,7 @@ const SeeAllDetails = () => {
   const overlayGuestLoader = useSelector((v) => v.cart.guestsave.loading);
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
   const guestCartError = useSelector((v) => v.cart.guestsave.error);
-  const { data } = state;
+  const {data} = state;
 
   const LoadRandomData = async () => {
     if (!isLoad) {
@@ -90,7 +90,7 @@ const SeeAllDetails = () => {
           sku: a.sku,
         });
       });
-    setstate({ ...state, data: data.concat(newData) });
+    setstate({...state, data: data.concat(newData)});
   }, [productsData]);
   const LoadMoreRandomData = async () => {
     if (data.length <= 59) {
@@ -107,10 +107,10 @@ const SeeAllDetails = () => {
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = data[index];
-      const updated = { ...old, isLoad: true };
+      const updated = {...old, isLoad: true};
       const clone = [...data];
       clone[index] = updated;
-      setstate({ data: clone });
+      setstate({data: clone});
 
       // setTimeout(() => {
       //   const old = data[index];
@@ -128,10 +128,10 @@ const SeeAllDetails = () => {
       dispatch(addToCartRequest(newData));
     } else {
       const old = data[index];
-      const updated = { ...old, isLoad: true };
+      const updated = {...old, isLoad: true};
       const clone = [...data];
       clone[index] = updated;
-      setstate({ data: clone });
+      setstate({data: clone});
 
       // setTimeout(() => {
       //   const old = data[index];
@@ -141,22 +141,19 @@ const SeeAllDetails = () => {
       //   setstate({data: clone});
       // }, 5000);
 
-
       const newData = {
         sku: val.sku,
         qty: val.qty,
         quote_id: guestCartToken,
       };
-      dispatch(addToGuestCartRequest({ token: guestCartToken, items: newData }));
+      dispatch(addToGuestCartRequest({token: guestCartToken, items: newData}));
     }
   };
-
-
 
   const addToWishlist = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = data[index];
-      const updated = { ...old, isWishlist: true };
+      const updated = {...old, isWishlist: true};
       const clone = [...data];
       clone[index] = updated;
 
@@ -165,17 +162,17 @@ const SeeAllDetails = () => {
       // await dispatch(updateWishlistRequest(id));
     } else {
       nav.reset({
-        routes: [{ name: 'Login' }],
+        routes: [{name: 'Login'}],
       });
     }
   };
 
   const updateQty = (qty, index) => {
     const old = data[index];
-    const updated = { ...old, qty: qty };
+    const updated = {...old, qty: qty};
     const clone = [...data];
     clone[index] = updated;
-    setstate({ data: clone });
+    setstate({data: clone});
   };
 
   const renderFooter = () => {
@@ -194,10 +191,10 @@ const SeeAllDetails = () => {
     }
   };
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({item, index}) => {
     return (
       <Block
-        style={{ width: wp(45), minHeight: hp(35) }}
+        style={{width: wp(45)}}
         padding={[hp(2)]}
         margin={[hp(0.5), wp(1.8)]}
         primary
@@ -236,7 +233,7 @@ const SeeAllDetails = () => {
           space={'between'}
           flex={false}>
           <Block
-            style={{ width: wp(18) }}
+            style={{width: wp(18)}}
             center
             row
             space={'between'}

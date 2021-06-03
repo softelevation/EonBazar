@@ -108,8 +108,6 @@ const PaymentMethod = ({
       })
         .then((r) => r.json())
         .then((r) => {
-          console.log('====', r);
-
           if (r === true) {
             setLoad(false);
             Toast('Coupon apply successfully');

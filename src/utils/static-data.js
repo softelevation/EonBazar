@@ -1,4 +1,4 @@
-import { images } from '../assets';
+import {images} from '../assets';
 
 export const sliderData = [
   images.banner_icon,
@@ -37,7 +37,7 @@ export const DrawerData = [
   {
     name: 'Your Profile',
     icon: 'your_profile_icon',
-    nav: 'Profile',
+    nav: 'Login',
   },
   {
     name: 'Your Orders',

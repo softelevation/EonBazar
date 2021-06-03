@@ -34,11 +34,11 @@ const PaymentSuccess = () => {
           <Button
             onPress={() =>
               navigation.reset({
-                routes: [{name: 'DashboardLogo'}],
+                routes: [{name: 'YourOrder'}],
               })
             }
             color="secondary">
-            CONTINUE SHOPPING
+            View Orders
           </Button>
         </Block>
         <Footer images={false} />

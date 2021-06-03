@@ -79,26 +79,13 @@ const SubCategory = (props) => {
   const [menu, setmenu] = useState(saveFiltered.id);
   const [name, setname] = useState(saveFiltered.name);
 
-  const cart_list = useSelector((state) => state.cart.list.data);
+  const cart_list = useSelector((v) => v.cart.list.data);
   const [cartlist, setList] = useState([]);
-  const userData = useSelector((state) => state.user.profile.user);
+  const userData = useSelector((v) => v.user.profile.user);
   const [pageSize, setPageSize] = useState(10);
   const [qtySum, setSum] = useState([]);
 
   const sortingMenu = (val) => {
-    //   scrollRef.scrollToEnd()
-    // scrollRef.scrollView.getScrollResponder().scrollResponderScrollTo({
-    //   x: 0,
-    //   y: scrollHeight,
-    //   animated: true
-    // });
-    // scrollRef.current.scrollToEnd();
-    // setstate({data: []});
-
-    // //scrollRef.current && scrollRef.current.scrollIntoView({ behavior: 'smooth' })
-    // setstate({data: []});
-    // setmenu(val.id);
-    // setname(val.name);
     setTimeout(() => {
       scrollRef.current.scrollToEnd({
         animated: true,
@@ -109,9 +96,6 @@ const SubCategory = (props) => {
       setname(val.name);
       setstate({data: []});
     } else {
-      // setmenu(val.id);
-      // setname(val.name);
-      // return null
     }
   };
 
@@ -147,6 +131,7 @@ const SubCategory = (props) => {
       }
     }
   };
+
   useEffect(() => {
     const newData = [];
     filteredData &&
@@ -168,18 +153,35 @@ const SubCategory = (props) => {
             : a.price,
           isLoad: false,
           sku: a.sku,
+          id: a.id,
         });
       });
-    setstate({...state, data: data.concat(newData)});
-  }, [filteredData]);
+    const result = [];
 
-  const LoadMoreRandomData = async () => {
-    if (data.length <= totalCount && !endReached) {
-      await setCurrentPage(currentPage + 1);
-      setEndReached(true);
-      LoadRandomData();
+    const updatedArray = data.concat(newData);
+    const map = new Map();
+    for (const item of updatedArray) {
+      if (!map.has(item.id)) {
+        map.set(item.id, true); // set any value to Map
+        result.push({
+          qty: 1,
+          name: item.name,
+          image: item.image,
+          currency_code: currency || 'BDT',
+          price_info: item.price,
+          specialPrice: item.special_price
+            ? Math.ceil(item.special_price.value).toFixed(2)
+            : item.price,
+          isLoad: false,
+          sku: item.sku,
+          id: item.id,
+        });
+      }
     }
-  };
+    console.log(result);
+
+    setstate({data: result});
+  }, [filteredData]);
 
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
@@ -218,10 +220,6 @@ const SubCategory = (props) => {
       const updated = {...old, isWishlist: true};
       const clone = [...data];
       clone[index] = updated;
-
-      // setstate({ data: clone });
-      // const id = val.id;
-      // await dispatch(updateWishlistRequest(id));
     } else {
       nav.reset({
         routes: [{name: 'Login'}],
@@ -236,22 +234,6 @@ const SubCategory = (props) => {
     clone[index] = updated;
     setstate({data: clone});
     setShowPrice(true);
-  };
-
-  const renderFooter = () => {
-    if (data.length >= 60) {
-      return null;
-    }
-    //it will show indicator at the bottom of the list when data is loading otherwise it returns null
-    if (!loading) {
-      return null;
-    } else {
-      return (
-        <Block alignSelf="center">
-          <ActivityIndicator size="large" color={light.secondary} />
-        </Block>
-      );
-    }
   };
 
   const navigateToShipping = () => {
@@ -284,8 +266,9 @@ const SubCategory = (props) => {
           image: a.extension_attributes.image_url,
         });
       });
-
-    setList(newData);
+    const unique = [...new Set(newData.map((item) => item.item_id))];
+    console.log(unique, 'unique');
+    setList(unique);
 
     var numbers = newData;
     var sum = 0;
@@ -329,15 +312,6 @@ const SubCategory = (props) => {
           <Text size={12} body margin={[hp(1), 0, 0, 0]} semibold>
             {item.currency_code} {item.price_info}
           </Text>
-          {/* {item.price_info !== item.specialPrice && (
-            <LineAboveText
-              body
-              size={12}
-              color="grey"
-              margin={[hp(0.2), 0, 0, 0]}>
-              {item.currency_code} {item.price_info}
-            </LineAboveText>
-          )} */}
         </CustomButton>
         <Block
           margin={[hp(1), 0, 0, 0]}
@@ -465,11 +439,12 @@ const SubCategory = (props) => {
             <FlatList
               contentContainerStyle={flatlistContentStyle}
               data={strictValidArray(data) && data}
+              keyExtractor={(item) => item.id}
               renderItem={renderItem}
-              onEndReached={LoadMoreRandomData}
-              onEndReachedThreshold={0.1}
+              // onEndReached={LoadMoreRandomData}
+              // onEndReachedThreshold={0.1}
               bounces={false}
-              ListFooterComponent={renderFooter}
+              // ListFooterComponent={renderFooter}
               maxHeight={500}
               onMomentumScrollBegin={() => {
                 setEndReached(false);
@@ -477,13 +452,7 @@ const SubCategory = (props) => {
             />
           </View>
         )}
-
-        {/* <Footer images={false} /> */}
       </ScrollView>
-
-      {/* <TouchableOpacity style={{flex:1,borderRadius: 20, height: 80,marginTop:10, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.8, shadowRadius: 2, elevation: 5,flex:1,bottom:0,position:'absolute'}}>
-
-                </TouchableOpacity> */}
       {cartlist.length > 0 && showPrice ? (
         <Block
           borderWidth={[0.5, 0, 0, 0]}

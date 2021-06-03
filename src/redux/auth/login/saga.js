@@ -29,7 +29,6 @@ const clearAuthToken = async () => {
 export function* loginRequest(action) {
   try {
     const response = yield call(Api, action.payload);
-    console.log(response, 'response');
     if (response) {
       yield call(clearAuthToken);
       yield call(SaveToken, response.data);
@@ -48,7 +47,6 @@ export function* loginRequest(action) {
     }
   } catch (err) {
     if (err.response) {
-      console.log(err.response);
       Toast(err.response.data.message);
       yield put(loginError(''));
     }

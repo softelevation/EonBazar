@@ -24,20 +24,18 @@ const Profile = () => {
   const nav = useNavigation();
   const userData = useSelector((state) => state.user.profile.user);
   const isLoad = useSelector((state) => state.user.profile.loading);
-  const [editable, setEditable] = useState(false);
   const [user, setUser] = useState({});
 
-  useEffect(() => {
-    console.log('u========>>>', userData);
-    if (!strictValidObjectWithKeys(userData)) {
-      nav.dispatch(
-        CommonActions.reset({
-          index: 1,
-          routes: [{name: 'Login'}],
-        }),
-      );
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!strictValidObjectWithKeys(userData)) {
+  //     nav.dispatch(
+  //       CommonActions.reset({
+  //         index: 1,
+  //         routes: [{name: 'Login'}],
+  //       }),
+  //     );
+  //   }
+  // }, []);
 
   useEffect(() => {
     setUser(userData);
@@ -50,9 +48,6 @@ const Profile = () => {
 
   const getUserDetail = async () => {
     const token = await AsyncStorage.getItem('token');
-
-    console.log('=======>>>>>', token);
-
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
@@ -62,7 +57,6 @@ const Profile = () => {
       url: `${config.Api_Url}/V1/customers/me`,
       headers,
     }).then((res) => {
-      // console.log("======>>>", res.data)
       setUser(res.data);
     });
   };
@@ -113,7 +107,7 @@ const Profile = () => {
                   <Input
                     label="Name"
                     value={values.name}
-                    editable={editable}
+                    editable={false}
                     onChangeText={handleChange('name')}
                     onBlur={() => setFieldTouched('name')}
                     error={touched.name && errors.name}
@@ -131,7 +125,7 @@ const Profile = () => {
                   <Input
                     label="Phone Number"
                     value={values.mobile}
-                    editable={editable}
+                    editable={false}
                     onChangeText={handleChange('mobile')}
                     onBlur={() => setFieldTouched('mobile')}
                     error={touched.mobile && errors.mobile}
@@ -168,7 +162,9 @@ const Profile = () => {
                   </Button>
                   <FlatList
                     data={user.addresses}
+                    inverted
                     renderItem={({item}) => {
+                      console.log(item);
                       return (
                         <Block
                           margin={[hp(1), 0, hp(0.5)]}
@@ -181,11 +177,9 @@ const Profile = () => {
                             size={14}
                             style={{width: wp(70)}}
                             numberOfLines={1}>
-                            {item.street[0]}, {item.city}, {item.postcode}
+                            {item.firstname} {item.lastname}, {item.city}{' '}
+                            {item.postcode}
                           </Text>
-                          {/* <Text secondary size={14} onPress={() => nav.navigate('EditAddress', { itemDetail: item })}>
-                            Edit
-                          </Text> */}
                         </Block>
                       );
                     }}

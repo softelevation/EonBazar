@@ -22,7 +22,6 @@ const Payment = () => {
 
   const handleNavigation = (v) => {
     setloader(v.loading);
-    console.log(v, 'v');
     if (v.url === 'http://stage.eonbazar.com/order/payment/success') {
       // Alert.alert('Payment Success');
       Toast('Payment Success');

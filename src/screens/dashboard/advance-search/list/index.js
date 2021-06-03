@@ -1,19 +1,13 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, FlatList, TouchableOpacity} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components/native';
+import {useDispatch, useSelector} from 'react-redux';
 import Header from '../../../../common/header';
 import {
   Block,
@@ -24,25 +18,22 @@ import {
 import {
   addToCartRequest,
   addToGuestCartRequest,
-  getAllProductsRequest,
 } from '../../../../redux/action';
 import ActivityLoader from '../../../../components/activityLoader';
-import { light } from '../../../../components/theme/colors';
 import {
   strictValidArray,
   strictValidObjectWithKeys,
 } from '../../../../utils/commonUtils';
-import { config } from '../../../../utils/config';
-import { t2 } from '../../../../components/theme/fontsize';
+import {config} from '../../../../utils/config';
+import {t2} from '../../../../components/theme/fontsize';
 
 const initialState = {
   data: [],
 };
-const SearchList = ({ route }) => {
-
+const SearchList = ({route}) => {
   const dispatch = useDispatch();
   const nav = useNavigation();
-  const [sku, setSku] = useState(route.params);
+
   const [loader, setloader] = useState(false);
   const [state, setstate] = useState(initialState);
   const productsData = useSelector((v) => v.advanceSearch.list.data.items);
@@ -54,10 +45,10 @@ const SearchList = ({ route }) => {
   );
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
   const guestCartError = useSelector((v) => v.cart.guestsave.error);
-  const { data } = state;
+  const {data} = state;
 
   useEffect(() => {
-//alert(JSON.stringify(route.params))
+    //alert(JSON.stringify(route.params))
     const newData = [];
     productsData &&
       productsData.map((a) => {
@@ -78,9 +69,31 @@ const SearchList = ({ route }) => {
             : a.price,
           isLoad: false,
           sku: a.sku,
+          id: a.id,
         });
       });
-    setstate({ ...state, data: data.concat(newData) });
+    const result = [];
+
+    const updatedArray = data.concat(newData);
+    const map = new Map();
+    for (const item of updatedArray) {
+      if (!map.has(item.id)) {
+        map.set(item.id, true); // set any value to Map
+        result.push({
+          qty: 1,
+          name: item.name,
+          image: item.image,
+          currency_code: currency || 'BDT',
+          price_info: item.price_info,
+          specialPrice: item.specialPrice,
+          isLoad: item.isLoad,
+          sku: item.sku,
+          id: item.id,
+        });
+      }
+    }
+
+    setstate({data: result});
   }, [productsData, guestCartError]);
   // const LoadMoreRandomData = async () => {
   //   if (data.length <= 59) {
@@ -97,10 +110,10 @@ const SearchList = ({ route }) => {
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
       const old = data[index];
-      const updated = { ...old, isLoad: true };
+      const updated = {...old, isLoad: true};
       const clone = [...data];
       clone[index] = updated;
-      setstate({ data: clone });
+      setstate({data: clone});
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -109,33 +122,33 @@ const SearchList = ({ route }) => {
       await dispatch(addToCartRequest(newData));
     } else {
       const old = data[index];
-      const updated = { ...old, isLoad: true };
+      const updated = {...old, isLoad: true};
       const clone = [...data];
       clone[index] = updated;
-      setstate({ data: clone });
+      setstate({data: clone});
       const newData = {
         sku: val.sku,
         qty: val.qty,
         quote_id: guestCartToken,
       };
       await dispatch(
-        addToGuestCartRequest({ token: guestCartToken, items: newData }),
+        addToGuestCartRequest({token: guestCartToken, items: newData}),
       );
     }
   };
 
   const updateQty = (qty, index) => {
     const old = data[index];
-    const updated = { ...old, qty: qty };
+    const updated = {...old, qty: qty};
     const clone = [...data];
     clone[index] = updated;
-    setstate({ data: clone });
+    setstate({data: clone});
   };
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({item, index}) => {
     return (
       <Block
-        style={{ width: wp(45), minHeight: hp(35) }}
+        style={{width: wp(45), minHeight: hp(35)}}
         padding={[hp(2)]}
         margin={[hp(0.5), wp(1.8)]}
         primary
@@ -157,17 +170,8 @@ const SearchList = ({ route }) => {
             {item.name}
           </Text>
           <Text size={12} body margin={[hp(1), 0, 0, 0]} semibold>
-            {item.currency_code} {item.specialPrice}
+            {item.currency_code} {item.price_info}
           </Text>
-          {item.price_info !== item.specialPrice && (
-            <LineAboveText
-              body
-              size={12}
-              color="grey"
-              margin={[hp(0.2), 0, 0, 0]}>
-              {item.currency_code} {item.price_info}
-            </LineAboveText>
-          )}
         </CustomButton>
         <Block
           margin={[hp(1), 0, 0, 0]}
@@ -176,7 +180,7 @@ const SearchList = ({ route }) => {
           space={'between'}
           flex={false}>
           <Block
-            style={{ width: wp(18) }}
+            style={{width: wp(18)}}
             center
             row
             space={'between'}
@@ -223,13 +227,19 @@ const SearchList = ({ route }) => {
       <Block padding={[t2]} flex={false} color="#fdf0d5">
         <Text color="#6f4400" size={14}>
           Don't see what you're looking for?{' '}
-          <Text onPress={() => nav.navigate('AdvanceSearch', {
-            data: route.params.data,
-            // fromPrice: AdnaceSerachdata.fromPrice,
-            // toPrice: AdnaceSerachdata.toPrice,
-         //   sku: route.params.data.sku,
-         //   description: AdnaceSerachdata.description
-          })} semibold color="#1979c3" size={14}>
+          <Text
+            onPress={() =>
+              nav.navigate('AdvanceSearch', {
+                data: route.params.data,
+                // fromPrice: AdnaceSerachdata.fromPrice,
+                // toPrice: AdnaceSerachdata.toPrice,
+                //   sku: route.params.data.sku,
+                //   description: AdnaceSerachdata.description
+              })
+            }
+            semibold
+            color="#1979c3"
+            size={14}>
             Modify your search.
           </Text>
         </Text>
@@ -243,10 +253,6 @@ const SearchList = ({ route }) => {
     </Block>
   );
 };
-const LineAboveText = styled(Text)({
-  textDecorationLine: 'line-through',
-  textDecorationStyle: 'solid',
-});
 const flatlistContentStyle = {
   flexWrap: 'wrap',
   flexDirection: 'row',

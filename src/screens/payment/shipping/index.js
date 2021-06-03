@@ -13,7 +13,11 @@ import Checkbox from '../../../components/checkbox';
 import {t1, t2, t4, w3, w5} from '../../../components/theme/fontsize';
 import RNPickerSelect from 'react-native-picker-select';
 import {useDispatch, useSelector} from 'react-redux';
-import {generateOtpRequest, updateProfileRequest} from '../../../redux/action';
+import {
+  generateOtpRequest,
+  profileRequest,
+  updateProfileRequest,
+} from '../../../redux/action';
 
 import * as yup from 'yup';
 import {Formik} from 'formik';
@@ -35,7 +39,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {color, onChange} from 'react-native-reanimated';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Toast} from '../../../common/toast';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import SearchableDropdown from 'react-native-searchable-dropdown';
 
 global.shippingAddress = '';
 const stylesPicker = StyleSheet.create({
@@ -143,7 +147,6 @@ const Shipping = ({
       url: `${config.Api_Url}/V1/customers/me`,
       headers,
     }).then((res) => {
-      console.log('======>>>', res.data.addresses);
       setShippingAddress(res.data.addresses);
     });
   };
@@ -223,7 +226,28 @@ const Shipping = ({
     };
     //updateAddress (data);
     // const savedata = {
+
     const savedata = {
+      customer_id: userData.id,
+      region: {
+        region_code: region,
+        region: State ? State : 'Dhaka',
+        region_id: region,
+      },
+      region_id: region,
+      country_id: 'BD',
+      street: [values.streetAddress, values.streetAddress2],
+      telephone: values.mobile,
+      postcode: values.postalCode,
+      city: values.city,
+      firstname: values.firstname,
+      lastname: values.lastname,
+      default_shipping: true,
+      default_billing: true,
+    };
+    var userAddress = userData.addresses;
+    var joined = userAddress.concat(savedata);
+    const submitData = {
       customer: {
         group_id: 1,
         default_billing: '2',
@@ -236,32 +260,32 @@ const Shipping = ({
         lastname: values.lastname,
         store_id: 1,
         website_id: 1,
-        addresses: [
-          {
-            customer_id: userData.id,
-            region: {
-              region_code: region,
-              // "region": `${values.region} - ${State}`,
-              region: State ? State : 'Dhaka',
-              region_id: region,
-            },
-            region_id: region,
-            country_id: 'BD',
-            street: [values.streetAddress, values.streetAddress2],
-            telephone: values.mobile,
-            postcode: values.postalCode,
-            city: values.city,
-            firstname: values.firstname,
-            lastname: values.lastname,
-            default_shipping: true,
-            default_billing: true,
-          },
-        ],
+        addresses: joined,
       },
     };
-
-    dispatch(updateProfileRequest(savedata));
+    addNewAddress(submitData);
     dispatch(addShippingRequest(data));
+  };
+
+  const addNewAddress = async (editData) => {
+    const token = await AsyncStorage.getItem('token');
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    };
+    return fetch(`${config.Api_Url}/V1/customers/me/ `, {
+      method: 'PUT',
+      headers: headers,
+      body: JSON.stringify(editData),
+    })
+      .then((r) => r.json())
+      .then((r) => {
+        dispatch(profileRequest());
+      })
+      .catch((error) => {
+        console.error(error);
+        return [];
+      });
   };
 
   const updateAddress = async (data) => {
@@ -301,13 +325,29 @@ const Shipping = ({
     dispatch(updateProfileRequest(savedata));
   };
 
+  // const selectDistrict = (value) => {
+  //   dispatch(searchAreaRequest(value));
+  //   formikRef.current?.setFieldValue('district', value);
+  //   const getStates =
+  //     strictValidArray(district.items) &&
+  //     district.items.filter((v) => v.id === value);
+  //   getStates.map((c) => setState(c.name));
+  // };
+  // const selectCity = (val) => {
+  //   const getStates =
+  //     strictValidArray(city.items) && city.items.filter((v) => v.name === val);
+  //   getStates.map((c) => setregion(c.id));
+  // };
   const selectDistrict = (value) => {
     dispatch(searchAreaRequest(value));
     formikRef.current?.setFieldValue('district', value);
+
     const getStates =
       strictValidArray(district.items) &&
       district.items.filter((v) => v.id === value);
-    getStates.map((c) => setState(c.name));
+    getStates.map((c) => {
+      setState(c.name);
+    });
   };
   const selectCity = (val) => {
     const getStates =
@@ -373,27 +413,6 @@ const Shipping = ({
     }
   };
 
-  const deleteAddress = async (item) => {
-    const token = await AsyncStorage.getItem('token');
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
-    };
-    return fetch(`${config.Api_Url}/V1/addresses/${item.customer_id}`, {
-      method: 'DELETE',
-      headers: headers,
-      body: JSON.stringify(editData),
-    })
-      .then((r) => r.json())
-      .then((r) => {
-        console.log('edit====', r);
-      })
-      .catch((error) => {
-        console.error(error);
-        return [];
-      });
-  };
-
   return (
     <Block>
       <Header leftIcon={false} />
@@ -410,7 +429,7 @@ const Shipping = ({
           city: '',
           postalCode: '',
           country: 'Bangladesh',
-          district: '',
+          district: State || '',
           region: '',
           shipping: '',
           carrier_code: '',
@@ -446,7 +465,6 @@ const Shipping = ({
           isValid,
           dirty,
         }) => {
-          console.log(values);
           return (
             <View style={{flex: 1}}>
               <View
@@ -509,7 +527,9 @@ const Shipping = ({
               </View>
 
               {selectTab === 'Shipping' ? (
-                <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+                <KeyboardAwareScrollView
+                  keyboardShouldPersistTaps="always"
+                  showsVerticalScrollIndicator={false}>
                   <Block margin={[t2, w5]}>
                     <Text size={24} height={40} bold>
                       Estimated Total
@@ -527,61 +547,82 @@ const Shipping = ({
                     <Text margin={[t1, 0, 0]} body color="#636363">
                       {'Select District'}
                     </Text>
-
-                    <RNPickerSelect
-                      placeholder={
-                        {
-                          // label: '',
-                        }
-                      }
-                      useNativeAndroidPickerStyle={false}
-                      value={values.district}
-                      mode="dropdown"
-                      style={stylesPicker}
-                      onValueChange={(value) => {
-                        setFieldValue('district', value);
-                        selectDistrict(value);
+                    <SearchableDropdown
+                      onItemSelect={(item) => {
+                        setFieldValue('district', item.name);
+                        selectDistrict(item.id);
+                      }}
+                      containerStyle={{marginTop: heightPercentageToDP(1)}}
+                      itemStyle={itemstyle}
+                      itemTextStyle={{color: '#222'}}
+                      itemsContainerStyle={{
+                        maxHeight: heightPercentageToDP(20),
                       }}
                       items={
-                        strictValidArray(district.items)
-                          ? district.items.map((v) => ({
-                              label: v.name,
-                              value: v.id,
-                            }))
-                          : []
+                        strictValidArray(district.items) &&
+                        district.items.map((a) => ({
+                          name: a.name,
+                          id: a.id,
+                        }))
                       }
+                      defaultIndex={1}
+                      resetValue={false}
+                      textInputProps={{
+                        placeholder: 'Select District',
+                        underlineColorAndroid: 'transparent',
+                        style: textStyle,
+                        onTextChange: (text) => setFieldValue('district', text),
+                        value: values.district,
+                      }}
+                      listProps={{
+                        nestedScrollEnabled: true,
+                      }}
                     />
 
-                    {strictValidNumber(values.district) ? (
+                    {strictValidString(values.district) &&
+                    strictValidArrayWithLength(city.items) ? (
                       <Text margin={[t1, 0, 0]} body color="#636363">
                         {'Select Delievery Area'}
                       </Text>
                     ) : null}
-                    {strictValidNumber(values.district) &&
+                    {strictValidString(values.district) &&
                     strictValidArrayWithLength(city.items) ? (
-                      <>
-                        <RNPickerSelect
-                          placeholder={{
-                            label: 'Select City',
-                          }}
-                          useNativeAndroidPickerStyle={false}
-                          style={stylesPicker}
-                          value={values.region}
-                          onValueChange={(value) => {
-                            setFieldValue('region', value);
-                            selectCity(value);
-                          }}
-                          items={
-                            strictValidArray(city.items) &&
-                            city.items.map((a) => ({
-                              label: `${a.name} - ${State}`,
-                              value: `${a.name}`,
-                            }))
-                          }
-                        />
-                      </>
-                    ) : strictValidNumber(values.district) ? (
-                      <Text size={12} errorColor>
+                      <SearchableDropdown
+                        onItemSelect={(item) => {
+                          setFieldValue('region', item.id);
+                          selectCity(item.id);
+                        }}
+                        containerStyle={{marginTop: heightPercentageToDP(1)}}
+                        itemStyle={itemstyle}
+                        itemTextStyle={{color: '#222'}}
+                        itemsContainerStyle={{
+                          maxHeight: heightPercentageToDP(20),
+                        }}
+                        items={
+                          strictValidArray(city.items) &&
+                          city.items.map((a) => ({
+                            name: `${a.name} - ${State}`,
+                            id: `${a.name}`,
+                          }))
+                        }
+                        defaultIndex={1}
+                        resetValue={false}
+                        textInputProps={{
+                          placeholder: 'Select City',
+                          underlineColorAndroid: 'transparent',
+                          style: textStyle,
+                          onTextChange: (text) => setFieldValue('region', text),
+                          value: values.region,
+                        }}
+                        listProps={{
+                          nestedScrollEnabled: true,
+                        }}
+                      />
+                    ) : strictValidString(values.district) ? (
+                      <Text
+                        margin={[heightPercentageToDP(1), 0]}
+                        size={12}
+                        errorColor>
                         Please choose another District
                       </Text>
                     ) : null}
@@ -617,7 +658,7 @@ const Shipping = ({
                       error={touched.streetAddress && errors.streetAddress}
                       errorText={touched.streetAddress && errors.streetAddress}
                     />
-                    <Input
+                    {/* <Input
                       value={values.streetAddress2}
                       onChangeText={handleChange('streetAddress2')}
                       onBlur={() => setFieldTouched('streetAddress2')}
@@ -625,7 +666,7 @@ const Shipping = ({
                       errorText={
                         touched.streetAddress2 && errors.streetAddress2
                       }
-                    />
+                    /> */}
                     <Input
                       label="City"
                       value={values.city}
@@ -719,6 +760,7 @@ const Shipping = ({
                   {shippingAddress ? (
                     <FlatList
                       data={shippingAddress}
+                      inverted
                       renderItem={({item, index}) => (
                         <TouchableOpacity
                           activeOpacity={0.7}
@@ -860,4 +902,19 @@ const buttonStyle = {
 };
 const checkboxStyle = {height: 20, width: 20};
 const labelStyle = {marginLeft: w3, fontSize: 12};
+const textStyle = {
+  padding: 12,
+  borderWidth: 1,
+  borderColor: '#ccc',
+  borderRadius: 5,
+  color: '#999999',
+};
+const itemstyle = {
+  padding: 10,
+  marginTop: 5,
+  backgroundColor: '#fff',
+  borderColor: '#bbb',
+  borderWidth: 1,
+  borderRadius: 5,
+};
 export default Shipping;

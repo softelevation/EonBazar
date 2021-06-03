@@ -135,7 +135,6 @@ const BillingAddress = ({
       url: `${config.Api_Url}/V1/customers/me`,
       headers,
     }).then((res) => {
-      console.log('======>>>', res.data.addresses);
       setShippingAddress(res.data.addresses);
     });
   };
@@ -379,9 +378,7 @@ const BillingAddress = ({
       // body: JSON.stringify(editData),
     })
       .then((r) => r.json())
-      .then((r) => {
-        console.log('edit====', r);
-      })
+      .then((r) => {})
       .catch((error) => {
         console.error(error);
         return [];

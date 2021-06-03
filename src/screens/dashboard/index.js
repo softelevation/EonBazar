@@ -218,7 +218,6 @@ const Dashboard = () => {
               Best Offers
             </Text>
           </Block>
-          {console.log(overlayLoader, 'overlayLoader')}
           {bestOfferLoad ? (
             <Block color="transparent" style={{height: hp(30)}} center middle>
               <ActivityIndicator color={light.secondary} size="large" />
@@ -268,7 +267,11 @@ const Dashboard = () => {
             </Block>
           ) : (
             <Cards
-              data={strictValidArrayWithLength(productsData) && productsData}
+              initialNumToRender={1}
+              data={
+                strictValidArrayWithLength(productsData) &&
+                productsData.slice(0, 10)
+              }
             />
           )}
         </Block>

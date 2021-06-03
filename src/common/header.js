@@ -1,45 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp, } from 'react-native-responsive-screen';
-import { Block, ImageComponent } from '../components';
-import PropTypes from 'prop-types';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native';
-import { w3 } from '../components/theme/fontsize';
-import { useDispatch, useSelector } from 'react-redux';
-import { View, Text } from 'react-native';
-import { myOrderRequest } from '../redux/action';
+import React, {useEffect, useState} from 'react';
 import {
-  deleteGuestCartRequest,
-  deleteItemRequest,
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
+import {Block, ImageComponent, Text} from '../components';
+import PropTypes from 'prop-types';
+import {DrawerActions, useNavigation} from '@react-navigation/native';
+import {TouchableOpacity} from 'react-native';
+import {w3} from '../components/theme/fontsize';
+import {useDispatch, useSelector} from 'react-redux';
+import {View} from 'react-native';
+import {
   getCartDetailsRequest,
   guestCartRequest,
   searchDistrictRequest,
-  updateCartRequest,
-  updateGuestCartRequest,
 } from '../redux/action';
-import {
-  strictValidArrayWithLength,
-  strictValidObjectWithKeys,
-} from '../utils/commonUtils';
+import {strictValidObjectWithKeys} from '../utils/commonUtils';
 // import {  guestCartRequest } from '../redux/action';
 
-const Header = ({ leftIcon, Logo, rightIcon }) => {
+const Header = ({leftIcon, Logo, rightIcon}) => {
   const nav = useNavigation();
   const navigation = useNavigation();
   const cart_list = useSelector((v) => v.cart.list.data);
   const userData = useSelector((state) => state.user.profile.user);
-  const orderData = useSelector((state) => state.order.list.data);
   const errorCartLoad = useSelector((state) => state.cart.updateCart.error);
   const [cartlist, setList] = useState([]);
   const [qtySum, setSum] = useState([]);
   const dispatch = useDispatch();
-  const [refreshing, setrefreshing] = useState(false);
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
 
-
-  const currency = useSelector(
-    (v) => v.currency.currencyDetail.data.base_currency_code,
-  );
   useEffect(() => {
     dispatch(searchDistrictRequest());
 
@@ -67,7 +56,6 @@ const Header = ({ leftIcon, Logo, rightIcon }) => {
 
     cart_list &&
       cart_list.map((a) => {
-        console.log(JSON.stringify(a))
         newData.push({
           qty: a.qty,
           name: a.name,
@@ -85,14 +73,12 @@ const Header = ({ leftIcon, Logo, rightIcon }) => {
       });
 
     setList(newData);
-    var numbers = newData
+    var numbers = newData;
     var sum = 0;
     for (var i = 0; i < numbers.length; i++) {
-
-      sum += numbers[i].qty
-
+      sum += numbers[i].qty;
     }
-    setSum(sum)
+    setSum(sum);
   }, [cart_list, errorCartLoad]);
 
   return (
@@ -114,28 +100,21 @@ const Header = ({ leftIcon, Logo, rightIcon }) => {
         </TouchableOpacity>
       )}
 
-      <TouchableOpacity activeOpacity={1} onPress={() => nav.navigate('DashboardLogo')}>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => nav.navigate('DashboardLogo')}>
         <ImageComponent name="logo_white_icon" height={30} width={120} />
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => nav.navigate('Cart')}>
         <ImageComponent name="cart_icon" height={25} width={25} color="#fff" />
-        {cart_list.length > 0 ? <View
-          style={{
-            backgroundColor: 'red',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 20,
-            position: 'absolute',
-            width: 15,
-            height: 15,
-            left: wp(4),
-            // top: 20,
-          }}>
-          <Text center color={'white'} size={10}>
-            {qtySum}
-          </Text>
-        </View> : null}
+        {cart_list.length > 0 ? (
+          <View style={cartView}>
+            <Text center color={'#fff'} size={10}>
+              {qtySum}
+            </Text>
+          </View>
+        ) : null}
       </TouchableOpacity>
     </Block>
   );
@@ -150,5 +129,15 @@ Header.propTypes = {
   Logo: PropTypes.string,
   rightIcon: PropTypes.string,
   leftIcon: PropTypes.string,
+};
+const cartView = {
+  backgroundColor: 'red',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 20,
+  position: 'absolute',
+  width: 15,
+  height: 15,
+  left: wp(4),
 };
 export default Header;
