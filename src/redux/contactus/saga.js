@@ -3,6 +3,7 @@ import {contactUsError, contactUsSuccess} from '../action';
 import {put, call, all, takeLatest} from 'redux-saga/effects';
 import {Api} from './api';
 import {Toast} from '../../common/toast';
+import {light} from '../../components/theme/colors';
 
 export function* request(action) {
   try {
@@ -15,7 +16,7 @@ export function* request(action) {
       Toast(response.data.message);
     }
   } catch (err) {
-    Toast(err.data.message);
+    Toast(err.response.data.message, light.danger);
     yield put(contactUsError(err));
   }
 }

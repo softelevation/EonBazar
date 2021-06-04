@@ -16,6 +16,7 @@ import {Alert} from 'react-native';
 import {Toast} from '../../../common/toast';
 
 import * as Navigation from '../../../routes/NavigationService';
+import {light} from '../../../components/theme/colors';
 const SaveToken = async (token) => {
   return await AsyncStorage.setItem('token', token);
 };
@@ -47,7 +48,7 @@ export function* loginRequest(action) {
     }
   } catch (err) {
     if (err.response) {
-      Toast(err.response.data.message);
+      Toast(err.response.data.message, light.danger);
       yield put(loginError(''));
     }
   }

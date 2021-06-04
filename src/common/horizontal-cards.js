@@ -175,7 +175,7 @@ const HorizontalCards = ({data, isLoad, setIsLoad}) => {
             )}
           </TouchableOpacity>
         )}
-        <Icon name="ios-shuffle" size={15} />
+        {/* <Icon name="ios-shuffle" size={15} /> */}
         <CustomButton
           activeOpacity={1}
           onPress={() =>

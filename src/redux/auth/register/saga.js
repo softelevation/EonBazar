@@ -6,6 +6,7 @@ import {Api} from './api';
 import * as navigation from '../../../routes/NavigationService';
 import {loginRequest} from '../login/action';
 import {Toast} from '../../../common/toast';
+import {light} from '../../../components/theme/colors';
 export function* request(action) {
   try {
     const response = yield call(Api, action.payload);
@@ -18,17 +19,16 @@ export function* request(action) {
       };
       yield put(loginRequest(data));
       // Alert.alert('User created Sucessfully');
-      setTimeout(() => {
-        Toast('User created Sucessfully');
-      }, 1000);
+
+      Toast('User created Sucessfully');
     } else {
       yield put(registerError(response));
     }
   } catch (err) {
     // Alert.alert(err.response.data.message);
-    setTimeout(() => {
-      Toast(err.response.data.message);
-    }, 1000);
+
+    Toast(err.response.data.message, light.danger);
+
     yield put(registerError(err));
   }
 }

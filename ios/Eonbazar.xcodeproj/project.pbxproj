@@ -11,15 +11,15 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		193CB44D05BDC58DA6CB57D9 /* libPods-Eonbazar-EonbazarTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB68C4D3C6E0456EA3C6D4BD /* libPods-Eonbazar-EonbazarTests.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* EonbazarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* EonbazarTests.m */; };
+		31165BFEB0F0889C38A1C0E6 /* libPods-Eonbazar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0196245EAD516EA9E1D82346 /* libPods-Eonbazar.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		83E30F8E8CBB498760E4A10D /* libPods-Eonbazar-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDD9354D81FB9E997834219 /* libPods-Eonbazar-tvOS.a */; };
-		974638A00E057A85087F45DA /* libPods-Eonbazar-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FEA930F24D7A03429563B66A /* libPods-Eonbazar-tvOSTests.a */; };
-		9AA77C8D5E243D74EA0A42F4 /* libPods-Eonbazar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11B70ECD1C10AA9248D649FA /* libPods-Eonbazar.a */; };
+		ABD7B8FAB6573F09D2056758 /* libPods-Eonbazar-EonbazarTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FB56FA0242E6F6B02BC3F49 /* libPods-Eonbazar-EonbazarTests.a */; };
+		B2CB4AB19AC821CBC82A0AB2 /* libPods-Eonbazar-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2141AF872D1A1852DF1CBFF /* libPods-Eonbazar-tvOS.a */; };
+		F0097F2A1A8E70191A89D060 /* libPods-Eonbazar-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E44E81C8C6DB50F4706715F0 /* libPods-Eonbazar-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,29 +44,29 @@
 		00E356EE1AD99517003FC87E /* EonbazarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EonbazarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* EonbazarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EonbazarTests.m; sourceTree = "<group>"; };
-		0EDD9354D81FB9E997834219 /* libPods-Eonbazar-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Eonbazar-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		11B70ECD1C10AA9248D649FA /* libPods-Eonbazar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Eonbazar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0196245EAD516EA9E1D82346 /* libPods-Eonbazar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Eonbazar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		05CDA8A567BEA2F4F84EA57F /* Pods-Eonbazar-EonbazarTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar-EonbazarTests.release.xcconfig"; path = "Target Support Files/Pods-Eonbazar-EonbazarTests/Pods-Eonbazar-EonbazarTests.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Eonbazar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Eonbazar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Eonbazar/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Eonbazar/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Eonbazar/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Eonbazar/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Eonbazar/main.m; sourceTree = "<group>"; };
-		2612290B78FB43AF0B8A1EC8 /* Pods-Eonbazar-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Eonbazar-tvOS/Pods-Eonbazar-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		1547881121C1CC9A81C0F174 /* Pods-Eonbazar-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Eonbazar-tvOS/Pods-Eonbazar-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		1CEE3230411C1025E11E9B81 /* Pods-Eonbazar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar.release.xcconfig"; path = "Target Support Files/Pods-Eonbazar/Pods-Eonbazar.release.xcconfig"; sourceTree = "<group>"; };
+		247BA2D2716FC9A94E18417F /* Pods-Eonbazar-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Eonbazar-tvOS/Pods-Eonbazar-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		27453DF39B7944FF1CFC32B1 /* Pods-Eonbazar-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Eonbazar-tvOSTests/Pods-Eonbazar-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* Eonbazar-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eonbazar-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Eonbazar-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Eonbazar-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		40390DDCC42ACD9C8EB91BC2 /* Pods-Eonbazar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar.release.xcconfig"; path = "Target Support Files/Pods-Eonbazar/Pods-Eonbazar.release.xcconfig"; sourceTree = "<group>"; };
-		4E796117E29EAC57143B32B9 /* Pods-Eonbazar-EonbazarTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar-EonbazarTests.release.xcconfig"; path = "Target Support Files/Pods-Eonbazar-EonbazarTests/Pods-Eonbazar-EonbazarTests.release.xcconfig"; sourceTree = "<group>"; };
-		5183CACE3EB0862B8E5F7348 /* Pods-Eonbazar-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Eonbazar-tvOSTests/Pods-Eonbazar-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		717BBFA0F8EB80DC14409FC9 /* Pods-Eonbazar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar.debug.xcconfig"; path = "Target Support Files/Pods-Eonbazar/Pods-Eonbazar.debug.xcconfig"; sourceTree = "<group>"; };
-		7E99425A701B4FD44D657577 /* Pods-Eonbazar-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Eonbazar-tvOSTests/Pods-Eonbazar-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		5E08AAAEAD44483FDD3DB0BD /* Pods-Eonbazar-EonbazarTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar-EonbazarTests.debug.xcconfig"; path = "Target Support Files/Pods-Eonbazar-EonbazarTests/Pods-Eonbazar-EonbazarTests.debug.xcconfig"; sourceTree = "<group>"; };
+		7FB56FA0242E6F6B02BC3F49 /* libPods-Eonbazar-EonbazarTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Eonbazar-EonbazarTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Eonbazar/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		85BEE6C9565F72C8ED5D348B /* Pods-Eonbazar-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Eonbazar-tvOS/Pods-Eonbazar-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		E40AF943BFE8F6600B6D596B /* Pods-Eonbazar-EonbazarTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar-EonbazarTests.debug.xcconfig"; path = "Target Support Files/Pods-Eonbazar-EonbazarTests/Pods-Eonbazar-EonbazarTests.debug.xcconfig"; sourceTree = "<group>"; };
-		EB68C4D3C6E0456EA3C6D4BD /* libPods-Eonbazar-EonbazarTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Eonbazar-EonbazarTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		98C91B60AF8F0A5322668230 /* Pods-Eonbazar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar.debug.xcconfig"; path = "Target Support Files/Pods-Eonbazar/Pods-Eonbazar.debug.xcconfig"; sourceTree = "<group>"; };
+		A63563086F547739E886797E /* Pods-Eonbazar-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eonbazar-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Eonbazar-tvOSTests/Pods-Eonbazar-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		C2141AF872D1A1852DF1CBFF /* libPods-Eonbazar-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Eonbazar-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E44E81C8C6DB50F4706715F0 /* libPods-Eonbazar-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Eonbazar-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		FEA930F24D7A03429563B66A /* libPods-Eonbazar-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Eonbazar-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,7 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				193CB44D05BDC58DA6CB57D9 /* libPods-Eonbazar-EonbazarTests.a in Frameworks */,
+				ABD7B8FAB6573F09D2056758 /* libPods-Eonbazar-EonbazarTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AA77C8D5E243D74EA0A42F4 /* libPods-Eonbazar.a in Frameworks */,
+				31165BFEB0F0889C38A1C0E6 /* libPods-Eonbazar.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,7 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83E30F8E8CBB498760E4A10D /* libPods-Eonbazar-tvOS.a in Frameworks */,
+				B2CB4AB19AC821CBC82A0AB2 /* libPods-Eonbazar-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,7 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				974638A00E057A85087F45DA /* libPods-Eonbazar-tvOSTests.a in Frameworks */,
+				F0097F2A1A8E70191A89D060 /* libPods-Eonbazar-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,10 +141,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				11B70ECD1C10AA9248D649FA /* libPods-Eonbazar.a */,
-				EB68C4D3C6E0456EA3C6D4BD /* libPods-Eonbazar-EonbazarTests.a */,
-				0EDD9354D81FB9E997834219 /* libPods-Eonbazar-tvOS.a */,
-				FEA930F24D7A03429563B66A /* libPods-Eonbazar-tvOSTests.a */,
+				0196245EAD516EA9E1D82346 /* libPods-Eonbazar.a */,
+				7FB56FA0242E6F6B02BC3F49 /* libPods-Eonbazar-EonbazarTests.a */,
+				C2141AF872D1A1852DF1CBFF /* libPods-Eonbazar-tvOS.a */,
+				E44E81C8C6DB50F4706715F0 /* libPods-Eonbazar-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -185,14 +185,14 @@
 		DCE2C8880A466B2C39488CF9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				717BBFA0F8EB80DC14409FC9 /* Pods-Eonbazar.debug.xcconfig */,
-				40390DDCC42ACD9C8EB91BC2 /* Pods-Eonbazar.release.xcconfig */,
-				E40AF943BFE8F6600B6D596B /* Pods-Eonbazar-EonbazarTests.debug.xcconfig */,
-				4E796117E29EAC57143B32B9 /* Pods-Eonbazar-EonbazarTests.release.xcconfig */,
-				2612290B78FB43AF0B8A1EC8 /* Pods-Eonbazar-tvOS.debug.xcconfig */,
-				85BEE6C9565F72C8ED5D348B /* Pods-Eonbazar-tvOS.release.xcconfig */,
-				5183CACE3EB0862B8E5F7348 /* Pods-Eonbazar-tvOSTests.debug.xcconfig */,
-				7E99425A701B4FD44D657577 /* Pods-Eonbazar-tvOSTests.release.xcconfig */,
+				98C91B60AF8F0A5322668230 /* Pods-Eonbazar.debug.xcconfig */,
+				1CEE3230411C1025E11E9B81 /* Pods-Eonbazar.release.xcconfig */,
+				5E08AAAEAD44483FDD3DB0BD /* Pods-Eonbazar-EonbazarTests.debug.xcconfig */,
+				05CDA8A567BEA2F4F84EA57F /* Pods-Eonbazar-EonbazarTests.release.xcconfig */,
+				1547881121C1CC9A81C0F174 /* Pods-Eonbazar-tvOS.debug.xcconfig */,
+				247BA2D2716FC9A94E18417F /* Pods-Eonbazar-tvOS.release.xcconfig */,
+				27453DF39B7944FF1CFC32B1 /* Pods-Eonbazar-tvOSTests.debug.xcconfig */,
+				A63563086F547739E886797E /* Pods-Eonbazar-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -204,12 +204,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "EonbazarTests" */;
 			buildPhases = (
-				D495132383AA110695486F5D /* [CP] Check Pods Manifest.lock */,
+				4845B1B8D80EE639557C6DD1 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				0DF422B4F5BBA07E22CD70FA /* [CP] Copy Pods Resources */,
-				F2813C1BA31153F1075E0355 /* [CP] Embed Pods Frameworks */,
+				968387C93FB9148AB8F8EFCA /* [CP] Embed Pods Frameworks */,
+				F552620E159190943BFA3CE7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -225,14 +225,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Eonbazar" */;
 			buildPhases = (
-				382AF42308FE52D8FD3BD5A5 /* [CP] Check Pods Manifest.lock */,
+				34035D0C4ECD5D77F5085D89 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				D67BD1D16864D288ADF6186D /* [CP] Copy Pods Resources */,
-				ECA20EA776A912AABAD93DB0 /* [CP] Embed Pods Frameworks */,
+				ACFC5BC431F01BC14A9009FA /* [CP] Embed Pods Frameworks */,
+				3B4BD5C2E90BC399F61F1F16 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -247,7 +247,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Eonbazar-tvOS" */;
 			buildPhases = (
-				0623FD59B522874174E008AF /* [CP] Check Pods Manifest.lock */,
+				4900AF858AE8807ED182FE13 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -267,7 +267,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Eonbazar-tvOSTests" */;
 			buildPhases = (
-				136EF86021A191375353A292 /* [CP] Check Pods Manifest.lock */,
+				ADD686887FB71836164AF5C8 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -380,100 +380,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		0623FD59B522874174E008AF /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Eonbazar-tvOS-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		0DF422B4F5BBA07E22CD70FA /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Eonbazar-EonbazarTests/Pods-Eonbazar-EonbazarTests-resources.sh",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Eonbazar-EonbazarTests/Pods-Eonbazar-EonbazarTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		136EF86021A191375353A292 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Eonbazar-tvOSTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -488,7 +394,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		382AF42308FE52D8FD3BD5A5 /* [CP] Check Pods Manifest.lock */ = {
+		34035D0C4ECD5D77F5085D89 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -510,29 +416,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D495132383AA110695486F5D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Eonbazar-EonbazarTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D67BD1D16864D288ADF6186D /* [CP] Copy Pods Resources */ = {
+		3B4BD5C2E90BC399F61F1F16 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -582,7 +466,69 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Eonbazar/Pods-Eonbazar-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		ECA20EA776A912AABAD93DB0 /* [CP] Embed Pods Frameworks */ = {
+		4845B1B8D80EE639557C6DD1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Eonbazar-EonbazarTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4900AF858AE8807ED182FE13 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Eonbazar-tvOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		968387C93FB9148AB8F8EFCA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Eonbazar-EonbazarTests/Pods-Eonbazar-EonbazarTests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Eonbazar-EonbazarTests/Pods-Eonbazar-EonbazarTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ACFC5BC431F01BC14A9009FA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -600,22 +546,76 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Eonbazar/Pods-Eonbazar-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F2813C1BA31153F1075E0355 /* [CP] Embed Pods Frameworks */ = {
+		ADD686887FB71836164AF5C8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Eonbazar-tvOSTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F552620E159190943BFA3CE7 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Eonbazar-EonbazarTests/Pods-Eonbazar-EonbazarTests-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
+				"${PODS_ROOT}/Target Support Files/Pods-Eonbazar-EonbazarTests/Pods-Eonbazar-EonbazarTests-resources.sh",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Eonbazar-EonbazarTests/Pods-Eonbazar-EonbazarTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Eonbazar-EonbazarTests/Pods-Eonbazar-EonbazarTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -711,7 +711,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E40AF943BFE8F6600B6D596B /* Pods-Eonbazar-EonbazarTests.debug.xcconfig */;
+			baseConfigurationReference = 5E08AAAEAD44483FDD3DB0BD /* Pods-Eonbazar-EonbazarTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -734,7 +734,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E796117E29EAC57143B32B9 /* Pods-Eonbazar-EonbazarTests.release.xcconfig */;
+			baseConfigurationReference = 05CDA8A567BEA2F4F84EA57F /* Pods-Eonbazar-EonbazarTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -754,7 +754,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 717BBFA0F8EB80DC14409FC9 /* Pods-Eonbazar.debug.xcconfig */;
+			baseConfigurationReference = 98C91B60AF8F0A5322668230 /* Pods-Eonbazar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -782,7 +782,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 40390DDCC42ACD9C8EB91BC2 /* Pods-Eonbazar.release.xcconfig */;
+			baseConfigurationReference = 1CEE3230411C1025E11E9B81 /* Pods-Eonbazar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -808,7 +808,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2612290B78FB43AF0B8A1EC8 /* Pods-Eonbazar-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 1547881121C1CC9A81C0F174 /* Pods-Eonbazar-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -836,7 +836,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 85BEE6C9565F72C8ED5D348B /* Pods-Eonbazar-tvOS.release.xcconfig */;
+			baseConfigurationReference = 247BA2D2716FC9A94E18417F /* Pods-Eonbazar-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -864,7 +864,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5183CACE3EB0862B8E5F7348 /* Pods-Eonbazar-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 27453DF39B7944FF1CFC32B1 /* Pods-Eonbazar-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -891,7 +891,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7E99425A701B4FD44D657577 /* Pods-Eonbazar-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = A63563086F547739E886797E /* Pods-Eonbazar-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;

@@ -47,6 +47,7 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import {Alert} from 'react-native';
 import {Toast} from '../../common/toast';
+import {light} from '../../components/theme/colors';
 
 export function* requestList(action) {
   try {
@@ -65,9 +66,8 @@ export function* requestSaveList(action) {
   try {
     const response = yield call(SaveListApi, action.payload);
     if (response) {
-      setTimeout(() => {
-        Toast('Product added to cart successfully...');
-      }, 1000);
+      Toast('Product added to cart successfully...');
+
       yield put(addToCartSuccess(response.data));
       yield put(getCartDetailsRequest());
       // RootNavigation.navigate('Cart');
@@ -75,9 +75,8 @@ export function* requestSaveList(action) {
       yield put(addToCartError(response));
     }
   } catch (err) {
-    setTimeout(() => {
-      Toast(err.response.data.message);
-    }, 1000);
+    Toast(err.response.data.message, light.danger);
+
     yield put(addToCartError(err.response.data.message));
   }
 }
@@ -105,10 +104,7 @@ export function* updateCart(action) {
       yield put(updateCartError(response));
     }
   } catch (err) {
-    // alert(err.response.data.message);
-    setTimeout(() => {
-      Toast(err.response.data.message);
-    }, 1000);
+    Toast(err.response.data.message, light.danger);
     yield put(updateCartError(err.response.data.message));
   }
 }
@@ -171,20 +167,14 @@ export function* guestSaveList(action) {
       yield put(addToGuestCartSuccess(response.data));
       const token = yield call(getToken);
       if (token) {
-        setTimeout(() => {
-          Toast('Product added to cart successfully...');
-        }, 1000);
+        Toast('Product added to cart successfully...');
         yield put(guestCartRequest(token));
       }
-
-      // RootNavigation.navigate('Cart');
     } else {
       yield put(addToGuestCartError(response));
     }
   } catch (err) {
-    setTimeout(() => {
-      Toast(err.response.data.message);
-    }, 1000);
+    Toast(err.response.data.message, light.danger);
     yield put(addToGuestCartError(err.response.data.message));
   }
 }
@@ -202,10 +192,7 @@ export function* guestupdateCart(action) {
       yield put(updateGuestCartError(response));
     }
   } catch (err) {
-    // alert(err.response.data.message);
-    setTimeout(() => {
-      Toast(err.response.data.message);
-    }, 1000);
+    Toast(err.response.data.message, light.danger);
     yield put(updateGuestCartError(err.response.data.message));
   }
 }

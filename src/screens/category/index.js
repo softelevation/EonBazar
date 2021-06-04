@@ -82,9 +82,9 @@ const Category = (props) => {
   const [name, setname] = useState(saveFiltered.name);
   const [pageSize, setPageSize] = useState(10);
   const [arrayLength, setArrayLength] = useState(10);
-  const cart_list = useSelector((state) => state.cart.list.data);
+  const cart_list = useSelector((v) => v.cart.list.data);
   const [cartlist, setList] = useState([]);
-  const userData = useSelector((state) => state.user.profile.user);
+  const userData = useSelector((v) => v.user.profile.user);
   const [qtySum, setSum] = useState([]);
 
   const sortingMenu = (val) => {
@@ -93,7 +93,7 @@ const Category = (props) => {
         animated: true,
       });
     }, 1000);
-    if (val.id != menu) {
+    if (val.id !== menu) {
       setmenu(val.id);
       setname(val.name);
       setstate({data: []});
@@ -104,28 +104,29 @@ const Category = (props) => {
     }
   };
 
-  useEffect(() => {
-    dispatch(
-      filterCategoryListRequest({
-        currentPage,
-        pageSize: pageSize,
-        menu,
-      }),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [menu]);
-
   useFocusEffect(
     React.useCallback(() => {
+      dispatch(
+        filterCategoryListRequest({
+          currentPage,
+          pageSize: 10,
+          menu,
+        }),
+      );
+    }, [menu]),
+  );
+
+  React.useEffect(() => {
+    const unsubscribe = nav.addListener('focus', () => {
+      // do something
       setstate({
         data: [],
       });
-      return () =>
-        setstate({
-          data: [],
-        });
-    }, []),
-  );
+    });
+
+    return unsubscribe;
+  }, [nav]);
+
   useEffect(() => {
     if (!menu) {
       setmenu(category[0].id);
@@ -183,10 +184,8 @@ const Category = (props) => {
           name: item.name,
           image: item.image,
           currency_code: currency || 'BDT',
-          price_info: item.price,
-          specialPrice: item.special_price
-            ? Math.ceil(item.special_price.value).toFixed(2)
-            : item.price,
+          price_info: item.price_info,
+          specialPrice: item.specialPrice,
           isLoad: false,
           sku: item.sku,
           id: item.id,
@@ -322,7 +321,7 @@ const Category = (props) => {
         <TouchableOpacity onPress={() => addToWishlist(item, index)}>
           <Icon name="ios-heart-outline" size={15} />
         </TouchableOpacity>
-        <Icon name="ios-shuffle" size={15} />
+        {/* <Icon name="ios-shuffle" size={15} /> */}
         <CustomButton
           activeOpacity={1}
           onPress={() =>
@@ -431,14 +430,11 @@ const Category = (props) => {
           center
           row
           space={'between'}
-          margin={[0, w2, 0, w2]}
+          margin={[hp(2), w2, 0, w2]}
           flex={false}>
           <Text semibold size={15}>
             {name || ''}
           </Text>
-          <ShopByButton style={{marginTop: 5}} color="secondary">
-            Shop by
-          </ShopByButton>
         </Block>
         <Block
           margin={[t2, w2, 0, w2]}

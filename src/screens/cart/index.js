@@ -260,16 +260,6 @@ const Cart = () => {
               />
             </CustomButton>
           )}
-
-          <CustomButton
-            margin={[t1, 0, 0, 0]}
-            flex={false}
-            style={{height: 20, width: 20}}
-            center
-            middle
-            secondary>
-            <Icon name="edit" size={12} color="#fff" />
-          </CustomButton>
         </Block>
         <ImageComponent isURL name={item.image} />
         <Block flex={false} margin={[0, w3]}>
@@ -281,29 +271,6 @@ const Cart = () => {
           <Text bold secondary size={14}>
             {currency} {item.price_copy.toFixed(2)}
           </Text>
-          {/* <Block row flex={false}>
-            <Text margin={[t1, 0]} size={14}>
-              Qty:
-            </Text>
-            <InputArea
-              keyboardType="numeric"
-              placeholder={'Qty'}
-              onBlur={(e) =>
-                changeQty(
-                  e.nativeEvent.text,
-                  item.item_id,
-                  index,
-                  item.price,
-                  item.qtyText,
-                  item.qty,
-                  item,
-                )
-              }
-              maxLength={3}
-              onChangeText={(a) => ChangeQtyText(a, index)}
-              value={`${item.qtyText}`}
-            />
-          </Block> */}
           <Block
             margin={[heightPercentageToDP(1.5), 0, 0]}
             style={{width: widthPercentageToDP(18)}}

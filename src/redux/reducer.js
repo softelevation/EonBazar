@@ -11,6 +11,7 @@ import advanceSearch from './advance-search/reducer';
 import shipping from './shipping/reducer';
 import area from './areas/reducer';
 import payment from './payment/reducer';
+import orientation from './orientation/reducer';
 const rootreducer = combineReducers({
   user,
   cart,
@@ -24,5 +25,6 @@ const rootreducer = combineReducers({
   shipping,
   area,
   payment,
+  orientation,
 });
 export default rootreducer;

@@ -176,7 +176,7 @@ const BottomTab = ({state, descriptors, navigation}) => {
         };
         return (
           <MainView
-            activeOpacity={0.7}
+            activeOpacity={0.8}
             style={
               tabImages[label] === undefined
                 ? {

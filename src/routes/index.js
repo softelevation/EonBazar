@@ -44,6 +44,7 @@ import ShowAddress from '../screens/auth/show-address';
 import PaymentSuccess from '../screens/payment/paymentSuccess';
 import PaymentError from '../screens/payment/paymentError';
 import BillingAddress from '../screens/payment/billingAddress';
+import {useSelector} from 'react-redux';
 
 const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -169,6 +170,7 @@ function Routes() {
         <RootStack.Screen name="PaymentSuccess" component={PaymentSuccess} />
         <RootStack.Screen name="PaymentError" component={PaymentError} />
         <RootStack.Screen name="BillingAddress" component={BillingAddress} />
+        <RootStack.Screen name="DashboardLogo" component={DashboardStack} />
       </RootStack.Navigator>
     );
   };
@@ -275,11 +277,34 @@ function Routes() {
       </RootStack.Navigator>
     );
   };
+  const AdvanceSearchStack = () => {
+    return (
+      <RootStack.Navigator
+        screenOptions={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+        initialRouteName="AdvanceSearch"
+        headerMode="none">
+        <RootStack.Screen name="AdvanceSearch" component={AdvanceSearch} />
+        <RootStack.Screen name="SearchList" component={SearchList} />
+      </RootStack.Navigator>
+    );
+  };
+
+  const checkPropsValue = () => {
+    const checkOrientation = useSelector((state) => state.orientation.data);
+    if (checkOrientation === false) {
+      return (props) => <BottomTab {...props} />;
+    }
+
+    return () => null;
+  };
+
   const TabNav = () => {
     return (
       <Tab.Navigator
         initialRouteName="DashboardLogo"
-        tabBar={(props) => <BottomTab {...props} />}>
+        tabBar={checkPropsValue()}>
         <Tab.Screen
           options={{unmountOnBlur: true}}
           name="Wishlist"
@@ -319,7 +344,7 @@ function Routes() {
         <Drawer.Screen name="Terms" component={Terms} />
         <Drawer.Screen name="Privacy" component={Privacy} />
         <Drawer.Screen name="Help" component={Help} />
-        <Drawer.Screen name="AdvanceSearch" component={AdvanceSearch} />
+        <Drawer.Screen name="AdvanceSearch" component={AdvanceSearchStack} />
         <Drawer.Screen name="YourOrder" component={YourOrder} />
       </Drawer.Navigator>
     );

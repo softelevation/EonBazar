@@ -31,6 +31,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import * as Navigation from '../../../routes/NavigationService';
 import {Toast} from '../../../common/toast';
 import SearchableDropdown from 'react-native-searchable-dropdown';
+import SearchOptions from '../../../components/searchOptions';
 
 global.shippingAddress = '';
 const stylesPicker = StyleSheet.create({
@@ -356,82 +357,32 @@ const AddAddress = (
                   <Text margin={[t2, 0]} bold transform="uppercase">
                     Add Address
                   </Text>
-
                   <Text margin={[t1, 0, 0]} body color="#636363">
                     {'Select District'}
                   </Text>
-                  <SearchableDropdown
-                    onItemSelect={(item) => {
-                      setFieldValue('district', item.name);
-                      selectDistrict(item.id);
-                    }}
-                    containerStyle={{marginTop: heightPercentageToDP(1)}}
-                    itemStyle={itemstyle}
-                    itemTextStyle={{color: '#222'}}
-                    itemsContainerStyle={{
-                      maxHeight: heightPercentageToDP(20),
-                    }}
-                    items={
-                      strictValidArray(district.items) &&
-                      district.items.map((a) => ({
-                        name: a.name,
-                        id: a.id,
-                      }))
-                    }
-                    defaultIndex={1}
-                    resetValue={false}
-                    textInputProps={{
-                      placeholder: 'Select District',
-                      underlineColorAndroid: 'transparent',
-                      style: textStyle,
-                      onTextChange: (text) => setFieldValue('district', text),
-                      value: values.district,
-                    }}
-                    listProps={{
-                      nestedScrollEnabled: true,
-                    }}
+                  <SearchOptions
+                    placeholder="Select district"
+                    data={strictValidArray(district.items) && district.items}
+                    setResults={(a) => selectDistrict(a.id)}
+                    results={State}
                   />
-
-                  {strictValidString(values.district) &&
-                  strictValidArrayWithLength(city.items) ? (
+                  {strictValidString(values.district) ||
+                  (strictValidNumber(values.district) &&
+                    strictValidArrayWithLength(city.items)) ? (
                     <Text margin={[t1, 0, 0]} body color="#636363">
                       {'Select Delievery Area'}
                     </Text>
                   ) : null}
-                  {strictValidString(values.district) &&
+                  {(strictValidString(values.district) ||
+                    strictValidNumber(values.district)) &&
                   strictValidArrayWithLength(city.items) ? (
-                    <SearchableDropdown
-                      onItemSelect={(item) => {
-                        setFieldValue('region', item.id);
-                        selectCity(item.id);
-                      }}
-                      containerStyle={{marginTop: heightPercentageToDP(1)}}
-                      itemStyle={itemstyle}
-                      itemTextStyle={{color: '#222'}}
-                      itemsContainerStyle={{
-                        maxHeight: heightPercentageToDP(20),
-                      }}
-                      items={
-                        strictValidArray(city.items) &&
-                        city.items.map((a) => ({
-                          name: `${a.name} - ${State}`,
-                          id: `${a.name}`,
-                        }))
-                      }
-                      defaultIndex={1}
-                      resetValue={false}
-                      textInputProps={{
-                        placeholder: 'Select City',
-                        underlineColorAndroid: 'transparent',
-                        style: textStyle,
-                        onTextChange: (text) => setFieldValue('region', text),
-                        value: values.region,
-                      }}
-                      listProps={{
-                        nestedScrollEnabled: true,
-                      }}
+                    <SearchOptions
+                      placeholder="Select city"
+                      data={strictValidArray(city.items) && city.items}
+                      setResults={(a) => selectCity(a.name)}
                     />
-                  ) : strictValidString(values.district) ? (
+                  ) : strictValidString(values.district) ||
+                    strictValidNumber(values.district) ? (
                     <Text
                       margin={[heightPercentageToDP(1), 0]}
                       size={12}

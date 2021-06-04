@@ -157,9 +157,9 @@ const SeeAllDetails = () => {
       const clone = [...data];
       clone[index] = updated;
 
-      // setstate({ data: clone });
-      // const id = val.id;
-      // await dispatch(updateWishlistRequest(id));
+      setstate({data: clone});
+      const id = val.id;
+      await dispatch(updateWishlistRequest(id));
     } else {
       nav.reset({
         routes: [{name: 'Login'}],
@@ -202,7 +202,7 @@ const SeeAllDetails = () => {
         <TouchableOpacity onPress={() => addToWishlist(item, index)}>
           <Icon name="ios-heart-outline" size={15} />
         </TouchableOpacity>
-        <Icon name="ios-shuffle" size={15} />
+        {/* <Icon name="ios-shuffle" size={15} /> */}
         <CustomButton
           activeOpacity={1}
           onPress={() =>

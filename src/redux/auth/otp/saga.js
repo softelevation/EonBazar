@@ -4,6 +4,7 @@ import {put, call, all, takeLatest} from 'redux-saga/effects';
 import {Api} from './api';
 import {Alert} from 'react-native';
 import {Toast} from '../../../common/toast';
+import {light} from '../../../components/theme/colors';
 
 export function* request(action) {
   try {
@@ -11,17 +12,16 @@ export function* request(action) {
     if (response) {
       yield put(generateOtpSuccess(response.data));
       // Alert.alert('Please check otp on your mobile number');
-      setTimeout(() => {
-        Toast('Please check otp on your mobile number');
-      }, 1000);
+
+      Toast('Please check otp on your mobile number');
     } else {
       yield put(generateOtpError(response));
     }
   } catch (err) {
     // Alert.alert(err.response.data.message);
-    setTimeout(() => {
-      Toast(err.response.data.message);
-    }, 1000);
+
+    Toast(err.response.data.message, light.danger);
+
     yield put(generateOtpError(err));
   }
 }

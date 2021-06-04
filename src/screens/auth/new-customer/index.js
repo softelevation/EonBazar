@@ -231,7 +231,7 @@ const NewCustomer = () => {
                     onPress={handleSubmit}
                     // disabled={!isValid}
                     color="secondary">
-                    Create an acount
+                    Create an Account
                   </Button>
                   <Button onPress={() => nav.goBack()} color="secondary">
                     Back

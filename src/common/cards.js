@@ -43,6 +43,7 @@ const Cards = ({data, maxHeight, initialNumToRender}) => {
 
   useEffect(() => {
     const newData = [];
+    console.log(data, 'data');
     data &&
       data.map((a) => {
         const special_price = a.custom_attributes.find(
@@ -177,7 +178,6 @@ const Cards = ({data, maxHeight, initialNumToRender}) => {
             )}
           </TouchableOpacity>
         )}
-        <Icon name="ios-shuffle" size={15} />
         <CustomButton
           activeOpacity={1}
           onPress={() =>

@@ -6,6 +6,8 @@ import {Alert} from 'react-native';
 import * as RootNavigation from '../../routes/NavigationService';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Toast} from '../../common/toast';
+import {light} from '../../components/theme/colors';
+import {orientationRequest} from '../orientation/action';
 
 export function* paymentRequest(action) {
   try {
@@ -14,18 +16,19 @@ export function* paymentRequest(action) {
       yield put(paymentSuccess(response.data));
       if (action.payload.method === 'sslcommerz') {
         RootNavigation.navigate('Payment');
+        yield put(orientationRequest(true));
       } else {
         RootNavigation.navigate('PaymentSuccess');
         yield put(createCartRequest());
       }
     } else {
       RootNavigation.navigate('PaymentError');
+      yield put(orientationRequest(false));
       yield put(paymentError(response));
     }
   } catch (err) {
-    // Alert.alert(err.response.data.message);
-
-    Toast(err.response.data.message);
+    Toast(err.response.data.message, light.danger);
+    yield put(orientationRequest(false));
     yield put(paymentError(err));
   }
 }

@@ -446,6 +446,7 @@ const Details = ({
                 <Text transform="uppercase" size={12} height={20}>
                   be the first to review this product
                 </Text>
+                {console.log(item)}
                 <Block row center flex={false}>
                   <Icon
                     name="checkmark-circle"
@@ -587,7 +588,7 @@ const Details = ({
                   />
                 </CustomButton>
               )}
-              <Block
+              {/* <Block
                 flex={false}
                 borderWidth={2}
                 center
@@ -597,7 +598,7 @@ const Details = ({
                 borderColor="#78A942"
                 padding={[hp(0.7)]}>
                 <Icon name="ios-swap-horizontal-sharp" size={20} />
-              </Block>
+              </Block> */}
             </Block>
           </Block>
           {renderConditions()}

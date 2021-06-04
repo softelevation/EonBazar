@@ -1,20 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {ScrollView} from 'react-native';
+import React from 'react';
 import {widthPercentageToDP} from 'react-native-responsive-screen';
 import Footer from '../../../common/footer';
 import Header from '../../../common/header';
 import {Block, Button, Input, Text} from '../../../components';
 import {t1, t2, w3} from '../../../components/theme/fontsize';
 import {Formik} from 'formik';
-import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {advanceSearchRequest} from '../../../redux/action';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-  
+
 const AdvanceSearch = ({route}) => {
   const isLoad = useSelector((state) => state.advanceSearch.list.loading);
   const dispatch = useDispatch();
-  const [data, setData] = useState(route.params);
 
   const submitValues = (values) => {
     const data = {
@@ -24,14 +21,10 @@ const AdvanceSearch = ({route}) => {
       sku: values.sku,
       description: values.description,
       short_description: values.short_description,
-
     };
     dispatch(advanceSearchRequest(data));
   };
-  useEffect(() => {
 
-
-  }, []);
   return (
     <Block>
       <Header />
@@ -44,12 +37,14 @@ const AdvanceSearch = ({route}) => {
           </Text>
           <Formik
             initialValues={{
-              name: route.params?route.params.data.name:null,
-              sku:  route.params?route.params.data.sku:null,
-              description: route.params?route.params.data.description:null,
-              short_description:  route.params?route.params.data.short_description:null,
-              fromPrice: route.params?route.params.data.fromPrice:null,
-              toPrice: route.params?route.params.data.toPrice:null,
+              name: route.params ? route.params.data.name : null,
+              sku: route.params ? route.params.data.sku : null,
+              description: route.params ? route.params.data.description : null,
+              short_description: route.params
+                ? route.params.data.short_description
+                : null,
+              fromPrice: route.params ? route.params.data.fromPrice : null,
+              toPrice: route.params ? route.params.data.toPrice : null,
             }}
             onSubmit={submitValues}>
             {({

@@ -13,4 +13,5 @@ export const light = {
   subtitleColor: '#818991',
   warning: '#EE3254',
   link: '#0044CC',
+  danger: '#BC2123',
 };

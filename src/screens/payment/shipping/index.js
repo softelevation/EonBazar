@@ -40,6 +40,7 @@ import {color, onChange} from 'react-native-reanimated';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Toast} from '../../../common/toast';
 import SearchableDropdown from 'react-native-searchable-dropdown';
+import SearchOptions from '../../../components/searchOptions';
 
 global.shippingAddress = '';
 const stylesPicker = StyleSheet.create({
@@ -339,9 +340,9 @@ const Shipping = ({
   //   getStates.map((c) => setregion(c.id));
   // };
   const selectDistrict = (value) => {
+    console.log(value);
     dispatch(searchAreaRequest(value));
     formikRef.current?.setFieldValue('district', value);
-
     const getStates =
       strictValidArray(district.items) &&
       district.items.filter((v) => v.id === value);
@@ -429,7 +430,7 @@ const Shipping = ({
           city: '',
           postalCode: '',
           country: 'Bangladesh',
-          district: State || '',
+          district: '',
           region: '',
           shipping: '',
           carrier_code: '',
@@ -465,6 +466,7 @@ const Shipping = ({
           isValid,
           dirty,
         }) => {
+          console.log(values);
           return (
             <View style={{flex: 1}}>
               <View
@@ -543,82 +545,32 @@ const Shipping = ({
                     <Text margin={[t2, 0]} bold transform="uppercase">
                       Shipping Address
                     </Text>
-
                     <Text margin={[t1, 0, 0]} body color="#636363">
                       {'Select District'}
                     </Text>
-                    <SearchableDropdown
-                      onItemSelect={(item) => {
-                        setFieldValue('district', item.name);
-                        selectDistrict(item.id);
-                      }}
-                      containerStyle={{marginTop: heightPercentageToDP(1)}}
-                      itemStyle={itemstyle}
-                      itemTextStyle={{color: '#222'}}
-                      itemsContainerStyle={{
-                        maxHeight: heightPercentageToDP(20),
-                      }}
-                      items={
-                        strictValidArray(district.items) &&
-                        district.items.map((a) => ({
-                          name: a.name,
-                          id: a.id,
-                        }))
-                      }
-                      defaultIndex={1}
-                      resetValue={false}
-                      textInputProps={{
-                        placeholder: 'Select District',
-                        underlineColorAndroid: 'transparent',
-                        style: textStyle,
-                        onTextChange: (text) => setFieldValue('district', text),
-                        value: values.district,
-                      }}
-                      listProps={{
-                        nestedScrollEnabled: true,
-                      }}
+                    <SearchOptions
+                      placeholder="Select district"
+                      data={strictValidArray(district.items) && district.items}
+                      setResults={(a) => selectDistrict(a.id)}
+                      results={State}
                     />
-
-                    {strictValidString(values.district) &&
-                    strictValidArrayWithLength(city.items) ? (
+                    {strictValidString(values.district) ||
+                    (strictValidNumber(values.district) &&
+                      strictValidArrayWithLength(city.items)) ? (
                       <Text margin={[t1, 0, 0]} body color="#636363">
                         {'Select Delievery Area'}
                       </Text>
                     ) : null}
-                    {strictValidString(values.district) &&
+                    {(strictValidString(values.district) ||
+                      strictValidNumber(values.district)) &&
                     strictValidArrayWithLength(city.items) ? (
-                      <SearchableDropdown
-                        onItemSelect={(item) => {
-                          setFieldValue('region', item.id);
-                          selectCity(item.id);
-                        }}
-                        containerStyle={{marginTop: heightPercentageToDP(1)}}
-                        itemStyle={itemstyle}
-                        itemTextStyle={{color: '#222'}}
-                        itemsContainerStyle={{
-                          maxHeight: heightPercentageToDP(20),
-                        }}
-                        items={
-                          strictValidArray(city.items) &&
-                          city.items.map((a) => ({
-                            name: `${a.name} - ${State}`,
-                            id: `${a.name}`,
-                          }))
-                        }
-                        defaultIndex={1}
-                        resetValue={false}
-                        textInputProps={{
-                          placeholder: 'Select City',
-                          underlineColorAndroid: 'transparent',
-                          style: textStyle,
-                          onTextChange: (text) => setFieldValue('region', text),
-                          value: values.region,
-                        }}
-                        listProps={{
-                          nestedScrollEnabled: true,
-                        }}
+                      <SearchOptions
+                        placeholder="Select city"
+                        data={strictValidArray(city.items) && city.items}
+                        setResults={(a) => selectCity(a.name)}
                       />
-                    ) : strictValidString(values.district) ? (
+                    ) : strictValidString(values.district) ||
+                      strictValidNumber(values.district) ? (
                       <Text
                         margin={[heightPercentageToDP(1), 0]}
                         size={12}
@@ -757,10 +709,9 @@ const Shipping = ({
                   <Text center size={16} margin={[heightPercentageToDP(1), 0]}>
                     Please select at least one address
                   </Text>
-                  {shippingAddress ? (
+                  {strictValidArrayWithLength(shippingAddress) ? (
                     <FlatList
                       data={shippingAddress}
-                      inverted
                       renderItem={({item, index}) => (
                         <TouchableOpacity
                           activeOpacity={0.7}

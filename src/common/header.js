@@ -18,7 +18,7 @@ import {
 import {strictValidObjectWithKeys} from '../utils/commonUtils';
 // import {  guestCartRequest } from '../redux/action';
 
-const Header = ({leftIcon, Logo, rightIcon}) => {
+const Header = ({leftIcon, cartIcon, onPress, customPress}) => {
   const nav = useNavigation();
   const navigation = useNavigation();
   const cart_list = useSelector((v) => v.cart.list.data);
@@ -95,9 +95,17 @@ const Header = ({leftIcon, Logo, rightIcon}) => {
           <ImageComponent name="menu_icon" height={25} width={25} />
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity onPress={() => nav.goBack()}>
-          <ImageComponent name="back_icon" height={25} width={25} />
-        </TouchableOpacity>
+        <>
+          {customPress ? (
+            <TouchableOpacity onPress={onPress}>
+              <ImageComponent name="back_icon" height={25} width={25} />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => nav.goBack()}>
+              <ImageComponent name="back_icon" height={25} width={25} />
+            </TouchableOpacity>
+          )}
+        </>
       )}
 
       <TouchableOpacity
@@ -106,16 +114,25 @@ const Header = ({leftIcon, Logo, rightIcon}) => {
         <ImageComponent name="logo_white_icon" height={30} width={120} />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => nav.navigate('Cart')}>
-        <ImageComponent name="cart_icon" height={25} width={25} color="#fff" />
-        {cart_list.length > 0 ? (
-          <View style={cartView}>
-            <Text center color={'#fff'} size={10}>
-              {qtySum}
-            </Text>
-          </View>
-        ) : null}
-      </TouchableOpacity>
+      {cartIcon ? (
+        <TouchableOpacity onPress={() => nav.navigate('Cart')}>
+          <ImageComponent
+            name="cart_icon"
+            height={25}
+            width={25}
+            color="#fff"
+          />
+          {cart_list.length > 0 ? (
+            <View style={cartView}>
+              <Text center color={'#fff'} size={10}>
+                {qtySum}
+              </Text>
+            </View>
+          ) : null}
+        </TouchableOpacity>
+      ) : (
+        <Text style={{width: wp(5)}} />
+      )}
     </Block>
   );
 };
@@ -124,11 +141,15 @@ Header.defaultProps = {
   Logo: 'Eonbazar',
   rightIcon: 'md-cart-outline',
   leftIcon: true,
+  customPress: false,
+  cartIcon: true,
 };
 Header.propTypes = {
   Logo: PropTypes.string,
   rightIcon: PropTypes.string,
-  leftIcon: PropTypes.string,
+  leftIcon: PropTypes.bool,
+  customPress: PropTypes.bool,
+  cartIcon: PropTypes.bool,
 };
 const cartView = {
   backgroundColor: 'red',

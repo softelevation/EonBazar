@@ -38,7 +38,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import HorizontalCards from '../../common/horizontal-cards';
 import ImageSlider from '../../components/ImageSlider';
 import styled from 'styled-components';
-import {config} from '../../utils/config';
+
 import OverlayLoader from '../../components/overlayLoader';
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -212,6 +212,7 @@ const Dashboard = () => {
             />
           )}
         </Block>
+
         <Block padding={[hp(1), wp(1)]} flex={false}>
           <Block padding={[0, w3]} row flex={false} space={'between'}>
             <Text body semibold>

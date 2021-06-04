@@ -59,3 +59,4 @@ buck-out/
 /ios/Pods/
 android/java_pid12286.hprof
 android/app/release/app-release.apk
+android/app/release/EonBazar.apk

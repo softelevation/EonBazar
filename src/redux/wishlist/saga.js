@@ -12,6 +12,7 @@ import {put, call, all, takeLatest} from 'redux-saga/effects';
 import {ListApi, AddWishlistApi, deleteItemApi} from './api';
 import * as RootNavigation from '../../routes/NavigationService';
 import {Toast} from '../../common/toast';
+import {light} from '../../components/theme/colors';
 export function* requestList(action) {
   try {
     const response = yield call(ListApi, action.payload);
@@ -36,9 +37,8 @@ export function* updateWishlist(action) {
     }
   } catch (err) {
     // alert(err.response.data.message);
-    setTimeout(() => {
-      Toast(err.response.data.message);
-    }, 1000);
+    Toast(err.response.data.message, light.danger);
+
     yield put(updateWishlistError(err.response.data.message));
   }
 }

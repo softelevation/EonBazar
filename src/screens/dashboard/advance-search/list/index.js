@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {StackActions, useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, TouchableOpacity} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -18,6 +18,7 @@ import {
 import {
   addToCartRequest,
   addToGuestCartRequest,
+  updateWishlistRequest,
 } from '../../../../redux/action';
 import ActivityLoader from '../../../../components/activityLoader';
 import {
@@ -26,6 +27,7 @@ import {
 } from '../../../../utils/commonUtils';
 import {config} from '../../../../utils/config';
 import {t2} from '../../../../components/theme/fontsize';
+import OverlayLoader from '../../../../components/overlayLoader';
 
 const initialState = {
   data: [],
@@ -45,6 +47,8 @@ const SearchList = ({route}) => {
   );
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
   const guestCartError = useSelector((v) => v.cart.guestsave.error);
+  const overlayLoader = useSelector((v) => v.cart.save.loading);
+  const overlayGuestLoader = useSelector((v) => v.cart.guestsave.loading);
   const {data} = state;
 
   useEffect(() => {
@@ -95,17 +99,6 @@ const SearchList = ({route}) => {
 
     setstate({data: result});
   }, [productsData, guestCartError]);
-  // const LoadMoreRandomData = async () => {
-  //   if (data.length <= 59) {
-  //     await setCurrentPage(currentPage + 1);
-  //     LoadRandomData();
-  //   }
-  // };
-
-  // useEffect(() => {
-
-  //   setData(newData);
-  // }, [data]);
 
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
@@ -145,16 +138,35 @@ const SearchList = ({route}) => {
     setstate({data: clone});
   };
 
+  const addToWishlist = async (val, index) => {
+    if (strictValidObjectWithKeys(userProfile)) {
+      const old = data[index];
+      const updated = {...old, isWishlist: true};
+      const clone = [...data];
+      clone[index] = updated;
+
+      setstate({data: clone});
+      const id = val.id;
+      await dispatch(updateWishlistRequest(id));
+    } else {
+      nav.reset({
+        routes: [{name: 'Login'}],
+      });
+    }
+  };
+
   const renderItem = ({item, index}) => {
     return (
       <Block
-        style={{width: wp(45), minHeight: hp(35)}}
+        style={{width: wp(45)}}
         padding={[hp(2)]}
         margin={[hp(0.5), wp(1.8)]}
         primary
         flex={false}>
-        <Icon name="ios-heart-outline" size={15} />
-        <Icon name="ios-shuffle" size={15} />
+        <TouchableOpacity onPress={() => addToWishlist(item, index)}>
+          <Icon name="ios-heart-outline" size={15} />
+        </TouchableOpacity>
+        {/* <Icon name="ios-shuffle" size={15} /> */}
         <CustomButton
           activeOpacity={1}
           onPress={() =>
@@ -166,7 +178,12 @@ const SearchList = ({route}) => {
           center
           flex={false}>
           <ImageComponent name={`${config.Image_Url}${item.image}`} isURL />
-          <Text size={12} center margin={[hp(2), 0, 0, 0]} body>
+          <Text
+            numberOfLines={1}
+            size={12}
+            center
+            margin={[hp(2), 0, 0, 0]}
+            body>
             {item.name}
           </Text>
           <Text size={12} body margin={[hp(1), 0, 0, 0]} semibold>
@@ -210,11 +227,7 @@ const SearchList = ({route}) => {
             center
             middle
             flex={false}>
-            {item.isLoad ? (
-              <ActivityIndicator size="small" color="#fff" />
-            ) : (
-              <MaterialIcon name="shopping-bag" size={20} color="#fff" />
-            )}
+            <MaterialIcon name="shopping-bag" size={20} color="#fff" />
           </CustomButton>
         </Block>
       </Block>
@@ -223,6 +236,8 @@ const SearchList = ({route}) => {
   return (
     <Block>
       {!loader && isLoad && <ActivityLoader />}
+      {(overlayLoader || overlayGuestLoader) && <OverlayLoader />}
+
       <Header leftIcon={false} />
       <Block padding={[t2]} flex={false} color="#fdf0d5">
         <Text color="#6f4400" size={14}>
@@ -231,10 +246,6 @@ const SearchList = ({route}) => {
             onPress={() =>
               nav.navigate('AdvanceSearch', {
                 data: route.params.data,
-                // fromPrice: AdnaceSerachdata.fromPrice,
-                // toPrice: AdnaceSerachdata.toPrice,
-                //   sku: route.params.data.sku,
-                //   description: AdnaceSerachdata.description
               })
             }
             semibold

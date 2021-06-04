@@ -463,7 +463,7 @@ const ShowAddress = (
           {strictValidArrayWithLength(shippingAddress) ? (
             <FlatList
               data={shippingAddress}
-              inverted
+              contentContainerStyle={{flexGrow: 1}}
               renderItem={({item, index}) => (
                 <View
                   style={{

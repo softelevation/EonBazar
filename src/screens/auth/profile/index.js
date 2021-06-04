@@ -12,6 +12,7 @@ import {CommonActions, useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import ActivityLoader from '../../../components/activityLoader';
 import {
+  strictValidArrayWithLength,
   strictValidObject,
   strictValidObjectWithKeys,
 } from '../../../utils/commonUtils';
@@ -160,30 +161,31 @@ const Profile = () => {
                     color="primary">
                     Your Addresses
                   </Button>
-                  <FlatList
-                    data={user.addresses}
-                    inverted
-                    renderItem={({item}) => {
-                      console.log(item);
-                      return (
-                        <Block
-                          margin={[hp(1), 0, hp(0.5)]}
-                          row
-                          space={'between'}
-                          white
-                          padding={[hp(1.5)]}>
-                          <Text
-                            grey
-                            size={14}
-                            style={{width: wp(70)}}
-                            numberOfLines={1}>
-                            {item.firstname} {item.lastname}, {item.city}{' '}
-                            {item.postcode}
-                          </Text>
-                        </Block>
-                      );
-                    }}
-                  />
+                  {strictValidArrayWithLength(user.addresses) && (
+                    <FlatList
+                      data={user.addresses}
+                      renderItem={({item}) => {
+                        console.log(item);
+                        return (
+                          <Block
+                            margin={[hp(1), 0, hp(0.5)]}
+                            row
+                            space={'between'}
+                            white
+                            padding={[hp(1.5)]}>
+                            <Text
+                              grey
+                              size={14}
+                              style={{width: wp(70)}}
+                              numberOfLines={1}>
+                              {item.firstname} {item.lastname}, {item.city}{' '}
+                              {item.postcode}
+                            </Text>
+                          </Block>
+                        );
+                      }}
+                    />
+                  )}
                   <Button
                     onPress={() => nav.navigate('DashboardLogo')}
                     color="secondary">

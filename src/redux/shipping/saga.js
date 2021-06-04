@@ -5,6 +5,7 @@ import {Api} from './api';
 import {Alert} from 'react-native';
 import * as RootNavigation from '../../routes/NavigationService';
 import {Toast} from '../../common/toast';
+import {light} from '../../components/theme/colors';
 
 export function* request(action) {
   try {
@@ -18,7 +19,7 @@ export function* request(action) {
       yield put(addShippingError(response));
     }
   } catch (err) {
-    Toast(err.response.data.message);
+    Toast(err.response.data.message, light.danger);
     yield put(addShippingError(err));
   }
 }

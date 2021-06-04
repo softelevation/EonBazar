@@ -36,7 +36,7 @@ import {
   strictValidObjectWithKeys,
 } from '../../../utils/commonUtils';
 import {light} from '../../../components/theme/colors';
-import {useNavigation} from '@react-navigation/core';
+import {useFocusEffect, useNavigation} from '@react-navigation/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {config} from '../../../utils/config';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -99,16 +99,28 @@ const SubCategory = (props) => {
     }
   };
 
-  useEffect(() => {
-    dispatch(
-      filterCategoryListRequest({
-        currentPage,
-        pageSize: 10,
-        menu,
-      }),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [menu]);
+  // useEffect(() => {
+  //   dispatch(
+  //     filterCategoryListRequest({
+  //       currentPage,
+  //       pageSize: 10,
+  //       menu,
+  //     }),
+  //   );
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [menu]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(
+        filterCategoryListRequest({
+          currentPage,
+          pageSize: 10,
+          menu,
+        }),
+      );
+    }, [menu]),
+  );
 
   useEffect(() => {
     if (!menu) {
@@ -131,6 +143,16 @@ const SubCategory = (props) => {
       }
     }
   };
+  React.useEffect(() => {
+    const unsubscribe = nav.addListener('focus', () => {
+      // do something
+      setstate({
+        data: [],
+      });
+    });
+
+    return unsubscribe;
+  }, [nav]);
 
   useEffect(() => {
     const newData = [];
@@ -168,10 +190,8 @@ const SubCategory = (props) => {
           name: item.name,
           image: item.image,
           currency_code: currency || 'BDT',
-          price_info: item.price,
-          specialPrice: item.special_price
-            ? Math.ceil(item.special_price.value).toFixed(2)
-            : item.price,
+          price_info: item.price_info,
+          specialPrice: item.specialPrice,
           isLoad: false,
           sku: item.sku,
           id: item.id,
@@ -220,6 +240,9 @@ const SubCategory = (props) => {
       const updated = {...old, isWishlist: true};
       const clone = [...data];
       clone[index] = updated;
+      setstate({data: clone});
+      const id = val.id;
+      await dispatch(updateWishlistRequest(id));
     } else {
       nav.reset({
         routes: [{name: 'Login'}],
@@ -266,9 +289,7 @@ const SubCategory = (props) => {
           image: a.extension_attributes.image_url,
         });
       });
-    const unique = [...new Set(newData.map((item) => item.item_id))];
-    console.log(unique, 'unique');
-    setList(unique);
+    setList(newData);
 
     var numbers = newData;
     var sum = 0;
@@ -289,7 +310,7 @@ const SubCategory = (props) => {
         <TouchableOpacity onPress={() => addToWishlist(item, index)}>
           <Icon name="ios-heart-outline" size={15} />
         </TouchableOpacity>
-        <Icon name="ios-shuffle" size={15} />
+        {/* <Icon name="ios-shuffle" size={15} /> */}
         <CustomButton
           activeOpacity={1}
           onPress={() =>
@@ -399,14 +420,11 @@ const SubCategory = (props) => {
           center
           row
           space={'between'}
-          margin={[0, w2, 0, w2]}
+          margin={[hp(2), w2, 0, w2]}
           flex={false}>
           <Text semibold size={15}>
             {name || ''}
           </Text>
-          <ShopByButton style={{marginTop: 5}} color="secondary">
-            Shop by
-          </ShopByButton>
         </Block>
         <Block
           margin={[t2, w2, 0, w2]}
