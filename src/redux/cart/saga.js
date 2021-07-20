@@ -20,7 +20,6 @@ import {
   updateGuestCartError,
   updateGuestCartSuccess,
   deleteGuestCartError,
-  deleteGuestCartRequest,
   GuestMergeSuccess,
   GuestMergeError,
 } from '../action';
@@ -38,27 +37,41 @@ import {
   GuestCartApi,
   guestdMergeApi,
 } from './api';
-import * as RootNavigation from '../../routes/NavigationService';
 import {
   deleteGuestCartSuccess,
   GuestCartIDRequest,
   guestCartRequest,
 } from './action';
 import AsyncStorage from '@react-native-community/async-storage';
-import {Alert} from 'react-native';
 import {Toast} from '../../common/toast';
 import {light} from '../../components/theme/colors';
+import {Alert} from 'react-native';
+import {profileSuccess} from '../auth/profile/action';
+import {authCheckError} from '../auth/login/action';
+import {sessionExpired} from '../../utils/constants';
+
+const clearAuthToken = async () => {
+  return await AsyncStorage.removeItem('token');
+};
 
 export function* requestList(action) {
   try {
     const response = yield call(ListApi, action.payload);
+
     if (response) {
       yield put(getCartDetailsSuccess(response.data));
     } else {
       yield put(getCartDetailsError(response));
     }
   } catch (err) {
-    yield put(getCartDetailsError(err));
+    if (err.response.status === 401 || err.response.status === 404) {
+      yield call(clearAuthToken);
+      yield put(profileSuccess({}));
+      yield put(getCartDetailsError(err));
+      Toast(sessionExpired, light.danger);
+    } else {
+      yield put(getCartDetailsError(err));
+    }
   }
 }
 
@@ -75,9 +88,14 @@ export function* requestSaveList(action) {
       yield put(addToCartError(response));
     }
   } catch (err) {
-    Toast(err.response.data.message, light.danger);
-
-    yield put(addToCartError(err.response.data.message));
+    if (err.response.status === 401 || err.response.status === 404) {
+      yield call(clearAuthToken);
+      yield put(profileSuccess({}));
+      yield put(getCartDetailsError(err));
+      Toast(sessionExpired, light.danger);
+    } else {
+      yield put(addToCartError(err.response.data.message));
+    }
   }
 }
 
@@ -90,7 +108,14 @@ export function* createCart(action) {
       yield put(createCartError(response));
     }
   } catch (err) {
-    yield put(createCartError(err));
+    if (err.response.status === 401 || err.response.status === 404) {
+      yield call(clearAuthToken);
+      yield put(profileSuccess({}));
+      yield put(createCartError(err));
+      Toast(sessionExpired, light.danger);
+    } else {
+      yield put(createCartError(err));
+    }
   }
 }
 
@@ -104,8 +129,15 @@ export function* updateCart(action) {
       yield put(updateCartError(response));
     }
   } catch (err) {
-    Toast(err.response.data.message, light.danger);
-    yield put(updateCartError(err.response.data.message));
+    if (err.response.status === 401 || err.response.status === 404) {
+      yield call(clearAuthToken);
+      yield put(profileSuccess({}));
+      yield put(updateCartError(err.response.data.message));
+      Toast(sessionExpired, light.danger);
+    } else {
+      Toast(err.response.data.message, light.danger);
+      yield put(updateCartError(err.response.data.message));
+    }
   }
 }
 
@@ -119,7 +151,14 @@ export function* deleteIem(action) {
       yield put(deleteItemError(response));
     }
   } catch (err) {
-    yield put(deleteItemError(err));
+    if (err.response.status === 401 || err.response.status === 404) {
+      yield call(clearAuthToken);
+      yield put(profileSuccess({}));
+      yield put(deleteItemError(err));
+      Toast(sessionExpired, light.danger);
+    } else {
+      yield put(deleteItemError(err));
+    }
   }
 }
 const SaveToken = async (token) => {
@@ -135,7 +174,14 @@ export function* guestcreateCart(action) {
       yield put(GuestCartIDError(response));
     }
   } catch (err) {
-    yield put(GuestCartIDError(err));
+    if (err.response.status === 401 || err.response.status === 404) {
+      yield call(clearAuthToken);
+      yield put(profileSuccess({}));
+      yield put(GuestCartIDError(err));
+      Toast(sessionExpired, light.danger);
+    } else {
+      yield put(GuestCartIDError(err));
+    }
   }
 }
 
@@ -150,8 +196,16 @@ export function* guestrequestList(action) {
       yield put(GuestCartIDRequest());
     }
   } catch (err) {
-    yield put(guestCartError(err));
-    yield put(GuestCartIDRequest());
+    if (err.response.status === 401 || err.response.status === 404) {
+      yield call(clearAuthToken);
+      yield put(profileSuccess({}));
+      yield put(guestCartError(err));
+      yield put(GuestCartIDRequest());
+      Toast(sessionExpired, light.danger);
+    } else {
+      yield put(guestCartError(err));
+      yield put(GuestCartIDRequest());
+    }
   }
 }
 
@@ -174,8 +228,15 @@ export function* guestSaveList(action) {
       yield put(addToGuestCartError(response));
     }
   } catch (err) {
-    Toast(err.response.data.message, light.danger);
-    yield put(addToGuestCartError(err.response.data.message));
+    if (err.response.status === 401 || err.response.status === 404) {
+      yield call(clearAuthToken);
+      yield put(profileSuccess({}));
+      yield put(addToGuestCartError(err.response.data.message));
+      Toast(sessionExpired, light.danger);
+    } else {
+      Toast(err.response.data.message, light.danger);
+      yield put(addToGuestCartError(err.response.data.message));
+    }
   }
 }
 
@@ -192,8 +253,15 @@ export function* guestupdateCart(action) {
       yield put(updateGuestCartError(response));
     }
   } catch (err) {
-    Toast(err.response.data.message, light.danger);
-    yield put(updateGuestCartError(err.response.data.message));
+    if (err.response.status === 401 || err.response.status === 404) {
+      yield call(clearAuthToken);
+      yield put(profileSuccess({}));
+      yield put(updateGuestCartError(err.response.data.message));
+      Toast(sessionExpired, light.danger);
+    } else {
+      Toast(err.response.data.message, light.danger);
+      yield put(updateGuestCartError(err.response.data.message));
+    }
   }
 }
 
@@ -210,7 +278,14 @@ export function* guestdeleteIem(action) {
       yield put(deleteGuestCartError(response));
     }
   } catch (err) {
-    yield put(deleteGuestCartError(err));
+    if (err.response.status === 401 || err.response.status === 404) {
+      yield call(clearAuthToken);
+      yield put(profileSuccess({}));
+      yield put(deleteGuestCartError(err));
+      Toast(sessionExpired, light.danger);
+    } else {
+      yield put(deleteGuestCartError(err));
+    }
   }
 }
 
@@ -223,7 +298,14 @@ export function* guestMerge(action) {
       yield put(GuestMergeError(response));
     }
   } catch (err) {
-    yield put(GuestMergeError(err));
+    if (err.response.status === 401 || err.response.status === 404) {
+      yield call(clearAuthToken);
+      yield put(profileSuccess({}));
+      yield put(GuestMergeError(err));
+      Toast(sessionExpired, light.danger);
+    } else {
+      yield put(GuestMergeError(err));
+    }
   }
 }
 

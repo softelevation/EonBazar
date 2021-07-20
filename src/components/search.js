@@ -156,6 +156,7 @@ const Search = ({placeholder}) => {
         <FlatList
           data={results}
           showsVerticalScrollIndicator={false}
+          keyExtractor={(item) => item.id}
           ListEmptyComponent={!load && renderEmpty}
           style={
             strictValidArrayWithLength(results)
@@ -185,8 +186,8 @@ const Search = ({placeholder}) => {
                   <ImageComponent
                     isURL
                     name={`${config.Image_Url}${getImage.file}`}
-                    height="60"
-                    width="60"
+                    height={60}
+                    width={60}
                   />
                 )}
                 <Block margin={[0, w5]} flex={false}>

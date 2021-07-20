@@ -1,11 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
-import styled from 'styled-components/native';
+import {ActivityIndicator, FlatList, TouchableOpacity} from 'react-native';
 import {Block, Text, ImageComponent, CustomButton} from '../components';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {
@@ -16,7 +10,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  strictValidArray,
   strictValidArrayWithLength,
   strictValidObjectWithKeys,
 } from '../utils/commonUtils';
@@ -27,7 +20,6 @@ import {
 } from '../redux/action';
 import {config} from '../utils/config';
 import {light} from '../components/theme/colors';
-import Toast from './toast';
 const Cards = ({data, maxHeight, initialNumToRender}) => {
   const nav = useNavigation();
   const [products, setData] = useState([]);
@@ -43,7 +35,6 @@ const Cards = ({data, maxHeight, initialNumToRender}) => {
 
   useEffect(() => {
     const newData = [];
-    console.log(data, 'data');
     data &&
       data.map((a) => {
         const special_price = a.custom_attributes.find(
@@ -81,15 +72,6 @@ const Cards = ({data, maxHeight, initialNumToRender}) => {
       const clone = [...products];
       clone[index] = updated;
       setData(clone);
-
-      // setTimeout(() => {
-      //   const old = products[index];
-      //   const updated = {...old, isLoad: false};
-      //   const clone = [...products];
-      //   clone[index] = updated;
-      //   setData(clone);
-      // }, 5000);
-
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -102,15 +84,6 @@ const Cards = ({data, maxHeight, initialNumToRender}) => {
       const clone = [...products];
       clone[index] = updated;
       setData(clone);
-
-      // setTimeout(() => {
-      //   const old = products[index];
-      //   const updated = {...old, isLoad: false};
-      //   const clone = [...products];
-      //   clone[index] = updated;
-      //   setData(clone);
-      // }, 5000);
-
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -135,7 +108,6 @@ const Cards = ({data, maxHeight, initialNumToRender}) => {
       nav.reset({
         routes: [{name: 'Login'}],
       });
-      // Alert.alert('Error', 'Please login First');
     }
   };
 
@@ -158,9 +130,9 @@ const Cards = ({data, maxHeight, initialNumToRender}) => {
     return (
       <CustomButton
         activeOpacity={1}
-        style={{width: wp(45)}}
+        style={{width: wp(48)}}
         padding={[hp(2)]}
-        margin={[hp(0.5), wp(1.8)]}
+        margin={[hp(0.5), wp(1)]}
         primary
         flex={false}>
         {item.isWishlist ? (
@@ -200,15 +172,6 @@ const Cards = ({data, maxHeight, initialNumToRender}) => {
           <Text size={12} body margin={[hp(1), 0, 0, 0]} semibold>
             {item.currency_code} {item.price_info}
           </Text>
-          {/* {item.price_info !== item.specialPrice && (
-            <LineAboveText
-              body
-              size={12}
-              color="grey"
-              margin={[hp(0.2), 0, 0, 0]}>
-              {item.currency_code} {item.price_info}
-            </LineAboveText>
-          )} */}
         </CustomButton>
         <Block
           margin={[hp(1), 0, 0, 0]}
@@ -247,11 +210,7 @@ const Cards = ({data, maxHeight, initialNumToRender}) => {
             center
             middle
             flex={false}>
-            {/* {item.isLoad ? (
-              <ActivityIndicator size="small" color="#fff" />
-            ) : ( */}
             <MaterialIcon name="shopping-bag" size={20} color="#fff" />
-            {/* )} */}
           </CustomButton>
         </Block>
       </CustomButton>
@@ -264,18 +223,14 @@ const Cards = ({data, maxHeight, initialNumToRender}) => {
       data={products && products}
       renderItem={renderItem}
       onEndReachedThreshold={0}
+      numColumns={2}
       ListEmptyComponent={_renderEmpty}
       maxHeight={maxHeight}
+      keyExtractor={(item) => item.id}
     />
   );
 };
-const LineAboveText = styled(Text)({
-  textDecorationLine: 'line-through',
-  textDecorationStyle: 'solid',
-});
 const flatlistContentStyle = {
-  flexWrap: 'wrap',
-  flexDirection: 'row',
   paddingTop: hp(2),
   flexGrow: 1,
 };

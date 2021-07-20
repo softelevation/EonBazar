@@ -347,7 +347,6 @@ const AddAddress = (
           isValid,
           dirty,
         }) => {
-          console.log(values);
           return (
             <View style={{flex: 1}}>
               <KeyboardAwareScrollView

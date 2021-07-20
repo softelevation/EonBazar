@@ -231,8 +231,8 @@ const Cart = () => {
               secondary>
               <ImageComponent
                 name="close_icon"
-                height="15"
-                width="15"
+                height={15}
+                width={15}
                 color="#fff"
               />
             </CustomButton>
@@ -254,8 +254,8 @@ const Cart = () => {
               secondary>
               <ImageComponent
                 name="refresh_icon"
-                height="12"
-                width="12"
+                height={12}
+                width={12}
                 color="#fff"
               />
             </CustomButton>
@@ -326,6 +326,7 @@ const Cart = () => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
+          keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
           data={strictValidArrayWithLength(cartlist) && cartlist}
           renderItem={_renderItem}

@@ -5,24 +5,14 @@ import {
 } from 'react-native-responsive-screen';
 import styled from 'styled-components/native';
 import PropTypes from 'prop-types';
-import {ActivityIndicator, FlatList, Platform, ScrollView} from 'react-native';
+import {FlatList, Platform} from 'react-native';
 import {Text, Block} from '.';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {t1, t2, t5, w3, w5} from './theme/fontsize';
-import {useNavigation} from '@react-navigation/native';
-import useDebounce from './debounce';
-import AsyncStorage from '@react-native-community/async-storage';
-import {config} from '../utils/config';
-import ImageComponent from './ImageComponent';
-import {useSelector} from 'react-redux';
 import {
   strictValidArrayWithLength,
   strictValidString,
-  strictValidStringWithMinLength,
 } from '../utils/commonUtils';
 import CustomButton from './CustomButton';
 import _ from 'lodash';
-import {light} from './theme/colors';
 
 const SearchOptions = ({placeholder, data, setResults, results}) => {
   const [isSearching, setIsSearching] = useState(false);
@@ -72,7 +62,6 @@ const SearchOptions = ({placeholder, data, setResults, results}) => {
     setSearchText(item.name);
     setResults(item);
     setIsSearching(false);
-    console.log(item, 'item');
   };
 
   return (
@@ -103,6 +92,7 @@ const SearchOptions = ({placeholder, data, setResults, results}) => {
       {isSearching && strictValidArrayWithLength(districts) && (
         <FlatList
           data={districts}
+          keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
           // ListEmptyComponent={renderEmpty}
           contentContainerStyle={{flexGrow: 1}}

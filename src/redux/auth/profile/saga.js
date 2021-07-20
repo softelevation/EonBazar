@@ -16,6 +16,8 @@ import {Alert} from 'react-native';
 import {Toast} from '../../../common/toast';
 import {profileFlush} from './action';
 import {loginSuccess} from '../login/action';
+import {sessionExpired} from '../../../utils/constants';
+import {light} from '../../../components/theme/colors';
 
 const getToken = async () => {
   const guest_token = await AsyncStorage.getItem('guest-token');
@@ -24,6 +26,9 @@ const getToken = async () => {
 export const cartItems = (state) => state.cart.list.data;
 const clearGuestToken = async () => {
   return await AsyncStorage.removeItem('guest-token');
+};
+const clearAuthToken = async () => {
+  return await AsyncStorage.removeItem('token');
 };
 
 export function* request(action) {
@@ -50,7 +55,14 @@ export function* request(action) {
       yield put(profileError(response));
     }
   } catch (err) {
-    yield put(profileError(err));
+    if (err.response.status === 401 || err.response.status === 404) {
+      yield call(clearAuthToken);
+      yield put(profileSuccess({}));
+      yield put(profileError(err));
+      Toast(sessionExpired, light.danger);
+    } else {
+      yield put(profileError(err));
+    }
   }
 }
 
@@ -79,7 +91,14 @@ export function* updateRequest(action) {
       yield put(profileError(response));
     }
   } catch (err) {
-    yield put(profileError(err));
+    if (err.response.status === 401 || err.response.status === 404) {
+      yield call(clearAuthToken);
+      yield put(profileSuccess({}));
+      yield put(profileError(err));
+      Toast(sessionExpired, light.danger);
+    } else {
+      yield put(profileError(err));
+    }
   }
 }
 

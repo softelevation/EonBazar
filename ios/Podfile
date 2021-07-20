@@ -5,12 +5,15 @@ platform :ios, '10.0'
 
 target 'Eonbazar' do
   config = use_native_modules!
-
+pod 'Firebase/Analytics'
+pod 'Firebase/Crashlytics'
   use_react_native!(:path => config["reactNativePath"])
 
   target 'EonbazarTests' do
     inherit! :complete
     # Pods for testing
+    # pod 'Firebase/Analytics'
+
   end
 
   # Enables Flipper.

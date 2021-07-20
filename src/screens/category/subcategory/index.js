@@ -198,7 +198,6 @@ const SubCategory = (props) => {
         });
       }
     }
-    console.log(result);
 
     setstate({data: result});
   }, [filteredData]);
@@ -457,13 +456,14 @@ const SubCategory = (props) => {
             <FlatList
               contentContainerStyle={flatlistContentStyle}
               data={strictValidArray(data) && data}
-              keyExtractor={(item) => item.id}
               renderItem={renderItem}
-              // onEndReached={LoadMoreRandomData}
-              // onEndReachedThreshold={0.1}
+              numColumns={2}
               bounces={false}
-              // ListFooterComponent={renderFooter}
               maxHeight={500}
+              windowSize={10}
+              maxToRenderPerBatch={60}
+              initialNumToRender={50}
+              keyExtractor={(item) => item.id}
               onMomentumScrollBegin={() => {
                 setEndReached(false);
               }}
@@ -565,12 +565,9 @@ const dropdownStyle = {
   },
 };
 const flatlistContentStyle = {
-  flexWrap: 'wrap',
-  flexDirection: 'row',
   paddingTop: hp(2),
   paddingBottom: hp(4),
   flexGrow: 1,
-  justifyContent: 'center',
 };
 
 const CartButton = styled(Button)({

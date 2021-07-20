@@ -42,7 +42,6 @@ const EditProfile = ({
   const isLoad = useSelector((state) => state.user.profile.loading);
   const [resend, setResend] = useState(0);
   const nav = useNavigation();
-  console.log(isLoad, 'isLoad');
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
   useEffect(() => {

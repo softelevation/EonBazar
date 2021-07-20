@@ -184,8 +184,8 @@ const Wishlist = () => {
           <ImageComponent
             isURL
             name={`${config.Image_Url}${image}`}
-            height="100"
-            width="100"
+            height={100}
+            width={100}
           />
           <Block
             style={{width: wp(53)}}
@@ -278,8 +278,8 @@ const Wishlist = () => {
             padding={[hp(0.6)]}>
             <ImageComponent
               name="wishlist_icon"
-              height="15"
-              width="17"
+              height={15}
+              width={17}
               color="#78A942"
             />
           </Block>
@@ -292,6 +292,7 @@ const Wishlist = () => {
             data={wishlistData}
             ListEmptyComponent={_renderEmpty}
             renderItem={_renderItem}
+            keyExtractor={(item) => item.id}
           />
           <Button
             onPress={() =>

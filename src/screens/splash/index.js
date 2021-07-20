@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import AsyncStorage from '@react-native-community/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
@@ -11,7 +10,6 @@ const Splash = () => {
   const nav = useNavigation();
 
   const CallNavigation = async () => {
-    const guest_token = await AsyncStorage.getItem('guest-token');
     const res = await dispatch(authCheckRequest());
     // const guestres = await dispatch(guestCheckRequest());
     if (res.res) {

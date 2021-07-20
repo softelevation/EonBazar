@@ -155,9 +155,9 @@ const HorizontalCards = ({data, isLoad, setIsLoad}) => {
     return (
       <CustomButton
         activeOpacity={1}
-        style={{width: wp(45)}}
+        style={{width: wp(48)}}
         padding={[hp(2)]}
-        margin={[hp(0.5), wp(1.8)]}
+        margin={[hp(0.5), wp(1)]}
         primary
         flex={false}>
         {item.isWishlist ? (
@@ -175,7 +175,6 @@ const HorizontalCards = ({data, isLoad, setIsLoad}) => {
             )}
           </TouchableOpacity>
         )}
-        {/* <Icon name="ios-shuffle" size={15} /> */}
         <CustomButton
           activeOpacity={1}
           onPress={() =>
@@ -198,15 +197,6 @@ const HorizontalCards = ({data, isLoad, setIsLoad}) => {
           <Text size={12} body margin={[hp(1), 0, 0, 0]} semibold>
             {item.currency_code} {item.price_info}
           </Text>
-          {/* {item.price_info !== item.specialPrice && (
-            <LineAboveText
-              body
-              size={12}
-              color="grey"
-              margin={[hp(0.2), 0, 0, 0]}>
-              {item.currency_code} {item.price_info}
-            </LineAboveText>
-          )} */}
         </CustomButton>
         <Block
           margin={[hp(1), 0, 0, 0]}
@@ -261,18 +251,13 @@ const HorizontalCards = ({data, isLoad, setIsLoad}) => {
         onEndReachedThreshold={0}
         ListEmptyComponent={_renderEmpty}
         horizontal
+        keyExtractor={(item) => item.id}
         showsHorizontalScrollIndicator={false}
       />
     </React.Fragment>
   );
 };
-const LineAboveText = styled(Text)({
-  textDecorationLine: 'line-through',
-  textDecorationStyle: 'solid',
-});
 const flatlistContentStyle = {
-  flexWrap: 'wrap',
-  flexDirection: 'row',
   paddingTop: hp(2),
 };
 export default HorizontalCards;

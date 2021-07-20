@@ -260,17 +260,16 @@ const SearchList = ({route}) => {
         contentContainerStyle={flatlistContentStyle}
         data={strictValidArray(data) && data}
         renderItem={renderItem}
+        numColumns={2}
+        keyExtractor={(item) => item.id}
       />
     </Block>
   );
 };
 const flatlistContentStyle = {
-  flexWrap: 'wrap',
-  flexDirection: 'row',
   paddingTop: hp(2),
   paddingBottom: hp(4),
   flexGrow: 1,
-  justifyContent: 'center',
 };
 
 export default SearchList;

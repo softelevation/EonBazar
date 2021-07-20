@@ -747,6 +747,7 @@ const BillingAddress = ({
                 <View style={{flex: 1, marginTop: 10}}>
                   {shippingAddress ? (
                     <FlatList
+                      keyExtractor={(item) => item.id}
                       data={shippingAddress}
                       renderItem={({item, index}) => (
                         <View

@@ -17,6 +17,7 @@ import {Toast} from '../../../common/toast';
 
 import * as Navigation from '../../../routes/NavigationService';
 import {light} from '../../../components/theme/colors';
+import {sessionExpired} from '../../../utils/constants';
 const SaveToken = async (token) => {
   return await AsyncStorage.setItem('token', token);
 };
@@ -68,6 +69,7 @@ export function* authRequest(action) {
     yield call(clearAuthToken);
     yield put(profileSuccess({}));
     yield put(authCheckError());
+    Toast(sessionExpired, light.danger);
   }
 }
 export function* gusetRequest() {

@@ -215,8 +215,8 @@ const Details = ({
           <Text size={14}>Reviews</Text>
           <ImageComponent
             name={reviews ? 'up_arrow_icon' : 'down_arrow_icon'}
-            height="10"
-            width="10"
+            height={10}
+            width={10}
           />
         </CustomButton>
         <Block
@@ -408,8 +408,8 @@ const Details = ({
                           <ImageComponent
                             isURL
                             name={`${config.Image_Url}${data.file}`}
-                            height="250"
-                            width="280"
+                            height={250}
+                            width={280}
                           />
                         </View>
                       ) : (
@@ -430,8 +430,8 @@ const Details = ({
                     <ImageComponent
                       isURL
                       name={`${config.Image_Url}${item.image}`}
-                      height="250"
-                      width="250"
+                      height={250}
+                      width={250}
                     />
                   </View>
                 )}
@@ -446,7 +446,6 @@ const Details = ({
                 <Text transform="uppercase" size={12} height={20}>
                   be the first to review this product
                 </Text>
-                {console.log(item)}
                 <Block row center flex={false}>
                   <Icon
                     name="checkmark-circle"
@@ -582,8 +581,8 @@ const Details = ({
                   padding={[hp(0.7)]}>
                   <ImageComponent
                     name="wishlist_icon"
-                    height="20"
-                    width="23"
+                    height={20}
+                    width={23}
                     color="#78A942"
                   />
                 </CustomButton>

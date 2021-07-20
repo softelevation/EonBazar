@@ -79,9 +79,9 @@ const PaymentMethod = ({
       agreement_id: terms[0].agreement_id,
     };
 
-    setTimeout(() => {
-      Toast('Order place successfully...');
-    }, 3000);
+    // setTimeout(() => {
+    //   Toast('Order place successfully...');
+    // }, 3000);
 
     dispatch(paymentRequest(data));
   };
@@ -191,8 +191,8 @@ const PaymentMethod = ({
                       </Text>
                       <ImageComponent
                         name={instruction ? 'up_arrow_icon' : 'down_arrow_icon'}
-                        height="10"
-                        width="10"
+                        height={10}
+                        width={10}
                       />
                     </CustomButton>
                     {instruction && (
@@ -230,8 +230,8 @@ const PaymentMethod = ({
             </Text>
             <ImageComponent
               name={discount ? 'up_arrow_icon' : 'down_arrow_icon'}
-              height="10"
-              width="10"
+              height={10}
+              width={10}
             />
           </CustomButton>
           {discount && (

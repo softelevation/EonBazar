@@ -8,11 +8,14 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "app-build": "cd android && ./gradlew clean && cd .. && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android && ./gradlew assembleDebug"
+    "app-build": "cd android && ./gradlew clean && cd .. && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android && ./gradlew assembleDebug",
+    "build-bundle": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-firebase/app": "^12.1.0",
+    "@react-native-firebase/crashlytics": "^12.1.0",
     "@react-native-picker/picker": "^1.9.6",
     "@react-navigation/bottom-tabs": "^5.11.2",
     "@react-navigation/drawer": "^5.11.4",
@@ -20,7 +23,6 @@
     "@react-navigation/stack": "^5.12.8",
     "axios": "^0.21.1",
     "formik": "^2.2.6",
-    "i": "^0.3.6",
     "moment": "^2.29.1",
     "npm": "^6.14.9",
     "react": "16.13.1",

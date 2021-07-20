@@ -340,7 +340,6 @@ const Shipping = ({
   //   getStates.map((c) => setregion(c.id));
   // };
   const selectDistrict = (value) => {
-    console.log(value);
     dispatch(searchAreaRequest(value));
     formikRef.current?.setFieldValue('district', value);
     const getStates =
@@ -466,7 +465,6 @@ const Shipping = ({
           isValid,
           dirty,
         }) => {
-          console.log(values);
           return (
             <View style={{flex: 1}}>
               <View
@@ -711,6 +709,7 @@ const Shipping = ({
                   </Text>
                   {strictValidArrayWithLength(shippingAddress) ? (
                     <FlatList
+                      keyExtractor={(item) => item.id}
                       data={shippingAddress}
                       renderItem={({item, index}) => (
                         <TouchableOpacity

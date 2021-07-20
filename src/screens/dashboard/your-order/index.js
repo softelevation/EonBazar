@@ -189,6 +189,7 @@ const YourOrder = () => {
               {renderThreeRow('Product Name', 'Qty', 'Price', true)}
               <FlatList
                 data={item.items}
+                keyExtractor={(item) => item.id}
                 renderItem={({item}) => {
                   const qty = `${item.qty_ordered} QTY`;
                   return (
@@ -327,6 +328,7 @@ const YourOrder = () => {
           ListEmptyComponent={<EmptyFile />}
           renderItem={_renderItem}
           inverted={upDownIcon}
+          keyExtractor={(item) => item.id}
         />
       </ScrollView>
       <Block flex={false} margin={[t1, w4]}>

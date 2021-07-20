@@ -43,6 +43,10 @@ import OverlayLoader from '../../components/overlayLoader';
 const Dashboard = () => {
   const navigation = useNavigation();
   const [menu, setmenu] = useState('');
+  const [cartlist, setList] = useState([]);
+  const [qtySum, setSum] = useState([]);
+  const [showPrice, setShowPrice] = useState(false);
+  const [scrollHeight, setScrollHeight] = useState(0);
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user.profile.user);
   const productsData = useSelector((v) => v.category.productList.data);
@@ -59,9 +63,6 @@ const Dashboard = () => {
   const newOfferLoad = useSelector((v) => v.category.brands.loading);
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
   const cart_list = useSelector((state) => state.cart.list.data);
-  const [cartlist, setList] = useState([]);
-  const [qtySum, setSum] = useState([]);
-  const [showPrice, setShowPrice] = useState(false);
   const scrollRef = useRef();
   const bestOffer = 10;
   const topOffer = 11;
@@ -168,23 +169,29 @@ const Dashboard = () => {
       <Block flex={false} padding={[0, wp(2), 0, wp(2)]}>
         <Search />
       </Block>
-      <BackButton
-        onPress={() => scrollRef.current && scrollRef.current.scrollTo()}
-        style={{
-          position: 'absolute',
-          right: 10,
-          top: 80,
-          zIndex: 2,
-        }}>
-        {/* <Text>Top</Text> */}
-        <ImageComponent
-          name="scroll_icon"
-          height="15"
-          width="15"
-          color="green"
-        />
-      </BackButton>
-      <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
+      {scrollHeight > 300 && (
+        <BackButton
+          onPress={() => scrollRef.current && scrollRef.current.scrollTo()}
+          style={{
+            position: 'absolute',
+            right: 10,
+            top: 80,
+            zIndex: 2,
+          }}>
+          <ImageComponent
+            name="scroll_icon"
+            height={15}
+            width={15}
+            color="green"
+          />
+        </BackButton>
+      )}
+      <ScrollView
+        onScroll={(e) => {
+          setScrollHeight(e.nativeEvent.contentOffset.y);
+        }}
+        ref={scrollRef}
+        showsVerticalScrollIndicator={false}>
         <HeaderMenu onPress={sortingMenu} color={menu} />
         {isLoadBanner ? (
           <Block color="transparent" style={{height: hp(23)}} center middle>

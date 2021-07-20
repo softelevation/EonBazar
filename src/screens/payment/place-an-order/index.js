@@ -83,8 +83,8 @@ const PlaceAnOrder = () => {
                       flex={false}>
                       <ImageComponent
                         name={`${item}_icon`}
-                        height="20"
-                        width="20"
+                        height={20}
+                        width={20}
                       />
                     </Block>
                     <Text height={24} size={14}>

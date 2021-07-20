@@ -164,8 +164,8 @@ const Profile = () => {
                   {strictValidArrayWithLength(user.addresses) && (
                     <FlatList
                       data={user.addresses}
+                      keyExtractor={(item) => item.id}
                       renderItem={({item}) => {
-                        console.log(item);
                         return (
                           <Block
                             margin={[hp(1), 0, hp(0.5)]}

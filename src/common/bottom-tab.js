@@ -146,7 +146,7 @@ const BottomTab = ({state, descriptors, navigation}) => {
           });
 
           if (!isFocused && !event.defaultPrevented) {
-            if (route.name == 'DashboardLogo') {
+            if (route.name === 'DashboardLogo') {
               navigation.reset({
                 routes: [{name: route.name}],
               });
@@ -155,13 +155,13 @@ const BottomTab = ({state, descriptors, navigation}) => {
             }
           }
 
-          if (route.name == 'Login') {
+          if (route.name === 'Login') {
             navigation.reset({
               routes: [{name: route.name}],
             });
           }
 
-          if (route.name == 'Category') {
+          if (route.name === 'Category') {
             navigation.reset({
               routes: [{name: route.name}],
             });
@@ -176,6 +176,7 @@ const BottomTab = ({state, descriptors, navigation}) => {
         };
         return (
           <MainView
+            key={index}
             activeOpacity={0.8}
             style={
               tabImages[label] === undefined

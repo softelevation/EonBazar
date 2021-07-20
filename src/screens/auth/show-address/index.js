@@ -462,6 +462,7 @@ const ShowAddress = (
         <View style={{flex: 1, marginTop: 10}}>
           {strictValidArrayWithLength(shippingAddress) ? (
             <FlatList
+              keyExtractor={(item) => item.id}
               data={shippingAddress}
               contentContainerStyle={{flexGrow: 1}}
               renderItem={({item, index}) => (

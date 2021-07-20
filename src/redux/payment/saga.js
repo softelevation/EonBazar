@@ -8,6 +8,13 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {Toast} from '../../common/toast';
 import {light} from '../../components/theme/colors';
 import {orientationRequest} from '../orientation/action';
+import {sessionExpired} from '../../utils/constants';
+import {myOrderError} from '../order/action';
+import {profileSuccess} from '../auth/profile/action';
+
+const clearAuthToken = async () => {
+  return await AsyncStorage.removeItem('token');
+};
 
 export function* paymentRequest(action) {
   try {
@@ -27,9 +34,17 @@ export function* paymentRequest(action) {
       yield put(paymentError(response));
     }
   } catch (err) {
-    Toast(err.response.data.message, light.danger);
-    yield put(orientationRequest(false));
-    yield put(paymentError(err));
+    if (err.response.status === 401 || err.response.status === 404) {
+      yield call(clearAuthToken);
+      yield put(profileSuccess({}));
+      yield put(paymentError(err));
+      Toast(sessionExpired, light.danger);
+      yield put(orientationRequest(false));
+    } else {
+      Toast(err.response.data.message, light.danger);
+      yield put(orientationRequest(false));
+      yield put(paymentError(err));
+    }
   }
 }
 

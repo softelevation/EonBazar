@@ -14,7 +14,7 @@ const Footer = ({images, footer, cards}) => {
     return (
       <Block
         margin={[hp(0.5), w1]}
-        style={{width: wp(43)}}
+        style={{width: wp(48)}}
         primary
         center
         padding={[hp(2)]}
@@ -60,6 +60,7 @@ const Footer = ({images, footer, cards}) => {
         <FlatList
           data={footerContent}
           contentContainerStyle={flatlistContentStyle}
+          numColumns={2}
           renderItem={renderItem}
         />
       )}
@@ -75,8 +76,6 @@ const Footer = ({images, footer, cards}) => {
   );
 };
 const flatlistContentStyle = {
-  flexWrap: 'wrap',
-  flexDirection: 'row',
   paddingTop: hp(2),
   justifyContent: 'center',
 };

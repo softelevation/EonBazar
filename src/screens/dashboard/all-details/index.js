@@ -1,11 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import {ActivityIndicator, FlatList, TouchableOpacity} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {
   widthPercentageToDP as wp,
@@ -30,7 +26,6 @@ import {
 } from '../../../utils/commonUtils';
 import {config} from '../../../utils/config';
 import OverlayLoader from '../../../components/overlayLoader';
-import Toast from '../../../common/toast';
 
 const initialState = {
   data: [],
@@ -51,7 +46,6 @@ const SeeAllDetails = () => {
   const overlayLoader = useSelector((v) => v.cart.save.loading);
   const overlayGuestLoader = useSelector((v) => v.cart.guestsave.loading);
   const guestCartToken = useSelector((v) => v.cart.guestcartId.id);
-  const guestCartError = useSelector((v) => v.cart.guestsave.error);
   const {data} = state;
 
   const LoadRandomData = async () => {
@@ -67,6 +61,7 @@ const SeeAllDetails = () => {
       }
     }
   };
+
   useEffect(() => {
     const newData = [];
     productsData &&
@@ -92,17 +87,13 @@ const SeeAllDetails = () => {
       });
     setstate({...state, data: data.concat(newData)});
   }, [productsData]);
+
   const LoadMoreRandomData = async () => {
     if (data.length <= 59) {
       await setCurrentPage(currentPage + 1);
       LoadRandomData();
     }
   };
-
-  // useEffect(() => {
-
-  //   setData(newData);
-  // }, [data]);
 
   const addToCart = async (val, index) => {
     if (strictValidObjectWithKeys(userProfile)) {
@@ -111,15 +102,6 @@ const SeeAllDetails = () => {
       const clone = [...data];
       clone[index] = updated;
       setstate({data: clone});
-
-      // setTimeout(() => {
-      //   const old = data[index];
-      //   const updated = {...old, isLoad: false};
-      //   const clone = [...data];
-      //   clone[index] = updated;
-      //   setstate({data: clone});
-      // }, 5000);
-
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -132,15 +114,6 @@ const SeeAllDetails = () => {
       const clone = [...data];
       clone[index] = updated;
       setstate({data: clone});
-
-      // setTimeout(() => {
-      //   const old = data[index];
-      //   const updated = {...old, isLoad: false};
-      //   const clone = [...data];
-      //   clone[index] = updated;
-      //   setstate({data: clone});
-      // }, 5000);
-
       const newData = {
         sku: val.sku,
         qty: val.qty,
@@ -176,7 +149,7 @@ const SeeAllDetails = () => {
   };
 
   const renderFooter = () => {
-    if (data.length >= 60) {
+    if (data.length >= 100) {
       return null;
     }
     //it will show indicator at the bottom of the list when data is loading otherwise it returns null
@@ -194,15 +167,14 @@ const SeeAllDetails = () => {
   const renderItem = ({item, index}) => {
     return (
       <Block
-        style={{width: wp(45)}}
+        style={{width: wp(48)}}
         padding={[hp(2)]}
-        margin={[hp(0.5), wp(1.8)]}
+        margin={[hp(0.5), wp(1)]}
         primary
         flex={false}>
         <TouchableOpacity onPress={() => addToWishlist(item, index)}>
           <Icon name="ios-heart-outline" size={15} />
         </TouchableOpacity>
-        {/* <Icon name="ios-shuffle" size={15} /> */}
         <CustomButton
           activeOpacity={1}
           onPress={() =>
@@ -276,11 +248,13 @@ const SeeAllDetails = () => {
       <Header leftIcon={false} />
       <FlatList
         contentContainerStyle={flatlistContentStyle}
-        data={strictValidArray(data) && data.slice(0, 60)}
+        data={strictValidArray(data) && data.slice(0, 100)}
         renderItem={renderItem}
         onEndReached={LoadMoreRandomData}
+        numColumns={2}
         onEndReachedThreshold={0.3}
         ListFooterComponent={renderFooter}
+        keyExtractor={(item) => item.id}
       />
     </Block>
   );
@@ -290,12 +264,9 @@ const LineAboveText = styled(Text)({
   textDecorationStyle: 'solid',
 });
 const flatlistContentStyle = {
-  flexWrap: 'wrap',
-  flexDirection: 'row',
   paddingTop: hp(2),
   paddingBottom: hp(4),
   flexGrow: 1,
-  justifyContent: 'center',
 };
 
 export default SeeAllDetails;

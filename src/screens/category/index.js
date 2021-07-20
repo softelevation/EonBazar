@@ -192,7 +192,6 @@ const Category = (props) => {
         });
       }
     }
-    console.log(result);
 
     setstate({data: result});
     setArrayLength(newData.length);
@@ -313,9 +312,9 @@ const Category = (props) => {
   const renderItem = ({item, index}) => {
     return (
       <Block
-        style={{width: widthPercentageToDP(45), minHeight: hp(35)}}
+        style={{width: widthPercentageToDP(48)}}
         padding={[hp(2)]}
-        margin={[hp(0.5), widthPercentageToDP(1.8)]}
+        margin={[hp(0.5), widthPercentageToDP(1)]}
         primary
         flex={false}>
         <TouchableOpacity onPress={() => addToWishlist(item, index)}>
@@ -389,6 +388,11 @@ const Category = (props) => {
     );
   };
 
+  const getItemLayout = (data, index) => ({
+    length: hp(30),
+    offset: hp(30) * index,
+    index,
+  });
   return (
     <Block
       onStartShouldSetResponderCapture={() => {
@@ -411,8 +415,8 @@ const Category = (props) => {
           {/* <Text>Top</Text> */}
           <ImageComponent
             name="scroll_icon"
-            height="15"
-            width="15"
+            height={15}
+            width={15}
             color="green"
           />
         </BackButton>
@@ -470,11 +474,14 @@ const Category = (props) => {
             data={strictValidArray(data) && data}
             renderItem={renderItem}
             ref={flatListRef}
+            numColumns={2}
             onEndReachedThreshold={0.1}
             bounces={false}
+            windowSize={10}
             maxToRenderPerBatch={60}
             initialNumToRender={50}
             ListFooterComponent={renderFooter}
+            keyExtractor={(item) => item.id}
             maxHeight={500}
             onMomentumScrollBegin={() => {
               setEndReached(false);
@@ -578,12 +585,9 @@ const dropdownStyle = {
   },
 };
 const flatlistContentStyle = {
-  flexWrap: 'wrap',
-  flexDirection: 'row',
   paddingTop: hp(2),
   paddingBottom: hp(4),
   flexGrow: 1,
-  justifyContent: 'center',
 };
 
 const CartButton = styled(Button)({

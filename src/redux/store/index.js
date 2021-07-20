@@ -19,7 +19,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 const sagaMiddleware = createSagaMiddleware();
 let store = createStore(
   rootReducer,
-  composeEnhancers(applyMiddleware(sagaMiddleware, logger)),
+  composeEnhancers(applyMiddleware(sagaMiddleware)),
 );
 let persistor = persistStore(store);
 
